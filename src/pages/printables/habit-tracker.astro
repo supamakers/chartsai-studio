@@ -41,8 +41,18 @@ const schema = [
   {
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.chartsai.com/' },
-      { '@type': 'ListItem', position: 2, name: 'Printables', item: 'https://www.chartsai.com/printables/' },
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://www.chartsai.com/',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Printables',
+        item: 'https://www.chartsai.com/printables/',
+      },
       {
         '@type': 'ListItem',
         position: 3,
@@ -62,7 +72,8 @@ const schema = [
   <section class="container tool-intro">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="/">Home</a><span>/</span><a href="/printables/">Printables</a><span>/</span><span
-        >Habit tracker</span>
+        >Habit tracker</span
+      >
     </nav><div class="tool-title-line">
       <div>
         <span class="eyebrow">FREE PRINTABLE · A4 & US LETTER</span><h1>
@@ -76,9 +87,8 @@ const schema = [
   </section>
   <div class="container editor-container">
     <TrackerEditor client:load /><noscript
-      ><div class="notice">
-        Enable JavaScript to personalize your tracker and generate the PDF.
-      </div></noscript>
+      ><div class="notice">Enable JavaScript to personalize your tracker and generate the PDF.</div></noscript
+    >
   </div>
   <section class="container section">
     <div class="section-heading">
@@ -158,6 +168,7 @@ const schema = [
   </section>
   <div class="container related-strip">
     <span>Have numbers to explore?</span><a href="/dot-plot-maker/">Make a dot plot ↗</a><a
-      href="/radar-chart-maker/">Compare a profile with a radar chart ↗</a>
+      href="/radar-chart-maker/">Compare a profile with a radar chart ↗</a
+    >
   </div>
 </Layout>

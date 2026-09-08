@@ -4,8 +4,8 @@ import ToolCards from '../../components/ToolCards.astro';
 ---
 
 <Layout
-  title="Free Online Chart Makers — Dot Plots & Radar Charts | ChartsAI"
-  description="Make a dot plot or radar chart online. Start with a sample, paste your own values or import CSV and Excel, and download a free PNG, SVG or PDF."
+  title="Free Online Chart Makers — Dot, Radar & Line Graphs | ChartsAI"
+  description="Make a dot plot, radar chart or line graph online. Start with a sample, paste your own values or import CSV and Excel, and download a free PNG, SVG or PDF."
 >
   <section class="container listing-intro">
     <span class="eyebrow">THE CHART COLLECTION</span><h1>
@@ -15,7 +15,9 @@ import ToolCards from '../../components/ToolCards.astro';
       your values, and download your chart.
     </p>
   </section>
-  <section class="container section listing-cards"><ToolCards show="charts" /></section>
+  <section class="container section listing-cards">
+    <ToolCards show="charts" />
+  </section>
   <section class="container prose-section">
     <h2>Choose the chart that fits your question</h2><div class="comparison-table">
       <table>
@@ -28,10 +30,15 @@ import ToolCards from '../../components/ToolCards.astro';
             ><td>Compare profiles across several dimensions</td><td
               ><a href="/radar-chart-maker/">Radar chart maker</a></td
             ><td>Dimension names and comparable scores for each series</td></tr
-          ></tbody>
+          ><tr
+            ><td>See how values change across ordered points</td><td
+              ><a href="/line-graph-maker/">Line graph maker</a></td
+            ><td>Ordered labels, dates or numeric positions and one to five numeric series</td></tr
+          ></tbody
+        >
       </table>
     </div><p>
-      Both tools process data in your browser. Import a spreadsheet and choose your columns in a preview.
+      All tools process data in your browser. Import a spreadsheet and choose your columns in a preview.
       Missing values are flagged, and downloads have no watermark. Looking for something to fill in by hand?
       Explore our <a href="/printables/">printable trackers</a>.
     </p>

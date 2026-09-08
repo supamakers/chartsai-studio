@@ -1,0 +1,64 @@
+<script>
+  import { analyticsUrl, productionHosts, usageEvent } from '../lib/analytics-policy';
+  type Tracker = ((name: string, options?: Record<string, unknown>) => void) & {
+    q?: unknown[];
+    o?: Record<string, unknown>;
+    init?: (options: Record<string, unknown>) => void;
+  };
+  const w = window as Window & { plausible?: Tracker };
+  // Local development, Vercel previews and explicit QA visits do not load the tracker.
+  if (
+    productionHosts.includes(location.hostname) &&
+    new URLSearchParams(location.search).get('analytics') !== 'off'
+  ) {
+    const plausible: Tracker =
+      w.plausible ||
+      Object.assign(function (...args: unknown[]) {
+        (plausible.q ||= []).push(args);
+      }, {});
+    w.plausible = plausible;
+    plausible.init ||= (options) => {
+      plausible.o = options;
+    };
+    plausible.init({
+      autoCapturePageviews: false,
+      outboundLinks: false,
+      fileDownloads: false,
+      formSubmissions: false,
+      transformRequest(payload: Record<string, any>) {
+        // Fixed routes and bounded properties only. Never forward titles, data or arbitrary query strings.
+        payload.u = analyticsUrl(location.href);
+        if (payload.r) {
+          try {
+            payload.r = new URL(payload.r).origin;
+          } catch {
+            payload.r = '';
+          }
+        }
+        return payload;
+      },
+    });
+    const tracker = document.createElement('script');
+    tracker.async = true;
+    tracker.src = 'https://plausible.io/js/pa-yhGSRdX3erTRDTGzTf-57.js';
+    document.head.appendChild(tracker);
+    plausible('pageview', { url: analyticsUrl(location.href) });
+    window.addEventListener('chartsai:usage', (event) => {
+      const mapped = usageEvent((event as CustomEvent).detail);
+      if (mapped)
+        w.plausible?.(mapped.name, {
+          props: mapped.props,
+          url: analyticsUrl(location.href),
+        });
+    });
+    document.addEventListener('click', (event) => {
+      const anchor = event.target instanceof Element ? event.target.closest('a') : null;
+      if (!anchor) return;
+      const url = new URL(anchor.href);
+      if (url.origin === location.origin && url.pathname === '/downloads/chartsai-source.zip')
+        w.plausible?.('Source Download', { url: analyticsUrl(location.href) });
+      else if (url.hostname === 'www.supamakers.com' || url.hostname === 'supamakers.com')
+        w.plausible?.('SupaMakers Visit', { url: analyticsUrl(location.href) });
+    });
+  }
+</script>

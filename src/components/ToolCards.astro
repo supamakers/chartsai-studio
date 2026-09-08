@@ -1,11 +1,11 @@
 ---
 import ChartPreview from './ChartPreview.astro';
 import { TrackerPreview } from './TrackerEditor';
-import { dotExample, radarExample } from '../lib/chart-presets';
+import { dotExample, radarExample, lineExample } from '../lib/chart-presets';
 const { show = 'all' } = Astro.props;
 ---
 
-<div class:list={['tool-cards', show !== 'all' && 'two-cards']}>
+<div class:list={['tool-cards', show === 'all' && 'four-cards']}>
   {
     show !== 'printables' && (
       <>
@@ -58,6 +58,27 @@ const { show = 'all' } = Astro.props;
             </div>
           </>
         </a>
+        <a class="tool-card" href="/line-graph-maker/">
+          <div class="card-preview">
+            <ChartPreview spec={lineExample()} />
+          </div>
+          <div class="card-copy">
+            <span class="card-index">03 / FOLLOW THE CHANGE</span>
+            <div>
+              <>
+                <h3>Line graph maker</h3>
+                <span class="card-arrow">↗</span>
+              </>
+            </div>
+            <p>
+              Track changes over time. Compare multiple lines with clear labels and accurate numeric or date
+              spacing.
+            </p>
+            <span class="card-format">
+              Up to 5 series <span>→</span> PNG · SVG · PDF
+            </span>
+          </div>
+        </a>
       </>
     )
   }
@@ -79,7 +100,7 @@ const { show = 'all' } = Astro.props;
           </div>
           <div class="card-copy">
             <>
-              <span class="card-index">03 / TAKE IT OFFLINE</span>
+              <span class="card-index">04 / TAKE IT OFFLINE</span>
               <div>
                 <>
                   <h3>Habit tracker printable</h3>

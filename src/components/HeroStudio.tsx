@@ -6,7 +6,10 @@ import { dotExample, radarExample } from '../lib/chart-presets';
 export default function HeroStudio({ radarSvg, dotSvg }: { radarSvg: string; dotSvg: string }) {
   const [kind, setKind] = useState<'radar' | 'dot'>('radar');
   const [theme, setTheme] = useState<ChartTheme>('night');
-  const spec: ChartSpec = { ...(kind === 'radar' ? radarExample('products') : dotExample('scores')), theme };
+  const spec: ChartSpec = {
+    ...(kind === 'radar' ? radarExample('products') : dotExample('scores')),
+    theme,
+  };
   return (
     <div className="hero-studio">
       <div className="hero-studio-toolbar">

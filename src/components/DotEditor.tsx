@@ -64,7 +64,7 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
     meanLine: mean,
     showCounts: counts,
   };
-  function selectPreset(id: string) {
+  function selectPreset(id: string, track = true) {
     const p = dotExample(id);
     setActive(id);
     setRaw(p.values.join('\n'));
@@ -72,7 +72,7 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
     setLabel(p.label);
     setPresentation((v) => ({ ...v, subtitle: p.subtitle, source: p.source }));
     setNotice('Example loaded. The sample data is fictional.');
-    emitUsage('dot-plot', 'sample');
+    if (track) emitUsage('dot-plot', 'sample');
   }
   function customData(text: string) {
     setRaw(text);
@@ -92,7 +92,7 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
   }
   useEffect(() => {
     const id = new URLSearchParams(location.search).get('example');
-    if (dotPresets.some((p) => p.id === id)) selectPreset(id!);
+    if (dotPresets.some((p) => p.id === id)) selectPreset(id!, false);
   }, []);
   return (
     <div id="editor" className="tool-workspace">
@@ -177,7 +177,10 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
               { name: 'Observations', value: stats?.count },
               { name: 'Mean', value: stats?.mean },
               { name: 'Median', value: stats?.median },
-              { name: 'Range', value: stats ? stats.max - stats.min : undefined },
+              {
+                name: 'Range',
+                value: stats ? stats.max - stats.min : undefined,
+              },
             ].map((s) => (
               <div key={s.name}>
                 <span>{s.name}</span>
@@ -190,13 +193,14 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
             <button
               className="text-button"
               disabled={!stats}
-              onClick={() =>
+              onClick={() => {
                 download(
                   csv([['Value'], ...values.map((v) => [String(v)])]),
                   'text/csv;charset=utf-8',
                   'dot-plot-data.csv',
-                )
-              }
+                );
+                emitUsage('dot', 'export', 'csv');
+              }}
             >
               <ArrowDownToLine size={13} /> Data CSV
             </button>

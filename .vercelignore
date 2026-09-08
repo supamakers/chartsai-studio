@@ -1,0 +1,10 @@
+.seo-cache/
+artifacts/
+node_modules/
+dist/
+.astro/
+.env*
+SEO-RESEARCH-*.md
+FOLLOWUP-*.md
+keyword-shortlist.csv
+public/downloads/

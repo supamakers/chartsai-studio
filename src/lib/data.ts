@@ -142,13 +142,19 @@ export async function readFileTables(file: File): Promise<Record<string, Table>>
   if (file.size > 8_000_000)
     throw new Error('Choose a file smaller than 8 MB. You can also copy just the cells you need.');
   if (/\.(csv|tsv|txt)$/i.test(file.name))
-    return { Data: parseText(await file.text(), /\.tsv$/i.test(file.name) ? '\t' : 'auto') };
+    return {
+      Data: parseText(await file.text(), /\.tsv$/i.test(file.name) ? '\t' : 'auto'),
+    };
   if (!/\.xlsx$/i.test(file.name))
     throw new Error(
       'Choose a CSV, TSV, TXT or XLSX file. For other formats, copy the table and paste it here.',
     );
   const XLSX = await import('xlsx');
-  const book = XLSX.read(await file.arrayBuffer(), { type: 'array', cellDates: false, sheetRows: 2002 });
+  const book = XLSX.read(await file.arrayBuffer(), {
+    type: 'array',
+    cellDates: false,
+    sheetRows: 2002,
+  });
   if (!book.SheetNames.length) throw new Error('This workbook has no readable sheets.');
   return Object.fromEntries(
     book.SheetNames.map((name) => {
@@ -160,7 +166,12 @@ export async function readFileTables(file: File): Promise<Record<string, Table>>
         );
       return [
         name,
-        XLSX.utils.sheet_to_json<string[]>(sheet, { header: 1, raw: false, defval: '', blankrows: true }),
+        XLSX.utils.sheet_to_json<string[]>(sheet, {
+          header: 1,
+          raw: false,
+          defval: '',
+          blankrows: true,
+        }),
       ];
     }),
   );

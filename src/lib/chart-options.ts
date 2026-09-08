@@ -34,7 +34,12 @@ export const chartFrames = {
   wide: { name: 'Presentation', width: 1600, height: 900 },
   square: { name: 'Square', width: 1200, height: 1200 },
 };
-export type Presentation = { theme: ChartTheme; frame: ChartFrame; subtitle: string; source: string };
+export type Presentation = {
+  theme: ChartTheme;
+  frame: ChartFrame;
+  subtitle: string;
+  source: string;
+};
 export const defaultPresentation: Presentation = {
   theme: 'editorial',
   frame: 'landscape',
@@ -59,7 +64,19 @@ export type RadarSpec = {
   filled: boolean;
   round: boolean;
 } & Presentation;
-export type ChartSpec = DotSpec | RadarSpec;
+export type LineSpec = {
+  kind: 'line';
+  labels: string[];
+  series: string[];
+  values: number[][];
+  title: string;
+  xLabel: string;
+  yLabel: string;
+  xMode: 'category' | 'number' | 'time';
+  zeroBaseline: boolean;
+  markers: boolean;
+} & Presentation;
+export type ChartSpec = DotSpec | RadarSpec | LineSpec;
 
 export function chartDescription(spec: ChartSpec) {
   if (spec.kind === 'dot') {
@@ -68,6 +85,8 @@ export function chartDescription(spec: ChartSpec) {
       ? `${spec.title}. ${stats.count} observations, mean ${formatNumber(stats.mean)}, median ${formatNumber(stats.median)}. Values range from ${formatNumber(stats.min)} to ${formatNumber(stats.max)}. Each dot is one observation.`
       : 'Add values to create a dot plot.';
   }
+  if (spec.kind === 'line')
+    return `${spec.title}. ${spec.series.join(' and ')} across ${spec.labels.length} points, in the supplied order. ${spec.xMode === 'category' ? 'Labels are equally spaced.' : 'Horizontal spacing reflects ' + (spec.xMode === 'time' ? 'elapsed days.' : 'numeric distance.')} Exact values are in the editable data table.`;
   return `${spec.title}. ${spec.series.join(' and ')} compared across ${spec.axes.join(', ')}. All axes use a scale from 0 to ${spec.max}. Exact scores are available in the data table.`;
 }
 
@@ -83,7 +102,9 @@ export function createChartOption(spec: ChartSpec, width = 900, height = 600): E
     spec.source ||
     (spec.kind === 'dot'
       ? 'Each dot represents one observation.'
-      : 'A shared scale. Compare values along the same axis.');
+      : spec.kind === 'line'
+        ? 'Straight segments connect observations. No interpolation or aggregation.'
+        : 'A shared scale. Compare values along the same axis.');
   const titleSize = Math.max(19, 29 * scale);
   const base: EChartsOption = {
     backgroundColor: t.background,
@@ -92,13 +113,24 @@ export function createChartOption(spec: ChartSpec, width = 900, height = 600): E
     aria: { enabled: true, label: { description: chartDescription(spec) } },
     title: [
       {
-        text: spec.kind === 'dot' ? 'DISTRIBUTION / DOT PLOT' : 'COMPARISON / RADAR',
+        text:
+          spec.kind === 'dot'
+            ? 'DISTRIBUTION / DOT PLOT'
+            : spec.kind === 'line'
+              ? 'CHANGE / LINE GRAPH'
+              : 'COMPARISON / RADAR',
         left: pad,
         top: pad * 0.75,
-        textStyle: { color: t.muted, fontSize: Math.max(8, 10 * scale), fontWeight: 'normal' },
+        textStyle: {
+          color: t.muted,
+          fontSize: Math.max(8, 10 * scale),
+          fontWeight: 'normal',
+        },
       },
       {
-        text: spec.title || (spec.kind === 'dot' ? 'Dot plot' : 'Radar chart'),
+        text:
+          spec.title ||
+          (spec.kind === 'dot' ? 'Dot plot' : spec.kind === 'line' ? 'Line graph' : 'Radar chart'),
         subtext: spec.subtitle,
         left: pad,
         top: pad * 1.6,
@@ -111,7 +143,12 @@ export function createChartOption(spec: ChartSpec, width = 900, height = 600): E
           overflow: 'break',
           lineHeight: titleSize * 1.15,
         },
-        subtextStyle: { color: t.muted, fontSize: font(12), width: width - pad * 2, overflow: 'truncate' },
+        subtextStyle: {
+          color: t.muted,
+          fontSize: font(12),
+          width: width - pad * 2,
+          overflow: 'truncate',
+        },
       },
       {
         text: footer,
@@ -168,7 +205,12 @@ export function createChartOption(spec: ChartSpec, width = 900, height = 600): E
         name: spec.label,
         nameLocation: 'middle',
         nameGap: 40 * Math.max(0.75, scale),
-        nameTextStyle: { fontSize: font(12), color: t.muted, width: width - 50, overflow: 'break' },
+        nameTextStyle: {
+          fontSize: font(12),
+          color: t.muted,
+          width: width - 50,
+          overflow: 'break',
+        },
         axisLine: { show: true, lineStyle: { color: t.line } },
         axisTick: { show: false },
         splitLine: { show: false },
@@ -178,7 +220,11 @@ export function createChartOption(spec: ChartSpec, width = 900, height = 600): E
           fontSize: font(11),
           formatter: (value) => formatNumber(value),
         },
-        axisPointer: { show: true, label: { show: false }, lineStyle: { color: t.line } },
+        axisPointer: {
+          show: true,
+          label: { show: false },
+          lineStyle: { color: t.line },
+        },
       },
       yAxis: {
         type: 'value',
@@ -221,6 +267,100 @@ export function createChartOption(spec: ChartSpec, width = 900, height = 600): E
       ],
     };
   }
+  if (spec.kind === 'line') {
+    return {
+      ...base,
+      useUTC: true,
+      grid: {
+        top,
+        left: pad + 36 * scale,
+        right: pad + 12,
+        bottom: Math.max(110, 118 * scale),
+        containLabel: true,
+      },
+      tooltip: { ...base.tooltip, trigger: 'axis' },
+      legend: {
+        bottom: 40 * scale,
+        left: 'center',
+        selectedMode: false,
+        data: spec.series,
+        textStyle: { color: t.ink, fontSize: font(11) },
+        itemWidth: 18,
+        itemHeight: 8,
+      },
+      xAxis: {
+        ...(spec.xMode === 'category'
+          ? { type: 'category' as const, data: spec.labels, boundaryGap: false }
+          : spec.xMode === 'time'
+            ? {
+                type: 'time' as const,
+                boundaryGap: ['3%', '3%'] as [string, string],
+              }
+            : {
+                type: 'value' as const,
+                scale: true,
+                boundaryGap: ['3%', '3%'] as [string, string],
+              }),
+        name: spec.xLabel,
+        nameLocation: 'middle',
+        nameGap: 38 * Math.max(0.75, scale),
+        nameTextStyle: { color: t.muted, fontSize: font(11) },
+        axisLabel: {
+          color: t.muted,
+          fontSize: font(10),
+          hideOverlap: true,
+          width: small ? 60 : 100 * scale,
+          overflow: 'truncate',
+        },
+        axisLine: { lineStyle: { color: t.line } },
+        axisTick: { show: false },
+        splitLine: { show: false },
+      },
+      yAxis: {
+        type: 'value',
+        scale: !spec.zeroBaseline,
+        name: spec.yLabel,
+        nameLocation: 'middle',
+        nameGap: 48 * Math.max(0.75, scale),
+        nameRotate: 90,
+        nameTextStyle: {
+          color: t.muted,
+          fontSize: font(11),
+          width: width * 0.45,
+          overflow: 'truncate',
+        },
+        axisLabel: {
+          color: t.muted,
+          fontSize: font(10),
+          formatter: (value) => formatNumber(value),
+        },
+        splitNumber: 5,
+        splitLine: { lineStyle: { color: t.line, type: 'dashed' } },
+      },
+      series: spec.series.map((name, i) => ({
+        type: 'line',
+        name,
+        smooth: false,
+        connectNulls: false,
+        showSymbol: spec.markers,
+        symbol: 'circle',
+        symbolSize: Math.max(3, 6 * scale),
+        lineStyle: {
+          width: Math.max(1.5, 2.5 * scale),
+          type: i % 2 ? 'dashed' : 'solid',
+        },
+        itemStyle: { color: t.colors[i % t.colors.length] },
+        data: spec.values.map((row, r) =>
+          spec.xMode === 'category'
+            ? row[i]
+            : [
+                spec.xMode === 'time' ? Date.parse(spec.labels[r] + 'T00:00:00Z') : Number(spec.labels[r]),
+                row[i],
+              ],
+        ),
+      })),
+    };
+  }
   const radius = Math.min(width * (small ? 0.27 : 0.235), (height - top - 90 * scale) * 0.44);
   const centerX = small ? width * 0.5 : width * 0.6;
   const centerY = top + (height - top - 68 * scale) * 0.49;
@@ -232,7 +372,11 @@ export function createChartOption(spec: ChartSpec, width = 900, height = 600): E
       left: pad,
       top: height * 0.43,
       textStyle: { color: t.ink, fontSize: 34 * scale, fontWeight: 500 },
-      subtextStyle: { color: t.muted, fontSize: font(10), lineHeight: 18 * scale },
+      subtextStyle: {
+        color: t.muted,
+        fontSize: font(10),
+        lineHeight: 18 * scale,
+      },
       itemGap: 12 * scale,
     });
   return {
@@ -281,7 +425,10 @@ export function createChartOption(spec: ChartSpec, width = 900, height = 600): E
           value: spec.scores.map((row) => row[s]),
           itemStyle: { color: t.colors[s % t.colors.length] },
           lineStyle: { color: t.colors[s % t.colors.length] },
-          areaStyle: { color: t.colors[s % t.colors.length], opacity: spec.filled ? 0.12 : 0 },
+          areaStyle: {
+            color: t.colors[s % t.colors.length],
+            opacity: spec.filled ? 0.12 : 0,
+          },
         })),
       },
     ],

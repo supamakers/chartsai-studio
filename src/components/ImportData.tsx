@@ -7,7 +7,7 @@ export default function ImportData({
   onClose,
   onImport,
 }: {
-  kind: 'dot' | 'radar';
+  kind: 'dot' | 'radar' | 'line';
   onClose: () => void;
   onImport: (table: Table, style: NumberStyle) => void;
 }) {
@@ -97,7 +97,7 @@ export default function ImportData({
     body.length > 0 &&
     selectedColumns.length > 0 &&
     !invalid.length &&
-    (kind !== 'radar' || body.every((row) => !!row[labelColumn]?.trim()));
+    (kind === 'dot' || body.every((row) => !!row[labelColumn]?.trim()));
   function commit() {
     if (!canImport) return;
     if (kind === 'dot' && body.length > 300) {
@@ -108,6 +108,10 @@ export default function ImportData({
     }
     if (kind === 'radar' && (body.length < 3 || body.length > 10 || selectedColumns.length > 5)) {
       setError('Use 3–10 dimensions and 1–5 score series for a readable radar chart.');
+      return;
+    }
+    if (kind === 'line' && (body.length < 2 || body.length > 300 || selectedColumns.length > 5)) {
+      setError('Use 2–300 points and 1–5 numeric series for a line graph. No rows have been removed.');
       return;
     }
     const result =
@@ -173,7 +177,9 @@ export default function ImportData({
           placeholder={
             kind === 'dot'
               ? 'Paste numbers or spreadsheet cells here…\n64, 68, 72, 72, 76, 80'
-              : 'Dimension\tAlex\tSam\nResearch\t8\t5\nDesign\t9\t6\nWriting\t7\t8'
+              : kind === 'line'
+                ? 'Month\tOrders\tTarget\nJan\t120\t100\nFeb\t145\t125'
+                : 'Dimension\tAlex\tSam\nResearch\t8\t5\nDesign\t9\t6\nWriting\t7\t8'
           }
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -308,7 +314,9 @@ export default function ImportData({
             ) : (
               <>
                 <label className="mapping-choice">
-                  Which column names the dimensions?
+                  {kind === 'line'
+                    ? 'Which column contains the horizontal labels?'
+                    : 'Which column names the dimensions?'}
                   <select value={labelColumn} onChange={(e) => setLabelColumn(Number(e.target.value))}>
                     {labels.map((label, i) => (
                       <option key={i} value={i}>
@@ -318,7 +326,11 @@ export default function ImportData({
                   </select>
                 </label>
                 <fieldset>
-                  <legend>Choose the score series to compare</legend>
+                  <legend>
+                    {kind === 'line'
+                      ? 'Choose the numeric series to plot'
+                      : 'Choose the score series to compare'}
+                  </legend>
                   <div className="check-row">
                     {labels.map(
                       (label, i) =>
@@ -345,9 +357,9 @@ export default function ImportData({
               Currency formatting is read as numbers; 12% is read as 12. Choose columns with consistent units.
               Missing values are never replaced with zero.
             </p>
-            {kind === 'radar' && body.some((row) => !row[labelColumn]?.trim()) && (
+            {kind !== 'dot' && body.some((row) => !row[labelColumn]?.trim()) && (
               <p className="notice error" role="status">
-                Every dimension needs a name. Check the label column or selected rows.
+                Every row needs a label. Check the label column or selected rows.
               </p>
             )}
             {invalid.length > 0 && (
@@ -360,7 +372,8 @@ export default function ImportData({
               </div>
             )}
             <button className="button" disabled={!canImport || busy} onClick={commit}>
-              Use {body.length} {kind === 'dot' ? 'values' : 'dimensions'} <ArrowRight size={16} />
+              Use {body.length} {kind === 'dot' ? 'values' : kind === 'line' ? 'points' : 'dimensions'}{' '}
+              <ArrowRight size={16} />
             </button>
           </div>
         )}

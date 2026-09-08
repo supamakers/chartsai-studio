@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowDownToLine, Upload, RotateCcw, Plus, X, FileSpreadsheet, Code2 } from 'lucide-react';
+import { Upload, RotateCcw, Plus, X, FileSpreadsheet, ArrowDownToLine, Code2 } from 'lucide-react';
 import EChartView from './EChartView';
 import ImportData from './ImportData';
 import {
@@ -10,109 +10,98 @@ import {
   usePresentation,
   PreviewStatus,
 } from './ChartControls';
-import { radarPresets } from '../lib/presets';
+import { linePresets } from '../lib/presets';
+import { lineExample } from '../lib/chart-presets';
+import { validateLineTable } from '../lib/line-data';
 import { csv, readNumber, type Table, type NumberStyle } from '../lib/data';
 import { download, emitUsage } from '../lib/export';
-import type { RadarSpec } from '../lib/chart-options';
-import { radarExample } from '../lib/chart-presets';
 import { exportChartConfig } from '../lib/chart-export';
+import type { LineSpec } from '../lib/chart-options';
 
-export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
-  const p = radarExample();
-  const [active, setActive] = useState('skills');
-  const [title, setTitle] = useState(p.title);
-  const [max, setMax] = useState(String(p.max));
-  const [table, setTable] = useState<Table>([
-    ['Dimension', ...p.series],
-    ...p.axes.map((axis, i) => [axis, ...p.scores[i].map(String)]),
-  ]);
-  const [presentation, setPresentation] = usePresentation(p);
+const asTable = (p: LineSpec): Table => [
+  [p.xLabel, ...p.series],
+  ...p.labels.map((label, i) => [label, ...p.values[i].map(String)]),
+];
+export default function LineEditor({ initialSvg }: { initialSvg?: string }) {
+  const initial = lineExample();
+  const [active, setActive] = useState('monthly');
+  const [table, setTable] = useState<Table>(asTable(initial));
+  const [title, setTitle] = useState(initial.title);
+  const [xLabel, setXLabel] = useState(initial.xLabel);
+  const [yLabel, setYLabel] = useState(initial.yLabel);
+  const [xMode, setXMode] = useState<LineSpec['xMode']>(initial.xMode);
+  const [zeroBaseline, setZero] = useState(true);
+  const [markers, setMarkers] = useState(true);
+  const [presentation, setPresentation] = usePresentation(initial);
   const [tab, setTab] = useState<'data' | 'design'>('data');
-  const [filled, setFilled] = useState(true);
-  const [round, setRound] = useState(false);
   const [importing, setImporting] = useState(false);
   const [notice, setNotice] = useState('');
-  const axes = table.slice(1).map((row) => row[0]);
-  const series = table[0].slice(1);
-  const scores = table.slice(1).map((row) => row.slice(1).map((v) => readNumber(v)));
-  const maxNumber = Number(max);
-  let error = '';
-  if (!max.trim() || !Number.isFinite(maxNumber) || maxNumber <= 0 || maxNumber > 1e6)
-    error = 'Choose a scale maximum greater than zero and no larger than 1,000,000.';
-  else if (axes.some((a) => !a.trim()) || series.some((s) => !s.trim()))
-    error = 'Give each dimension and series a name.';
-  else if (axes.some((a) => a.length > 30) || series.some((s) => s.length > 22))
-    error =
-      'Use dimension names up to 30 characters and series names up to 22 characters so labels remain readable.';
-  else if (new Set(series.map((s) => s.trim())).size !== series.length)
-    error = 'Give each series a different name so the legend is unambiguous.';
-  else if (scores.some((row) => row.some((n) => n === null)))
-    error = 'Every selected score needs a number. Empty scores are not treated as zero.';
-  else if (scores.some((row) => row.some((n) => n! < 0 || n! > maxNumber)))
-    error = `Scores must be between 0 and ${maxNumber}. Adjust the scale or check your values.`;
-  const spec: RadarSpec = {
+  const checked = validateLineTable(table, xMode);
+  const { error, labels, series, values } = checked;
+  const spec: LineSpec = {
     ...presentation,
-    kind: 'radar',
-    axes,
+    kind: 'line',
+    labels,
     series,
-    scores: scores as number[][],
-    max: maxNumber,
+    values,
     title,
-    filled,
-    round,
+    xLabel,
+    yLabel,
+    xMode,
+    zeroBaseline,
+    markers,
   };
   function markCustom() {
     setActive('custom');
     if (active !== 'custom')
       setPresentation((v) => ({
         ...v,
-        source: v.source.startsWith('Source: fictional example data.') ? '' : v.source,
         subtitle: '',
+        source: v.source.startsWith('Source: fictional example data.') ? '' : v.source,
       }));
   }
-  function edit(row: number, col: number, value: string) {
-    setTable((t) => t.map((r, i) => (i === row ? r.map((c, j) => (j === col ? value : c)) : r)));
+  function edit(r: number, c: number, value: string) {
+    setTable((t) => t.map((row, i) => (i === r ? row.map((cell, j) => (j === c ? value : cell)) : row)));
     markCustom();
   }
   function preset(id: string, track = true) {
-    const example = radarExample(id);
-    setTitle(example.title);
-    setMax(String(example.max));
-    setTable([
-      ['Dimension', ...example.series],
-      ...example.axes.map((axis, i) => [axis, ...example.scores[i].map(String)]),
-    ]);
-    setPresentation((v) => ({
-      ...v,
-      subtitle: example.subtitle,
-      source: example.source,
-    }));
+    const p = lineExample(id);
+    setTable(asTable(p));
+    setTitle(p.title);
+    setXLabel(p.xLabel);
+    setYLabel(p.yLabel);
+    setXMode(p.xMode);
+    setPresentation((v) => ({ ...v, subtitle: p.subtitle, source: p.source }));
     setActive(id);
-    if (track) emitUsage('radar-chart', 'sample');
+    setNotice('');
+    if (track) emitUsage('line', 'sample');
   }
   function imported(t: Table, style: NumberStyle) {
     setTable(t.map((row, r) => row.map((v, c) => (r && c ? String(readNumber(v, style)) : v))));
+    setXLabel(t[0][0]);
+    setYLabel('Value');
+    setXMode('category');
     markCustom();
     setNotice(
-      'Imported. Check that the shared scale fits your scores and the dimensions use comparable units.',
+      'Imported in the supplied order. Labels are equally spaced; choose numeric or date spacing when distances matter.',
     );
-    emitUsage('radar-chart', 'render');
+    emitUsage('line', 'render');
   }
   useEffect(() => {
     const id = new URLSearchParams(location.search).get('example');
-    if (radarPresets.some((p) => p.id === id)) preset(id!, false);
+    if (linePresets.some((p) => p.id === id)) preset(id!, false);
   }, []);
   return (
     <div id="editor" className="tool-workspace">
-      <WorkspaceHeader kind="Radar chart" />
-      <div className="workspace-body radar-workspace">
+      <WorkspaceHeader kind="Line graph" />
+      <div className="workspace-body radar-workspace line-workspace">
         <aside className="editor-sidebar">
           <SidebarTabs tab={tab} setTab={setTab} />
           {tab === 'data' ? (
             <div className="sidebar-tab-content">
               <div className="panel-title">
-                <h2>Your comparison</h2>
-                <button className="text-button" onClick={() => preset('skills')}>
+                <h2>Your series</h2>
+                <button className="text-button" onClick={() => preset('monthly')}>
                   <RotateCcw size={13} /> Reset
                 </button>
               </div>
@@ -120,30 +109,25 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
                 <Upload size={15} /> Paste or import a spreadsheet
               </button>
               <label className="field">
-                Shared scale: 0 to
-                <input
-                  type="number"
-                  min="0.01"
-                  max="1000000"
-                  step="any"
-                  value={max}
-                  onChange={(e) => {
-                    setMax(e.target.value);
-                    markCustom();
-                  }}
-                />
+                Horizontal spacing
+                <select value={xMode} onChange={(e) => setXMode(e.target.value as LineSpec['xMode'])}>
+                  <option value="category">Equal spacing — labels in row order</option>
+                  <option value="number">Numeric distance</option>
+                  <option value="time">Elapsed days — YYYY-MM-DD dates</option>
+                </select>
               </label>
               <p className="fine-print">
-                Compare like-for-like units. Higher should consistently mean more or better.
+                Use comparable units for all series. Numeric positions and dates must increase; rows are never
+                sorted automatically.
               </p>
-              <div className="table-scroll editable-data">
+              <div className="table-scroll editable-data line-data-table">
                 <table>
-                  <caption className="sr-only">Edit radar dimensions and series scores</caption>
+                  <caption className="sr-only">Edit line graph labels and values</caption>
                   <thead>
                     <tr>
-                      <th scope="col">Dimension</th>
-                      {series.map((name, s) => (
-                        <th scope="col" key={s}>
+                      <th scope="col">Point</th>
+                      {table[0].slice(1).map((name, s) => (
+                        <th key={s} scope="col">
                           <input
                             aria-label={`Series ${s + 1} name`}
                             value={name}
@@ -175,11 +159,11 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
                         {row.map((value, c) => (
                           <td key={c}>
                             <input
-                              aria-label={c === 0 ? `Dimension ${r + 1}` : `${series[c - 1]}, ${axes[r]}`}
+                              aria-label={c === 0 ? `Point ${r + 1} label` : `${table[0][c]}, point ${r + 1}`}
+                              value={value}
                               type={c ? 'number' : 'text'}
                               step="any"
-                              maxLength={c ? undefined : 30}
-                              value={value}
+                              maxLength={c ? undefined : 40}
                               onChange={(e) => edit(r + 1, c, e.target.value)}
                             />
                           </td>
@@ -187,8 +171,8 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
                         <td>
                           <button
                             className="icon-button tiny"
-                            aria-label={`Remove dimension ${axes[r]}`}
-                            disabled={axes.length <= 3}
+                            aria-label={`Remove point ${r + 1}`}
+                            disabled={labels.length <= 2}
                             onClick={() => {
                               setTable((t) => t.filter((_, i) => i !== r + 1));
                               markCustom();
@@ -205,21 +189,24 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
               <div className="data-add">
                 <button
                   className="text-button"
-                  disabled={axes.length >= 10}
+                  disabled={labels.length >= 300}
                   onClick={() => {
-                    setTable((t) => [...t, [`Dimension ${axes.length + 1}`, ...series.map(() => '0')]]);
+                    setTable((t) => [
+                      ...t,
+                      [xMode === 'category' ? `Point ${labels.length + 1}` : '', ...series.map(() => '')],
+                    ]);
                     markCustom();
                   }}
                 >
-                  <Plus size={13} /> Dimension
+                  <Plus size={13} /> Point
                 </button>
                 <button
                   className="text-button"
                   disabled={series.length >= 5}
                   onClick={() => {
-                    setTable((t) =>
-                      t.map((row, r) => [...row, r === 0 ? `Series ${series.length + 1}` : '0']),
-                    );
+                    let i = 1;
+                    while (series.includes(`Series ${i}`)) i++;
+                    setTable((t) => t.map((row, r) => [...row, r ? '' : `Series ${i}`]));
                     markCustom();
                   }}
                 >
@@ -233,14 +220,22 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
                 Chart title
                 <input value={title} maxLength={60} onChange={(e) => setTitle(e.target.value)} />
               </label>
+              <label className="field">
+                Horizontal axis label
+                <input value={xLabel} maxLength={40} onChange={(e) => setXLabel(e.target.value)} />
+              </label>
+              <label className="field">
+                Vertical axis label and unit
+                <input value={yLabel} maxLength={40} onChange={(e) => setYLabel(e.target.value)} />
+              </label>
               <StylePicker value={presentation} onChange={setPresentation} />
               <label className="check-label">
-                <input type="checkbox" checked={filled} onChange={(e) => setFilled(e.target.checked)} /> Fill
-                the profile shapes
+                <input type="checkbox" checked={zeroBaseline} onChange={(e) => setZero(e.target.checked)} />{' '}
+                Include zero on the vertical axis
               </label>
               <label className="check-label">
-                <input type="checkbox" checked={round} onChange={(e) => setRound(e.target.checked)} /> Use a
-                circular grid
+                <input type="checkbox" checked={markers} onChange={(e) => setMarkers(e.target.checked)} />{' '}
+                Show a marker at each observation
               </label>
             </div>
           )}
@@ -264,17 +259,25 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
           <div className="radar-note">
             <span className="note-dot" />
             <p>
-              A shape shows a profile, not an overall score. The order of the axes changes the shape; compare
-              values along matching axes.
+              {xMode === 'category'
+                ? 'Equal spacing: labels follow your row order. Use numeric or date spacing for irregular intervals.'
+                : xMode === 'number'
+                  ? 'Horizontal distances reflect your numeric positions.'
+                  : 'Horizontal distances reflect elapsed days, using UTC dates.'}{' '}
+              {!zeroBaseline && 'The vertical scale is fitted to your values and may not include zero.'}
             </p>
           </div>
           <div className="canvas-bottom">
-            <span>Hover a profile to inspect its scores.</span>
+            <span>Straight lines. Original values. Hover to inspect.</span>
             <button
               className="text-button"
               onClick={() => {
-                download(csv(table), 'text/csv;charset=utf-8', 'radar-chart-data.csv');
-                emitUsage('radar', 'export', 'csv');
+                download(
+                  csv([[xLabel, ...table[0].slice(1)], ...table.slice(1)]),
+                  'text/csv;charset=utf-8',
+                  'line-graph-data.csv',
+                );
+                emitUsage('line', 'export', 'csv');
               }}
             >
               <ArrowDownToLine size={13} /> Data CSV
@@ -287,7 +290,7 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
       </div>
       <div className="preset-bar">
         <span>Load an example</span>
-        {radarPresets.map((p) => (
+        {linePresets.map((p) => (
           <button
             key={p.id}
             className={`preset ${active === p.id ? 'active' : ''}`}
@@ -301,7 +304,7 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
       <p className="import-notice" role="status">
         {notice}
       </p>
-      {importing && <ImportData kind="radar" onClose={() => setImporting(false)} onImport={imported} />}
+      {importing && <ImportData kind="line" onClose={() => setImporting(false)} onImport={imported} />}
     </div>
   );
 }

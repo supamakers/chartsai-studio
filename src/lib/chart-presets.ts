@@ -1,5 +1,5 @@
-import { dotPresets, radarPresets } from './presets';
-import { defaultPresentation, type DotSpec, type RadarSpec } from './chart-options';
+import { dotPresets, radarPresets, linePresets } from './presets';
+import { defaultPresentation, type DotSpec, type RadarSpec, type LineSpec } from './chart-options';
 export function dotExample(id = 'scores'): DotSpec {
   const p = dotPresets.find((p) => p.id === id) || dotPresets[0];
   return {
@@ -27,6 +27,22 @@ export function radarExample(id = 'skills'): RadarSpec {
     filled: true,
     round: false,
     subtitle: 'Two profiles, compared on the same 0–10 scale.',
+    source: 'Source: fictional example data. Replace with your own.',
+  };
+}
+
+export function lineExample(id = 'monthly'): LineSpec {
+  const p = linePresets.find((p) => p.id === id) || linePresets[0];
+  return {
+    ...defaultPresentation,
+    ...p,
+    kind: 'line',
+    zeroBaseline: true,
+    markers: true,
+    subtitle:
+      p.xMode === 'category'
+        ? 'Two shops · six months · fictional data'
+        : 'Original fictional example · replace with your own data',
     source: 'Source: fictional example data. Replace with your own.',
   };
 }

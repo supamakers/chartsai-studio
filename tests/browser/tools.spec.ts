@@ -65,13 +65,11 @@ test('XLSX sheet selection resets mapping and rejects missing values', async ({ 
   await page.goto('/dot-plot-maker/');
   await page.getByRole('button', { name: 'Paste or import a spreadsheet' }).click();
   const dialog = page.getByRole('dialog');
-  await dialog
-    .locator('input[type=file]')
-    .setInputFiles({
-      name: 'scores.xlsx',
-      mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      buffer: XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }),
-    });
+  await dialog.locator('input[type=file]').setInputFiles({
+    name: 'scores.xlsx',
+    mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    buffer: XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }),
+  });
   await dialog.getByLabel('Sheet', { exact: true }).selectOption('Second');
   await expect(dialog.getByRole('button', { name: 'Use 3 values' })).toBeDisabled();
   await expect(dialog.getByRole('status')).toContainText('empty');
@@ -123,7 +121,9 @@ test('tracker honors leap years, weekly links, paper sizes and actual PDF output
 });
 
 test('all main pages fit phone screens and ship meaningful HTML without JavaScript', async ({ browser }) => {
-  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+  });
   const page = await context.newPage();
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));

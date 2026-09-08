@@ -107,4 +107,62 @@ export const tools = [
       },
     ],
   },
+  {
+    slug: 'line-graph-maker',
+    name: 'Line graph maker',
+    short: 'See the change. Keep the context.',
+    tag: 'TRENDS',
+    type: 'line',
+    description:
+      'Create a free line graph with multiple lines from pasted data, CSV or Excel. Choose numeric or date spacing, style your chart, and download PNG, SVG or PDF.',
+    intro:
+      'Turn ordered observations into a clear story. Compare multiple lines, keep the intervals honest, and download a chart ready to use.',
+    definition:
+      'A line graph connects successive observations with straight segments. The horizontal axis shows an ordered variable, such as time, and the vertical axis shows a numeric value. Multiple lines compare series using the same horizontal positions and units.',
+    use: 'Use a line graph to show change over time or another ordered variable. Use equal spacing for category labels, numeric spacing for measured intervals, or date spacing for elapsed days. For unrelated categories, a bar chart is usually easier to interpret.',
+    steps: [
+      {
+        title: 'Bring your observations',
+        text: 'Paste spreadsheet cells or import CSV, TSV, TXT or XLSX. Choose the label column and one to five numeric series in the preview.',
+      },
+      {
+        title: 'Check order and spacing',
+        text: 'Keep the row order you intend. Choose numeric distance or YYYY-MM-DD dates for irregular intervals; equally spaced labels do not represent elapsed time.',
+      },
+      {
+        title: 'Label, style and download',
+        text: 'Add a title, axis units and source note. Choose a visual theme, then download PNG, SVG or PDF. Save your input table as CSV.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'Is this line graph maker free?',
+        a: 'Yes. Create and download line charts without an account, payment or watermark. PNG, SVG, PDF, CSV and ECharts configuration downloads are included.',
+      },
+      {
+        q: 'Can I create a graph with multiple lines?',
+        a: 'Yes. Plot one to five named series across two to 300 points. Every line shares the horizontal positions and vertical scale. Use the same units so the comparison makes sense.',
+      },
+      {
+        q: 'What data format do I need?',
+        a: 'Use one column for horizontal labels and one or more numeric columns for values. You can paste cells, select a sheet from Excel, choose a row range, transpose the table and map columns before importing. Files stay on your device.',
+      },
+      {
+        q: 'How do I handle dates and irregular intervals?',
+        a: 'After importing, choose Elapsed days and enter valid YYYY-MM-DD dates, or choose Numeric distance for measured positions. These modes preserve interval sizes and require strictly increasing positions. Equal spacing instead treats each row as the next equally spaced label.',
+      },
+      {
+        q: 'Does the tool fill missing values or sort my data?',
+        a: 'No. Missing or invalid values block the chart until corrected. Rows are never silently dropped, sorted, aggregated or interpolated. Numeric and date positions cannot repeat; resolve duplicate positions in your source or use equally spaced labels deliberately.',
+      },
+      {
+        q: 'Can I show negative values or change the vertical scale?',
+        a: 'Yes. Negative values and zero are retained. The vertical axis includes zero by default. In Design & details you can turn that off to fit the range more closely; the preview explains that the scale may no longer include zero.',
+      },
+      {
+        q: 'Are line graphs and line charts the same?',
+        a: 'The terms are commonly used for the same visualization. This tool uses straight segments between observations. It does not calculate a regression, forecast or smoothed trend.',
+      },
+    ],
+  },
 ] as const;

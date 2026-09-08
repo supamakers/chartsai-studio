@@ -11,11 +11,11 @@ Build excellent free chart tools and printable resources that people can discove
 - Do not constrain opportunities to industries currently featured on SupaMakers.
 - Do not reintroduce a generic AI chat interface, MCP proposition, account requirement, payment gate, or model API dependency without a new product decision.
 - There is no obligation to preserve old engineering. Prefer proven chart libraries over building chart geometry from scratch.
-- Keep ChartsAI as the initial site. DashDashGo remains a separate future decision; do not split effort or cross-publish duplicate pages.
+- The broader aim is many valuable free tools earning SEO/AEO/GEO discovery and SupaMakers authority. Consider Remocn for AnimStats animated outputs only after search, export and licensing validation; see `docs/PRODUCT-DIRECTION.md`. Keep ChartsAI as the initial site. DashDashGo remains a separate future decision; do not split effort or cross-publish duplicate pages.
 
 ## Current scope and evidence
 
-The implemented initial scope is a dot plot maker, radar/spider chart maker, and weekly/monthly printable habit tracker. Each has a working editor and downloads. Line charts, relationship charts, other printable families, and Power BI/Tableau resources are candidates, not committed work.
+The implemented initial scope is a dot plot maker, radar/spider chart maker, line graph maker, and weekly/monthly printable habit tracker. Each has a working editor and downloads. Relationship charts, other printable families, and Power BI/Tableau resources are candidates, not committed work.
 
 Local research, when available:
 
@@ -81,10 +81,10 @@ Google reports AI features within overall Web search performance; do not present
 ## Engineering and data integrity
 
 - Stack: Astro static output, React, TypeScript, Apache ECharts. Inspect `package.json` and lockfile for exact versions.
-- The original ChartsAI also used ECharts. This rebuild uses ECharts built-in scatter/radar series with SVG rendering. Lieflat Charts is inspiration only; its code is not integrated. Check licenses before copying any external implementation.
+- The original ChartsAI also used ECharts. This rebuild uses ECharts built-in scatter/radar/line series with SVG rendering. Lieflat Charts is inspiration only; its code is not integrated. Check licenses before copying any external implementation.
 - Share chart options between preview and export. Do not replace native axes/geometry with a separate hand-drawn engine. A custom printable SVG grid is appropriate.
 - Keep the initial sample visible in static HTML. Load interactive charts, spreadsheet parsing, and PDF generation only where needed.
-- Default flows run locally in the visitor's browser. No backend, account, model API, or analytics transmission is required. Do not silently introduce data transmission or invalidate privacy claims.
+- Default flows run locally in the visitor's browser. No backend, account or model API is required. The user authorized Plausible analytics and production deployment on 2026-09-08; keep analytics events limited to fixed identifiers and never transmit entered data. Do not silently introduce data transmission or invalidate privacy claims.
 - Support practical paste/file imports with previews, sheet/column/row selection, transpose, and explicit numeric conventions. Users should not need our internal data format.
 - Never silently drop invalid rows, replace missing values with zero, remove outliers, normalize scores, or choose an aggregation. Show ambiguity and preserve user control.
 - Preserve current explicit size/row/series limits unless intentionally changed and tested. Radar dimensions use a declared common scale; polygon area is not a composite score.
@@ -105,7 +105,7 @@ Google reports AI features within overall Web search performance; do not present
 - `scripts/prepare-assets.mjs`: sample files, social graphic, and allowlisted public source ZIP.
 - `scripts/check-build.mjs`: static page/metadata/schema/resource checks.
 
-Use Node 22.12+ and `npm ci`. Commands:
+Use Node 22.12+ or 24.x and `npm ci`. Commands:
 
 ```sh
 npm run dev

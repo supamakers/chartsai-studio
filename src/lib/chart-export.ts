@@ -1,11 +1,11 @@
 import { chartFrames, createChartOption, type ChartSpec } from './chart-options';
-import { download, svgMarkupToPng } from './export';
+import { download, svgMarkupToPng, emitUsage } from './export';
 export type ChartExportFormat = 'png' | 'svg' | 'pdf';
 export async function exportEChart(spec: ChartSpec, format: ChartExportFormat) {
   const { renderChartSvg } = await import('./echarts');
   const { width, height } = chartFrames[spec.frame];
   const svg = renderChartSvg(spec, width, height);
-  const filename = spec.kind === 'dot' ? 'dot-plot' : 'radar-chart';
+  const filename = spec.kind === 'dot' ? 'dot-plot' : spec.kind === 'line' ? 'line-graph' : 'radar-chart';
   if (format === 'svg') {
     download(svg, 'image/svg+xml;charset=utf-8', `${filename}.svg`);
     return;
@@ -40,4 +40,5 @@ export function exportChartConfig(spec: ChartSpec) {
     'application/json',
     `${spec.kind}-echarts-option.json`,
   );
+  emitUsage(spec.kind, 'export', 'json');
 }

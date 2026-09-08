@@ -1,4 +1,5 @@
 ---
+import Analytics from '../components/Analytics.astro';
 import '../styles/global.css';
 import '../styles/studio.css';
 import '@fontsource/dm-sans/400.css';
@@ -22,7 +23,11 @@ const graph = [
     '@id': 'https://www.chartsai.com/#organization',
     name: 'ChartsAI',
     url: 'https://www.chartsai.com/',
-    parentOrganization: { '@type': 'Organization', name: 'SupaMakers', url: 'https://www.supamakers.com/' },
+    parentOrganization: {
+      '@type': 'Organization',
+      name: 'SupaMakers',
+      url: 'https://www.supamakers.com/',
+    },
   },
   {
     '@type': 'WebSite',
@@ -78,8 +83,12 @@ const graph = [
     <script
       is:inline
       type="application/ld+json"
-      set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\u003c')}
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': graph,
+      }).replace(/</g, '\u003c')}
     />
+    <Analytics />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -111,11 +120,15 @@ const graph = [
           <div>
             <a class="brand" href="/"
               >charts<span class="brand-ai">ai</span><span class="brand-dot">.</span></a
-            ><p>Your data. Ready to share.<br />Free chart makers & printables.</p>
+            ><p>
+              Your data. Ready to share.<br />Free chart makers & printables.
+            </p>
           </div><div>
             <span class="footer-label">MAKE SOMETHING</span><a href="/dot-plot-maker/">Dot plot maker</a><a
               href="/radar-chart-maker/">Radar chart maker</a
-            ><a href="/printables/habit-tracker/">Habit tracker printable</a>
+            ><a href="/line-graph-maker/">Line graph maker</a><a href="/printables/habit-tracker/"
+              >Habit tracker printable</a
+            >
           </div><div>
             <span class="footer-label">THE DETAILS</span><a href="/about/">About & methodology</a><a
               href="/source/">Source code & reuse</a
@@ -127,7 +140,8 @@ const graph = [
           </div>
         </div><div class="footer-bottom">
           <span>© 2026 SupaMakers Limited</span><span>No accounts. No watermarks. Just useful tools.</span><a
-            href="/terms/">Terms of use</a>
+            href="/terms/">Terms of use</a
+          >
         </div>
       </div>
     </footer>

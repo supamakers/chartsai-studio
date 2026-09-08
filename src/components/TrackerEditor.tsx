@@ -9,8 +9,20 @@ export const TrackerPreview = forwardRef<SVGSVGElement, { config: TrackerConfig 
 ) {
   const theme =
     config.style === 'blueprint'
-      ? { ink: '#254267', muted: '#61758a', line: '#9bafc6', header: '#eaf1fb', accent: '#3158df' }
-      : { ink: '#222924', muted: '#647063', line: '#9ca695', header: '#edf0e6', accent: '#738f4f' };
+      ? {
+          ink: '#254267',
+          muted: '#61758a',
+          line: '#9bafc6',
+          header: '#eaf1fb',
+          accent: '#3158df',
+        }
+      : {
+          ink: '#222924',
+          muted: '#647063',
+          line: '#9ca695',
+          header: '#edf0e6',
+          accent: '#738f4f',
+        };
   const plain = config.ink || config.style === 'minimal';
   const w = 1120,
     h = config.paper === 'a4' ? 792 : 865,

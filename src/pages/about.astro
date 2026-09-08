@@ -38,15 +38,21 @@ import Layout from '../layouts/Layout.astro';
       changes the shape, so the enclosed area is not presented as an overall score. For more context, see <a
         href="https://www.data-to-viz.com/caveat/spider.html">Data to Viz’s discussion of radar charts</a
       >.
+    </p><h3>Line graphs</h3><p>
+      Line graphs connect observations in the supplied row order. Equal spacing treats labels as categories;
+      numeric distance and UTC date spacing preserve actual intervals. Numeric/date positions must be strictly
+      increasing. Missing values, impossible dates and duplicate positions are flagged rather than guessed.
+      Values are not smoothed, forecast, aggregated or normalized. All series share one vertical scale, with
+      zero included by default.
     </p><h3>Habit trackers</h3><p>
       Monthly layouts use the Gregorian calendar and include leap-year February. Weekly layouts use Monday
       through Sunday with a blank start-date field. The PDF uses the selected A4 or US Letter dimensions. This
       is a printable template, not a health assessment or a behavior-change guarantee.
     </p><h2>Proven rendering. Open implementation.</h2><p>
-      The chart makers use Apache ECharts’ built-in scatter and radar charts. Our application provides the
-      data validation, presentation settings and examples. The same option builders drive the static previews,
-      interactive editors and exports. Chart PDFs contain a high-resolution image; SVG exports retain vector
-      shapes and text.
+      The chart makers use Apache ECharts’ built-in scatter, radar and line charts. Our application provides
+      the data validation, presentation settings and examples. The same option builders drive the static
+      previews, interactive editors and exports. Chart PDFs contain a high-resolution image; SVG exports
+      retain vector shapes and text.
     </p><h2>Your input stays with you.</h2><p>
       Parsing, calculations and file generation happen in your browser. We do not receive your spreadsheet or
       habit list. There is no account or cloud history; download your data or finished output before closing
@@ -71,5 +77,11 @@ import Layout from '../layouts/Layout.astro';
         >, or <a href="/printables/habit-tracker/">print a habit tracker</a>.
       </p>
     </div>
+    <h2 id="contact">Contact</h2><p>
+      For feedback or questions, email <a href="mailto:support@chartsai.com">support@chartsai.com</a>. For
+      bugs and improvements, <a href="https://github.com/supamakers/chartsai-studio/issues"
+        >open an issue on GitHub</a
+      > using fictional sample data.
+    </p>
   </article>
 </Layout>

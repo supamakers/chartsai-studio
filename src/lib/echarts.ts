@@ -1,5 +1,5 @@
 import { init, use } from 'echarts/core';
-import { ScatterChart, RadarChart } from 'echarts/charts';
+import { ScatterChart, RadarChart, LineChart } from 'echarts/charts';
 import {
   GridComponent,
   RadarComponent,
@@ -12,6 +12,7 @@ import {
 import { SVGRenderer } from 'echarts/renderers';
 import { createChartOption, type ChartSpec } from './chart-options';
 use([
+  LineChart,
   ScatterChart,
   RadarChart,
   GridComponent,
@@ -25,7 +26,12 @@ use([
 ]);
 export { init };
 export function renderChartSvg(spec: ChartSpec, width = 900, height = 600) {
-  const chart = init(null, undefined, { renderer: 'svg', ssr: true, width, height });
+  const chart = init(null, undefined, {
+    renderer: 'svg',
+    ssr: true,
+    width,
+    height,
+  });
   try {
     chart.setOption(createChartOption(spec, width, height));
     return chart.renderToSVGString();

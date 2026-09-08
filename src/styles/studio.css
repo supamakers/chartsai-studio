@@ -2028,3 +2028,23 @@ em {
     transform: none;
   }
 }
+
+/* The expanded collection retains generous previews and readable data tables. */
+.tool-cards.four-cards {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.line-data-table {
+  max-height: 420px;
+  overflow: auto;
+}
+.line-data-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f8f9f6;
+}
+@media (max-width: 680px) {
+  .tool-cards.four-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

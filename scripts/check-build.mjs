@@ -33,7 +33,12 @@ for (const file of files) {
 }
 const sitemap = await readFile('dist/sitemap-0.xml', 'utf8');
 assert(!sitemap.includes('/404'));
-for (const route of ['dot-plot-maker/', 'radar-chart-maker/', 'printables/habit-tracker/'])
+for (const route of [
+  'line-graph-maker/',
+  'dot-plot-maker/',
+  'radar-chart-maker/',
+  'printables/habit-tracker/',
+])
   assert(sitemap.includes(route));
 console.log(
   `Checked ${files.length} static pages: unique titles, headings, descriptions, canonicals, schema, local resources and tool sitemap entries.`,

@@ -4,9 +4,11 @@ export function daysInMonth(year: number, month: number) {
 export function monthLabel(value: string) {
   const [year, month] = value.split('-').map(Number);
   if (!year || month < 1 || month > 12) return 'Your month';
-  return new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
-    new Date(Date.UTC(year, month - 1, 1)),
-  );
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(Date.UTC(year, month - 1, 1)));
 }
 export type TrackerConfig = {
   title: string;
@@ -21,7 +23,11 @@ export type TrackerConfig = {
 export async function downloadTracker(config: TrackerConfig, svg: SVGSVGElement) {
   const { jsPDF } = await import('jspdf');
   const { svgToPng } = await import('./export');
-  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: config.paper });
+  const doc = new jsPDF({
+    orientation: 'landscape',
+    unit: 'mm',
+    format: config.paper,
+  });
   const w = doc.internal.pageSize.getWidth(),
     h = doc.internal.pageSize.getHeight();
   // Render the same preview at print resolution, preserving Unicode text and layout.

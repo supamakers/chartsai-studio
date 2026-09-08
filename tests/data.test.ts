@@ -88,7 +88,13 @@ describe('explicit numeric interpretation', () => {
 describe('observations and calendar correctness', () => {
   it('includes zeros, repeats and outliers in statistics', () => {
     const stats = summarize([0, 2, 2, 100])!;
-    expect(stats).toMatchObject({ count: 4, mean: 26, median: 2, min: 0, max: 100 });
+    expect(stats).toMatchObject({
+      count: 4,
+      mean: 26,
+      median: 2,
+      min: 0,
+      max: 100,
+    });
     expect(stats.frequencies).toEqual([
       { value: 0, count: 1 },
       { value: 2, count: 2 },

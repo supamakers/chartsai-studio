@@ -1,7 +1,9 @@
 export function emitUsage(tool: string, action: 'render' | 'export' | 'sample', format?: string) {
-  // No network request or data values. A deployment may listen to this event.
+  // Only fixed tool/action/format identifiers. Production analytics listens without any entered values.
   window.dispatchEvent(
-    new CustomEvent('chartsai:usage', { detail: { tool, action, ...(format ? { format } : {}) } }),
+    new CustomEvent('chartsai:usage', {
+      detail: { tool, action, ...(format ? { format } : {}) },
+    }),
   );
 }
 
