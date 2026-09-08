@@ -68,6 +68,14 @@
 .showcase-card:hover {
   box-shadow: 0 9px 30px #263b3412;
 }
+.showcase-card > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  border-bottom: 1px solid #e3e7df;
+}
 .showcase-card-image {
   display: flex;
   background: #eef0e9;

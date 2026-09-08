@@ -99,3 +99,25 @@ test('all public pages fit compact phones, tablets and desktop', async ({ page }
     }
   }
 });
+
+test('gallery charts scale inside their cards without cropping at phone and desktop widths', async ({
+  page,
+}) => {
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const path of ['/', '/examples/']) {
+      await page.goto(path);
+      const charts = page.locator('.showcase-card > img');
+      expect(await charts.count()).toBeGreaterThan(0);
+      for (const img of await charts.all()) {
+        const dimensions = await img.evaluate((el) => {
+          const image = el.getBoundingClientRect(),
+            card = el.parentElement!.getBoundingClientRect();
+          return { imageWidth: image.width, imageHeight: image.height, cardWidth: card.width };
+        });
+        expect(dimensions.imageWidth).toBeLessThanOrEqual(dimensions.cardWidth);
+        expect(dimensions.imageWidth / dimensions.imageHeight).toBeCloseTo(1.5, 1);
+      }
+    }
+  }
+});
