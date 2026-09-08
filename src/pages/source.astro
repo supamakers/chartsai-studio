@@ -4,22 +4,23 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout
   title="ChartsAI Source Code & Sample Data — Free to Reuse"
-  description="Download the MIT-licensed source for ChartsAI’s eight chart makers and printable habit tracker. Inspect the calculations and reuse original sample datasets."
+  description="Inspect and reuse ChartsAI’s chart makers, five educational math tools, printables and experimental chart-quality skill. MIT source with original examples."
   ><article class="container prose-page">
     <span class="eyebrow">OPEN TO LEARN FROM</span><h1>
       Look under<br /><em>the picture.</em>
     </h1><p class="intro-text">
       The tools are free to use. The implementation is open to inspect, adapt and build on.
-    </p><p class="byline">Version 0.7.0 · SupaMakers · September 8, 2026</p><a
+    </p><p class="byline">Version 0.8.0 · SupaMakers · September 8, 2026</p><a
       class="button"
       href="/downloads/chartsai-source.zip"
       download>Download the source ZIP ↓</a
     ><h2>What is included?</h2><ul>
       <li>
-        Eight chart editors, including histogram, box plot, scatter, bar and Pareto, Apache ECharts configuration, three visual themes
-        and export logic.
+        Eight chart editors, including histogram, box plot, scatter, bar and Pareto, Apache ECharts
+        configuration, three visual themes and export logic.
       </li><li>The spreadsheet import preview, number parsing and data validation.</li><li>
-        The printable habit tracker, coordinate plane maker, practice worksheets and answer-key generation.
+        The printable habit tracker, five educational math tools, practice worksheets and answer-key
+        generation.
       </li><li>Static pages, original sample data, methodology notes and meaningful calculation tests.</li>
     </ul><h2>Run it locally</h2><pre><code>npm install
 npm run prepare:assets
@@ -27,16 +28,27 @@ npm run dev</code></pre><p>
       The project uses Astro, React, TypeScript and Apache ECharts. The README contains build instructions,
       input limits and deployment notes. Node.js 22.12 or newer is required by the current build tooling.
     </p><h2>Built on Apache ECharts</h2><p>
-      ChartsAI uses ECharts’ built-in scatter, radar, line, bar and boxplot series for geometry, axes, tooltips and
-      rendering. Examples are rendered as SVG during the site build; interactive charts and all user data stay
-      in the browser. You can download a chart’s ECharts option JSON from its editor.
+      ChartsAI uses ECharts’ built-in scatter, radar, line, bar and boxplot series for geometry, axes,
+      tooltips and rendering. Examples are rendered as SVG during the site build; interactive charts and all
+      user data stay in the browser. You can download ECharts option JSON from the statistical chart editors.
+      Number lines, polygon transformations and coordinate worksheets use shared SVG geometry.
     </p><p>
       <a href="https://echarts.apache.org/">Apache ECharts</a> is licensed under Apache 2.0. Third-party notices
       are included in the source archive.
+    </p><h2>Experimental chart-quality skill</h2><p>
+      The source includes reusable instructions for choosing scales, preserving source values and checking
+      actual exports. A small projection checker tests unchanged row/column mappings; seven original task
+      fixtures define a future model comparison.
+    </p><p>
+      <a href="https://github.com/supamakers/chartsai-studio/tree/main/.agents/skills/chartsai-chart-quality"
+        >Read the skill and its validation scripts on GitHub ↗</a
+      >. It is experimental: the passing calculation tests do not demonstrate that it improves an LLM, and no
+      model-comparison score is claimed.
     </p><h2>License and attribution</h2><p>
       The original ChartsAI code and fictional sample data are released under the MIT license. Keep the
       license notice when redistributing substantial portions of the code. Third-party libraries and fonts
-      have their own licenses. Charts generated from your own data do not require a ChartsAI credit. Public datasets retain their own attribution requirements.
+      have their own licenses. Charts generated from your own data do not require a ChartsAI credit. Public
+      datasets retain their own attribution requirements.
     </p><p>
       If the tools help your work, a link to <a href="https://www.chartsai.com/">ChartsAI</a> or a mention of <a
         href="https://www.supamakers.com/">SupaMakers</a
@@ -47,7 +59,12 @@ npm run dev</code></pre><p>
       The <a href="/examples/">example library</a> includes original fictional datasets, worked calculations, reusable
       chart exports and exact editor starting points. Generated showcase assets are recreated by the asset preparation
       command.
-    </p><h2>Attributed public datasets</h2><p>The <a href="/datasets/">public-data collection</a> contains Iris, Wine, Glass Identification, Seeds and Abalone from UCI. These datasets are CC BY 4.0, separately from our MIT code and fictional examples. Keep the original authors, source and license attribution and identify your changes. Each resource documents the pinned source file and chart selection.</p><h2>Small fictional datasets to try</h2><ul>
+    </p><h2>Attributed public datasets</h2><p>
+      The <a href="/datasets/">public-data collection</a> contains Iris, Wine, Glass Identification, Seeds and Abalone
+      from UCI. These datasets are CC BY 4.0, separately from our MIT code and fictional examples. Keep the original
+      authors, source and license attribution and identify your changes. Each resource documents the pinned source
+      file and chart selection.
+    </p><h2>Small fictional datasets to try</h2><ul>
       <li>
         <a href="/samples/dot-scores.csv" download>Class scores — dot-plot CSV</a>
       </li><li>

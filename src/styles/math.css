@@ -1,0 +1,110 @@
+.math-fields {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.math-fields h3 {
+  font-size: 16px;
+  margin: 18px 0 12px;
+}
+.math-fields input[type='range'] {
+  padding: 4px 0;
+  accent-color: #315b84;
+}
+.math-workspace .field small {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #526254;
+}
+.math-workspace .coordinate-preview {
+  min-width: 0;
+}
+.math-given {
+  background: #f4f6f0;
+  border-radius: 8px;
+  padding: 12px 18px;
+  margin-bottom: 16px;
+}
+.math-given p {
+  margin: 4px 0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.math-answer {
+  border-left: 3px solid #789257;
+  background: #eef3e7;
+  padding: 18px 22px;
+  border-radius: 0 8px 8px 0;
+}
+.math-answer h3,
+.math-practice h3 {
+  font-size: 18px;
+  margin: 0 0 12px;
+}
+.math-answer p {
+  font-size: 15px;
+  line-height: 1.8;
+  margin: 6px 0;
+  overflow-wrap: anywhere;
+}
+.math-practice {
+  margin: 20px 0;
+}
+.math-practice li {
+  font-size: 15px;
+  line-height: 1.8;
+  margin: 8px 0;
+}
+.math-formula {
+  font-size: 25px;
+  font-family: Georgia, serif;
+  margin: 16px 0;
+}
+.math-tool-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin: 28px 0;
+}
+.math-tool-cards article {
+  border: 1px solid #d9e2d5;
+  border-radius: 12px;
+  padding: 24px;
+  background: white;
+}
+.math-tool-cards img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+.math-tool-cards h2 {
+  font-size: 28px;
+  margin-top: 20px;
+}
+.math-tool-cards p {
+  line-height: 1.7;
+  font-size: 15px;
+}
+.math-download-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin: 24px 0;
+}
+.math-workspace .coordinate-drawing {
+  max-width: 660px;
+}
+@media (max-width: 760px) {
+  .math-tool-cards {
+    grid-template-columns: 1fr;
+  }
+  .math-given {
+    padding: 12px;
+  }
+  .math-answer {
+    padding: 16px;
+  }
+}

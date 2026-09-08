@@ -123,6 +123,11 @@ const graph = [
           ><a href="/examples/" aria-current={path.startsWith('/examples/') ? 'page' : undefined}>Examples</a
           ><a href="/printables/" aria-current={path.includes('printables') ? 'page' : undefined}
             >Printables</a
+          ><a
+            href="/math-tools/"
+            aria-current={path === '/math-tools/' || /calculator|number-line|coordinate-plane/.test(path)
+              ? 'page'
+              : undefined}>Math tools</a
           ><a href="/about/" aria-current={path === '/about/' ? 'page' : undefined}>Our approach</a>
         </nav>
         <a class="header-maker" href="https://www.supamakers.com/">Built by <strong>SupaMakers ↗</strong></a>
@@ -143,7 +148,9 @@ const graph = [
               href="/dot-plot-maker/">Dot plot maker</a
             ><a href="/radar-chart-maker/">Radar chart maker</a><a href="/line-graph-maker/"
               >Line graph maker</a
-            ><a href="/printables/habit-tracker/">Habit tracker printable</a><a href="/coordinate-plane-generator/">Coordinate plane generator</a>
+            ><a href="/printables/habit-tracker/">Habit tracker printable</a><a href="/math-tools/"
+              >Free math tools & worksheets</a
+            >
           </div><div>
             <span class="footer-label">THE DETAILS</span><a href="/guides/">Chart guides</a><a
               href="/datasets/">Public datasets</a

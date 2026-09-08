@@ -100,7 +100,7 @@ await pool(urls, async (url) => {
   assert(!/<meta name="robots" content="[^"]*noindex/.test(html), 'Unexpected noindex');
   for (const m of html.matchAll(/<script[^>]+type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs))
     assert(Array.isArray(JSON.parse(m[1])['@graph']));
-  for (const [, path] of html.matchAll(/(?:href|src)="(\/(?:examples|charts|datasets|coordinate)\/assets\/[^"?#]+)"/g))
+  for (const [, path] of html.matchAll(/(?:href|src)="(\/(?:examples|charts|datasets|coordinate|math)\/assets\/[^"?#]+)"/g))
     assets.add(path);
   report.pages.push({ url, status: 200 });
 });

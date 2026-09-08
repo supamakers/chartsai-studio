@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "status": "Unrun evaluation tasks; not model outputs or benchmark results",
+  "outputContract": "Create a standalone SVG plus a render-spec.json recording sourceRows, selected columns, plotted values, axis domains and declared transformations. Include a short decisions.md. No external requests or fabricated values. Use the same installed renderer in each condition. Target 900 by 600 pixels unless the task specifies otherwise.",
+  "tasks": [
+    {"id":"long-labels","prompt":"Compare counts for these support issue categories in a chart for a slide. Keep the complete category names readable.","columns":["Category","Count"],"rows":[["Unable to complete the account verification process",23],["Monthly invoice does not match the agreed subscription",17],["Unexpected loss of saved settings after signing out",9]]},
+    {"id":"zero-missing","prompt":"Graph daily counts over time. A blank value means the count was not recorded. Do not estimate unobserved values.","columns":["Day","Count"],"rows":[["Monday",4],["Tuesday",0],["Wednesday",null],["Thursday",7]]},
+    {"id":"duplicate-observations","prompt":"Make a dot plot of the individual observed scores. Every row is a different student; repeated scores are separate observations.","columns":["Score"],"rows":[[0],[2],[2],[2],[5],[5]]},
+    {"id":"european-numbers","prompt":"Make a bar chart of these amounts in EUR. The supplied strings use dots for thousands and commas for decimals. State the parsing convention.","columns":["Category","EUR"],"rows":[["A","1.250,50"],["B","0,00"],["C","875,25"]],"expectedParsedRows":[["A",1250.5],["B",0],["C",875.25]]},
+    {"id":"paired-xy","prompt":"Plot the measured X/Y pairs as a scatter plot. Row pairing matters. Repeated positions remain separate observations. Do not join points or fit a model.","columns":["X","Y"],"rows":[[3,1],[0,4],[2,3],[2,3]]},
+    {"id":"signed-bars","prompt":"Compare the signed changes by category, retaining their units and showing increases and decreases.","columns":["Category","Change (units)"],"rows":[["A",12],["B",0],["C",-7],["D",3]]},
+    {"id":"coordinate-geometry","prompt":"Draw this triangle on a coordinate grid at 720 by 720 pixels. Connect vertices in order and close the triangle. Preserve geometric angles and show the coordinates outside the image as well.","columns":["Vertex","X","Y"],"rows":[["A",0,0],["B",6,0],["C",0,3]]}
+  ]
+}

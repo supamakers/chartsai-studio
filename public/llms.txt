@@ -37,3 +37,11 @@
 - [Pareto chart maker](https://www.chartsai.com/pareto-chart-maker/): Descending nonnegative categories and cumulative shares.
 - [Chart guides](https://www.chartsai.com/guides/): Twenty comparison and method guides with original arithmetic and limitations.
 - [Public datasets](https://www.chartsai.com/datasets/): Five UCI resources with complete CSVs, checksums, original author attribution and exact chart selections.
+
+## Educational math tools
+
+- [Math tools](https://www.chartsai.com/math-tools/): Five free visual tools with original worked examples, practice and separate printable answers.
+- [Number line generator](https://www.chartsai.com/number-line-generator/): Fractions, points, equal jumps and finite intervals.
+- [Slope calculator](https://www.chartsai.com/slope-calculator/): Two points, signed rise/run, line equation and vertical-line handling.
+- [Geometry transformations](https://www.chartsai.com/geometry-transformation-calculator/): Translate, reflect, rotate or dilate a simple polygon; corresponding vertices and equal units.
+- [Quadratic graph calculator](https://www.chartsai.com/quadratic-graph-calculator/): Standard-form coefficients, vertex, real roots, discriminant and calculated table. Independent axis scales.

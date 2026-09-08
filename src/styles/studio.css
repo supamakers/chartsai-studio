@@ -1468,14 +1468,20 @@ em {
     width: calc(100% - 34px);
   }
   .header-inner {
-    height: 70px;
+    height: auto;
+    padding: 14px 0 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
   .site-header .brand {
     font-size: 26px;
   }
   .site-header nav {
-    font-size: 11px;
-    gap: 17px;
+    width: 100%;
+    justify-content: space-between;
+    font-size: 12px;
+    gap: 8px;
   }
   .studio-hero {
     padding-top: 32px;

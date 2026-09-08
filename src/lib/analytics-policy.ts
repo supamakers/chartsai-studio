@@ -6,6 +6,12 @@ const pagePaths = new Set([
   '/',
   '/charts/',
   '/coordinate-plane-generator/',
+  '/number-line-generator/',
+  '/slope-calculator/',
+  '/geometry-transformation-calculator/',
+  '/quadratic-graph-calculator/',
+  '/math-tools/',
+
   '/guides/',
   '/datasets/',
   ...guideSlugs.map((s) => `/guides/${s}/`),
@@ -34,6 +40,10 @@ export function usageEvent(detail: unknown) {
   const { tool, action, format } = detail as Record<string, unknown>;
   const names: Record<string, string> = {
     'coordinate-plane': 'coordinate-plane',
+    'number-line': 'number-line',
+    slope: 'slope',
+    transformation: 'transformation',
+    quadratic: 'quadratic',
     histogram: 'histogram',
     box: 'box-plot',
     scatter: 'scatter-plot',
@@ -59,7 +69,19 @@ export function usageEvent(detail: unknown) {
 }
 
 export function showcaseDownloadEvent(pathname: string) {
-  if (/^\/coordinate\/assets\/(?:quadrants\.(?:svg|png|csv)|(?:four-quadrants|first-quadrant|triangle)-(?:a4|letter)\.pdf)$/.test(pathname)) return usageEvent({ tool: 'coordinate-plane', action: 'export', format: pathname.split('.').pop() });
+  if (
+    /^\/coordinate\/assets\/(?:quadrants\.(?:svg|png|csv)|(?:four-quadrants|first-quadrant|triangle)-(?:a4|letter)\.pdf)$/.test(
+      pathname,
+    )
+  )
+    return usageEvent({ tool: 'coordinate-plane', action: 'export', format: pathname.split('.').pop() });
+  const mathMatch = pathname.match(
+    /^\/math\/assets\/(number-line|slope|transformation|quadratic)(?:-(a4|letter))?\.(svg|png|csv|pdf)$/,
+  );
+  if (mathMatch) {
+    if (Boolean(mathMatch[2]) !== (mathMatch[3] === 'pdf')) return null;
+    return usageEvent({ tool: mathMatch[1], action: 'export', format: mathMatch[3] });
+  }
   const statMatch = pathname.match(/^\/charts\/assets\/([a-z-]+)\.(svg|png|csv|json)$/);
   if (statMatch) {
     const spec = findStatPreset(statMatch[1]);

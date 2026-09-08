@@ -54,3 +54,25 @@ it('measures only known public dataset assets without transmitting dataset names
   ])
     expect(datasetDownloadEvent(p)).toBeNull();
 });
+
+import { showcaseDownloadEvent } from '../src/lib/analytics-policy';
+it('math analytics admit only fixed paths, tools and published files', () => {
+  expect(analyticsUrl('https://www.chartsai.com/slope-calculator/?x=SECRET')).toBe(
+    'https://www.chartsai.com/slope-calculator/',
+  );
+  expect(showcaseDownloadEvent('/math/assets/slope-a4.pdf')).toEqual({
+    name: 'Chart Download',
+    props: { tool: 'slope', format: 'pdf' },
+  });
+  expect(showcaseDownloadEvent('/math/assets/quadratic.csv')?.props.format).toBe('csv');
+  for (const p of [
+    '/math/assets/customer.csv',
+    '/math/assets/slope.pdf',
+    '/math/assets/slope-a4.csv',
+    '/math/assets/slope-a4.pdf?x=secret',
+  ])
+    expect(showcaseDownloadEvent(p)).toBeNull();
+  expect(
+    usageEvent({ tool: 'transformation', action: 'export', format: 'svg', points: 'SECRET' })?.props,
+  ).toEqual({ tool: 'transformation', format: 'svg' });
+});

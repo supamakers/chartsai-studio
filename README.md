@@ -95,3 +95,9 @@ GitHub Actions runs the build and browser checks on changes, and checks producti
 `/coordinate-plane-generator/` offers a blank grid, labelled diagram, plotting practice and reading practice. Up to 12 points; signed decimals and fractions; one or four quadrants; equal X/Y unit scales; A4/Letter worksheets with a separate answer key. SVG/PNG diagram and exact numeric CSV downloads are included. The PDF is a high-resolution raster page, SVG is vector. No equation solver or student account is included. Settings remain local and are not indexed as separate pages. Ready-made grids and triangle worksheets are generated from the same renderer at build time.
 
 See `docs/EDUCATION-RESEARCH-2026-09-08.md` for search evidence and adjacent candidates. The experimental repository skill in `.agents/skills/chartsai-chart-quality/` includes a source-projection validator and failure fixtures. `npm test` runs them alongside application tests. This is an internal quality workflow and public source, not a claim of measured LLM improvement; its evaluation protocol describes the evidence needed before promoting a skill release.
+
+### Educational tools (v0.8.0)
+
+Five free visual tools cover coordinate planes, number lines, slope, geometry transformations and quadratic graphs. Each includes original static worked examples, editable browser-only inputs, practice with reveal, and A4/Letter worksheets with separate answer keys. The four new tools share `src/lib/math-tools.ts`, `MathEditor.tsx` and `MathToolPage.astro`. Generated `/math/assets/` files rebuild during `npm run build`.
+
+The experimental [chart-quality skill](.agents/skills/chartsai-chart-quality/SKILL.md) and its seven [evaluation tasks](.agents/skills/chartsai-chart-quality/fixtures/evaluation-tasks.json) are included in source. Its tests validate invariants; they are not an LLM improvement benchmark. Search evidence and scope: [education expansion](docs/EDUCATION-EXPANSION-2026-09-08.md).

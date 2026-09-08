@@ -1,0 +1,151 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MathEditor from './MathEditor';
+import { buildMath, defaults, mathKinds, mathPaths, mathNames, type MathKind } from '../lib/math-tools';
+import { renderOptionSvg } from '../lib/echarts';
+import { mathPages } from '../data/math-pages';
+import '../styles/coordinate.css';
+import '../styles/math.css';
+interface Props {
+  kind: MathKind;
+}
+const { kind } = Astro.props;
+const page = mathPages[kind],
+  url = `https://www.chartsai.com/${mathPaths[kind]}/`,
+  initial = buildMath(kind, defaults[kind], renderOptionSvg);
+const schema = [
+  {
+    '@type': 'SoftwareApplication',
+    name: mathNames[kind],
+    applicationCategory: 'EducationalApplication',
+    operatingSystem: 'Web browser',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    url,
+    author: { '@id': 'https://www.chartsai.com/#organization' },
+    featureList: [
+      'Interactive mathematical diagram',
+      'Worked calculation',
+      'Practice with separate answers',
+      'A4 and Letter PDF',
+      'SVG, PNG and CSV',
+    ],
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.chartsai.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Math tools', item: 'https://www.chartsai.com/math-tools/' },
+      { '@type': 'ListItem', position: 3, name: mathNames[kind], item: url },
+    ],
+  },
+];
+---
+
+<Layout
+  title={page.title}
+  description={page.description}
+  schema={schema}
+  imagePath={`/math/assets/${kind}.png`}
+  imageAlt={page.exampleTitle}
+  imageWidth={720}
+  imageHeight={720}
+>
+  <section class="container coordinate-intro">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><a href="/math-tools/">Math tools</a><span>/</span><span
+        >{mathNames[kind]}</span>
+    </nav><span class="eyebrow">FREE MATH TOOL · EXPLORE & PRINT</span><h1>{mathNames[kind]}<em>.</em></h1><p>
+      {page.answer}
+    </p>
+  </section>
+  <div class="container editor-container">
+    <MathEditor kind={kind} initial={initial} client:load /><noscript
+      ><p class="notice">
+        Enable JavaScript to change the values. The worked example and ready-made worksheets below work
+        without JavaScript.
+      </p></noscript>
+  </div>
+  <section class="container section coordinate-reference">
+    <span class="eyebrow">FROM VALUES TO UNDERSTANDING</span><h2>How to use it</h2><ol>
+      {page.steps.map((s) => <li>{s}</li>)}
+    </ol>
+  </section>
+  <section class="container section coordinate-worked">
+    <div>
+      <span class="eyebrow">ORIGINAL WORKED EXAMPLE</span><h2>{page.exampleTitle}</h2>{
+        page.example.map((p) => <p>{p}</p>)
+      }<div class="math-download-list">
+        <a href={`/math/assets/${kind}-a4.pdf`} download>A4 worksheet + answers ↓</a><a
+          href={`/math/assets/${kind}-letter.pdf`}
+          download>Letter worksheet + answers ↓</a
+        ><a href={`/math/assets/${kind}.svg`} download>SVG diagram ↓</a><a
+          href={`/math/assets/${kind}.csv`}
+          download>Example values CSV ↓</a>
+      </div><p class="coordinate-help">
+        Free for class, homework and presentations. Two-page PDFs: question first, answer key second. Print in
+        portrait at 100% / Actual size.
+      </p>
+    </div><img
+      src={`/math/assets/${kind}.svg`}
+      width="720"
+      height="720"
+      loading="lazy"
+      alt={page.exampleTitle}
+    />
+  </section>
+  <section class="container section coordinate-reference">
+    <span class="eyebrow">METHOD & LIMITS</span><h2>Understand the result</h2>{
+      page.method.map((m) => (
+        <article>
+          <>
+            <h3>{m.heading}</h3>
+            <p>{m.text}</p>
+          </>
+        </article>
+      ))
+    }<p>
+      Further reference: <a href={page.source.url}>{page.source.name}</a>. Examples, tool design and practice
+      sheets on this page are original ChartsAI work; no affiliation is implied.
+    </p><p class="byline">
+      Made by <a href="https://www.supamakers.com/">SupaMakers</a> · Method and examples reviewed September 8, 2026
+      · <a href="/source/">Inspect the source</a>
+    </p>
+  </section>
+  <section class="container section coordinate-reference">
+    <h2>Common questions</h2>{
+      page.faq.map((f) => (
+        <details>
+          <>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </>
+        </details>
+      ))
+    }
+  </section>
+  <section class="container section">
+    <span class="eyebrow">KEEP EXPLORING</span><h2>Another way to see the maths.</h2><div
+      class="coordinate-activities"
+    >
+      {
+        mathKinds
+          .filter((k) => k !== kind)
+          .map((k) => (
+            <article>
+              <>
+                <h3>
+                  <a href={`/${mathPaths[k]}/`}>{mathNames[k]}</a>
+                </h3>
+                <p>{mathPages[k].purpose}</p>
+              </>
+            </article>
+          ))
+      }
+    </div><p>
+      Start with <a href="/coordinate-plane-generator/">coordinate-plane plotting practice</a>, or browse <a
+        href="/math-tools/">all free math tools</a
+      >.
+    </p>
+  </section>
+</Layout>

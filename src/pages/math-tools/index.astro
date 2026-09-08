@@ -1,0 +1,92 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { mathKinds, mathPaths, mathNames } from '../../lib/math-tools';
+import { mathPages } from '../../data/math-pages';
+import '../../styles/coordinate.css';
+import '../../styles/math.css';
+const tools = [
+  {
+    name: 'Coordinate plane generator',
+    path: 'coordinate-plane-generator',
+    image: '/coordinate/assets/quadrants.svg',
+    purpose: 'Start with ordered pairs: plot labelled points, read coordinates, or print a blank grid.',
+  },
+  ...mathKinds.map((k) => ({
+    name: mathNames[k],
+    path: mathPaths[k],
+    image: `/math/assets/${k}.svg`,
+    purpose: mathPages[k].purpose,
+  })),
+];
+---
+
+<Layout
+  title="Free Math Visualization Tools & Printable Worksheets | ChartsAI"
+  description="Explore coordinate planes, number lines, slope, geometry transformations and quadratic graphs. Five free visual tools with practice and printable answer keys."
+  schema={[
+    {
+      '@type': 'ItemList',
+      name: 'Free math visualization tools',
+      itemListElement: tools.map((t, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: t.name,
+        url: `https://www.chartsai.com/${t.path}/`,
+      })),
+    },
+  ]}
+>
+  <section class="container coordinate-intro">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><span>Math tools</span>
+    </nav><span class="eyebrow">FOR LEARNING & TEACHING</span><h1>Make the maths<br /><em>visible.</em></h1><p
+    >
+      Five free tools that connect numbers, rules and diagrams. Change an example, work through the
+      explanation, then print a practice sheet with a separate answer key. No account or software to install.
+    </p>
+  </section>
+  <section class="container section">
+    <div class="math-tool-cards">
+      {
+        tools.map((t) => (
+          <article>
+            <>
+              <a href={`/${t.path}/`} tabindex="-1" aria-hidden="true">
+                <img src={t.image} width="720" height="720" alt="" loading="lazy" />
+              </a>
+              <h2>
+                <a href={`/${t.path}/`}>{t.name}</a>
+              </h2>
+              <p>{t.purpose}</p>
+              <a class="button secondary" href={`/${t.path}/`}>
+                Explore & print ↗
+              </a>
+            </>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+  <section class="container section coordinate-reference">
+    <h2>Choose the tool for the question.</h2><p>
+      Use a number line for values on one axis. Move to a coordinate plane when every point needs both X and
+      Y. The slope tool connects two points to a straight-line equation; the quadratic tool connects three
+      coefficients to a curved graph. Transformations show how one rule moves every vertex of a shape.
+    </p><h3>For a lesson or for independent practice</h3><p>
+      Explore mode shows the calculation alongside the diagram. Practice mode hides the completed result so a
+      learner can work on paper and reveal it when ready. Download the question page alone or include an
+      answer key. The tools do not grade responses or claim alignment with a specific curriculum.
+    </p><h3>Ready-made sheets when you do not need to customize</h3><p>
+      Each tool page includes original A4 and US Letter PDFs that work without JavaScript. Use the SVG
+      diagrams in a document or slide, or download the example values as CSV. Customized inputs stay in your
+      browser. Worksheet PDFs use high-resolution images; SVG diagrams remain vector.
+    </p><p>
+      For experimental observations, survey results or category comparisons, use the <a href="/charts/"
+        >statistical chart makers</a
+      >. For personal routines, try the <a href="/printables/habit-tracker/">printable habit tracker</a>.
+    </p><p class="byline">
+      Made by <a href="https://www.supamakers.com/">SupaMakers</a> · Free tools, open source · Reviewed September
+      8, 2026
+    </p>
+  </section>
+</Layout>
