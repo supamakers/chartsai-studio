@@ -56,8 +56,15 @@ for (const path of [
   'playwright.config.ts',
   'vitest.config.ts',
   '.gitignore',
-])
-  archive[`chartsai/${path}`] = new Uint8Array(await readFile(path));
+]) {
+  // Vercel CLI omits .gitignore from source uploads. The downloadable checkout
+  // still needs a safe, portable ignore file; all actual source files are required.
+  const contents = await readFile(path).catch((error) => {
+    if (path !== '.gitignore' || error.code !== 'ENOENT') throw error;
+    return Buffer.from('node_modules/\ndist/\n.astro/\n.env\n.env.*\n.vercel/\nartifacts/\npublic/downloads/\n');
+  });
+  archive[`chartsai/${path}`] = new Uint8Array(contents);
+}
 await writeFile('public/downloads/chartsai-source.zip', zipSync(archive, { level: 6 }));
 console.log(
   `Prepared 9 original datasets, social image and source archive (${Object.keys(archive).length} files).`,
