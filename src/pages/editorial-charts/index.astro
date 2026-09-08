@@ -1,0 +1,116 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { editorialNames, editorialKinds } from '../../lib/editorial';
+import { editorialRoutes } from '../../data/editorial-examples';
+import '../../styles/editorial.css';
+const summaries = {
+  line: 'Explain a trend with direct series labels and notes anchored to observations.',
+  bar: 'Compare categories with a zero-based scale, exact labels and a publication caption.',
+  dumbbell: 'Compare two values for each category. Keep the endpoints and the gap in view.',
+  slopegraph: 'Compare two periods, with category names and values at both ends.',
+  'small-multiples': 'Give each series its own panel while preserving one shared value scale.',
+};
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    name: 'Editorial charts for articles and publications',
+    isAccessibleForFree: true,
+  },
+  {
+    '@type': 'ItemList',
+    itemListElement: editorialKinds.map((kind, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: editorialNames[kind],
+      url: 'https://www.chartsai.com' + editorialRoutes[kind].split('?')[0],
+    })),
+  },
+];
+---
+
+<Layout
+  title="Free Editorial Charts for Articles & Reports | ChartsAI"
+  description="Make publication charts with clear labels, annotations and source notes. Explore free chart makers, real-data examples and SVG, PNG, PDF or HTML downloads."
+  schema={schema}
+  dateModified="2026-09-09"
+>
+  <section class="container tool-intro">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><a href="/charts/">Chart makers</a><span>/</span><span
+        >Editorial charts</span>
+    </nav><h1>Charts that carry the story.</h1><p>
+      Free chart tools for articles, newsletters and reports. Add your data, tell readers what it means, and
+      publish a graphic with its source and context intact.
+    </p><a class="button" href={editorialRoutes.line}>Make an annotated line chart</a>
+    <a class="text-link" href="#examples">See the sourced examples</a>
+  </section>
+  <section class="container editorial-resource">
+    <h2>Choose the question. Then the chart.</h2><p>
+      The chart type should serve the comparison you want a reader to make. A long time series needs a
+      different view from a two-period comparison; overlapping lines may need separate panels. These previews
+      are made by the same native chart renderer used for your downloads.
+    </p><div class="editorial-collection">
+      {
+        editorialKinds.map((kind) => (
+          <article>
+            <>
+              <a href={editorialRoutes[kind]}>
+                <>
+                  <img
+                    src={`/editorial/assets/${kind}.svg`}
+                    width="1200"
+                    height={kind === 'small-multiples' ? 1200 : 900}
+                    loading="lazy"
+                    alt={`${editorialNames[kind]} with sourced ${kind === 'line' ? 'NASA temperature' : 'World Bank life expectancy'} data`}
+                  />
+                  <h2>{editorialNames[kind]}</h2>
+                </>
+              </a>
+              <p>{summaries[kind]}</p>
+            </>
+          </article>
+        ))
+      }
+    </div>
+    <h2 id="examples">Real data. Inspectable choices.</h2><p>
+      Every source-based resource includes the selected values, retrieval date, original interpretation and
+      reusable downloads. They are worked examples of chart construction, not a live news feed or a substitute
+      for reporting.
+    </p><h3><a href="/editorial-charts/life-expectancy/">One dataset, four views of life expectancy</a></h3><p
+    >
+      Compare endpoints, a current snapshot within the chosen period, and complete annual paths. See why a
+      positive difference between 2000 and 2023 does not mean improvement in every intervening year.
+    </p><h3>
+      <a href="/editorial-charts/temperature-record/">Annotating the global temperature record</a>
+    </h3><p>
+      Plot annual anomalies against the stated 1951–1980 baseline, retain the year spacing, and attach a note
+      to a measured year. Download all 66 selected annual estimates.
+    </p>
+    <h2>From a spreadsheet to an article</h2><p>
+      Upload or paste your table and select the columns. The importer lets you inspect sheets, row ranges,
+      headers and number formats; it does not expect your full workbook to match a private template. Missing
+      or ambiguous selected values are reported before they replace the chart.
+    </p><p>
+      Next add a headline, unit, caption, source credit, source link and data period. Optional numbered
+      annotations refer to exact rows and series. The same notes appear below the plot in downloaded graphics.
+      Direct labels and the visible data table help readers identify the values without relying solely on
+      color or hover.
+    </p><h2>Publish without an account</h2><p>
+      Download a vector SVG, PNG, PDF, source CSV or editable project. A self-contained HTML figure includes
+      the chart and accessible data table without external scripts, analytics or a hosted ChartsAI dependency.
+      Upload it to your own site when you choose. Your private data is not placed in a public link or sent to
+      another service.
+    </p><p>
+      For animation, the line workflow can export a compatible project for the <a
+        href="https://animcharts.com/editorial-lab/">AnimCharts editorial lab</a
+      >, subject to its smaller dated-series limits. You choose when to open that downloaded file there. Read
+      the <a href="/editorial-charts/publishing-guide/">publishing guide</a> for formats, accessibility, revisions
+      and reuse.
+    </p><p>
+      Made by <a href="https://www.supamakers.com/">SupaMakers</a>. All tools remain free. No forced watermark
+      or ChartsAI credit; retain any attribution required by the data you use. <a href="/source/"
+        >Public source and licenses</a
+      >.
+    </p>
+  </section>
+</Layout>

@@ -1,3 +1,5 @@
+import {editorialKinds,editorialOption,publicationFrames,publicationHtml} from '../src/lib/editorial.ts';
+import {editorialExample} from '../src/data/editorial-examples.ts';
 import { packIds, initialWorksheet, worksheetPages, worksheetCsv } from '../src/lib/number-line-worksheets.ts';
 import { buildMath, defaults, mathKinds, mathWorksheetSvg, mathCsv } from '../src/lib/math-tools.ts';
 import { coordinateExamples, defaultPlane, parsePoints, planeSvg, pointsCsv, worksheetSvg } from '../src/lib/coordinate-plane.ts';
@@ -133,12 +135,26 @@ for (const pack of packIds) {
   }
 }
 
+await mkdir('public/editorial/assets',{recursive:true});
+for(const kind of editorialKinds){
+  const project=editorialExample(kind),{width,height}=publicationFrames[project.frame];
+  const svg=renderOptionSvg(editorialOption(project,width,height),width,height),path=`public/editorial/assets/${kind}`;
+  await writeFile(`${path}.svg`,svg);
+  const png=await sharp(Buffer.from(svg)).png().toBuffer();await writeFile(`${path}.png`,png);
+  await writeFile(`${path}.csv`,csv(project.table));
+  await writeFile(`${path}.json`,JSON.stringify(project,null,2));
+  await writeFile(`${path}.html`,publicationHtml(project,svg));
+  const doc=new jsPDF({orientation:width>=height?'landscape':'portrait',unit:'pt',format:[width*.75,height*.75],compress:true});
+  doc.addImage(png,'PNG',0,0,width*.75,height*.75);doc.setProperties({title:project.title,creator:'ChartsAI by SupaMakers'});
+  await writeFile(`${path}.pdf`,Buffer.from(doc.output('arraybuffer')));
+}
+
 // Explicit allowlist: research notes, environment files and build artifacts never enter the public source archive.
 const archive = {};
 async function collect(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = join(directory, entry.name);
-    if (path === 'public/worksheets/assets' || path === 'public/math/assets' || path === 'public/coordinate/assets' || path === 'public/previews' || path === 'public/downloads' || path === 'public/examples/assets' || path === 'public/charts/assets') continue;
+    if (path === 'public/editorial/assets' || path === 'public/worksheets/assets' || path === 'public/math/assets' || path === 'public/coordinate/assets' || path === 'public/previews' || path === 'public/downloads' || path === 'public/examples/assets' || path === 'public/charts/assets') continue;
     if (directory === 'public/datasets/assets' && /\.(svg|png|json)$/.test(path)) continue;
     if (entry.isDirectory()) await collect(path);
     else if (entry.isFile()) archive[`chartsai/${path}`] = new Uint8Array(await readFile(path));

@@ -16,7 +16,7 @@ test('the expanded library remains usable without JavaScript on a small phone', 
     await expect(launch.getByRole('link', { name })).toBeVisible();
     await expect(launch.getByRole('link', { name })).toHaveAttribute('href', path);
   }
-  await expect(page.locator('.home-directory li a')).toHaveCount(15);
+  await expect(page.locator('.home-directory li a')).toHaveCount(18);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320);
   await launch.getByRole('link', { name: 'Explore math tools' }).click();
   await expect(page).toHaveURL(/\/math-tools\/$/);

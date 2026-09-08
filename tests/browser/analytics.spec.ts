@@ -79,3 +79,41 @@ test('production analytics wires bounded events and canonical URLs while exports
     .toBe(true);
   expect(JSON.stringify(received)).not.toMatch(/SECRET|CONFIDENTIAL/);
 });
+
+test('editorial events measure imports, edits and exports without private content', async ({
+  page,
+  request,
+}) => {
+  const received: Record<string, any>[] = [];
+  await page.route('https://www.chartsai.com/**', async (route) => {
+    const url = new URL(route.request().url());
+    await route.fulfill({ response: await request.get(`http://127.0.0.1:4321${url.pathname}`) });
+  });
+  await page.route('https://plausible.io/js/**', (route) =>
+    route.fulfill({
+      contentType: 'text/javascript',
+      body: `(()=>{const q=window.plausible.q||[],o=window.plausible.o;window.plausible=(name,c={})=>{const p=o.transformRequest({n:name,u:c.url,p:c.props||{}});fetch('https://plausible.io/api/event',{method:'POST',body:JSON.stringify(p)});};q.forEach(a=>window.plausible(...a));})();`,
+    }),
+  );
+  await page.route('https://plausible.io/api/event', async (route) => {
+    received.push(JSON.parse(route.request().postData()!));
+    await route.fulfill({ status: 202, body: 'ok' });
+  });
+  await page.goto('https://www.chartsai.com/dumbbell-chart-maker/?private=SECRET');
+  await expect(page.locator('.publication-preview[data-chart-ready="true"]')).toBeVisible();
+  await page.getByRole('button', { name: 'Paste data', exact: true }).click();
+  await page.getByRole('button', { name: 'Close import', exact: true }).click();
+  await page.getByRole('button', { name: 'Design & details', exact: true }).click();
+  await page.getByLabel('Headline', { exact: true }).fill('CONFIDENTIAL private headline');
+  await page.getByLabel('Headline', { exact: true }).press('Tab');
+  await page.getByLabel('Publication download format').selectOption('html');
+  const file = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Download publication chart', exact: true }).click();
+  await file;
+  await expect.poll(() => received.some((e) => e.n === 'Chart Download')).toBe(true);
+  expect(received.some((e) => e.n === 'Import Started')).toBe(true);
+  expect(received.some((e) => e.n === 'Chart Edited')).toBe(true);
+  expect(received.filter((e) => e.n === 'Import Started')).toHaveLength(1);
+  expect(received.every((e) => e.u === 'https://www.chartsai.com/dumbbell-chart-maker/')).toBe(true);
+  expect(JSON.stringify(received)).not.toMatch(/SECRET|CONFIDENTIAL|India|World Bank/);
+});

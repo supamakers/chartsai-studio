@@ -72,6 +72,8 @@
         });
       if (url.origin === location.origin && url.pathname === '/downloads/chartsai-source.zip')
         w.plausible?.('Source Download', { url: analyticsUrl(location.href) });
+      else if (url.hostname === 'animcharts.com' || url.hostname === 'www.animcharts.com')
+        w.plausible?.('AnimCharts Visit', { url: analyticsUrl(location.href) });
       else if (url.hostname === 'www.supamakers.com' || url.hostname === 'supamakers.com')
         w.plausible?.('SupaMakers Visit', { url: analyticsUrl(location.href) });
     });

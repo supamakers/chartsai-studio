@@ -1,4 +1,17 @@
-export function emitUsage(tool: string, action: 'render' | 'export' | 'sample', format?: string) {
+export function emitUsage(
+  tool: string,
+  action:
+    | 'render'
+    | 'export'
+    | 'sample'
+    | 'upload-open'
+    | 'paste-open'
+    | 'project-load'
+    | 'annotation'
+    | 'design'
+    | 'apply',
+  format?: string,
+) {
   // Only fixed tool/action/format identifiers. Production analytics listens without any entered values.
   window.dispatchEvent(
     new CustomEvent('chartsai:usage', {

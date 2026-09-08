@@ -1,0 +1,139 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import data from '../../data/editorial-data.json';
+import '../../styles/editorial.css';
+const schema = [
+  {
+    '@type': 'Article',
+    headline: 'Annotating the global temperature record',
+    datePublished: '2026-09-09',
+    dateModified: '2026-09-09',
+    author: { '@id': 'https://www.chartsai.com/#organization' },
+  },
+  {
+    '@type': 'Dataset',
+    name: 'GISTEMP annual global temperature anomalies, selected 1960–2025',
+    description:
+      '66 NASA GISTEMP v4 J-D annual anomalies, baseline 1951–1980, retained at source precision for an annotated chart example.',
+    creator: { '@type': 'Organization', name: 'NASA GISS' },
+    isBasedOn: 'https://data.giss.nasa.gov/gistemp/',
+    temporalCoverage: '1960/2025',
+    distribution: {
+      '@type': 'DataDownload',
+      encodingFormat: 'text/csv',
+      contentUrl: 'https://www.chartsai.com/editorial/data/temperature.csv',
+    },
+  },
+];
+---
+
+<Layout
+  title="Annotated Temperature Chart: NASA Data & Method | ChartsAI"
+  description="Make an annotated line chart from NASA GISTEMP annual data. Inspect the baseline, all 66 values, source citation and free editable publication downloads."
+  schema={schema}
+  imageHeight={900}
+  imageAlt="Original source-based publication chart by ChartsAI"
+  imagePath="/editorial/assets/line.png"
+  dateModified="2026-09-09"
+>
+  <article class="container editorial-resource">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/editorial-charts/">Editorial charts</a><span>/</span><span>Temperature record</span>
+    </nav><h1>A trend needs context.</h1><p>
+      An annotated line chart should tell readers what the values measure, what the reference point means and
+      which observation a note describes. This example makes those choices explicit using a pinned NASA
+      GISTEMP dataset.
+    </p><p>
+      By ChartsAI / <a href="https://www.supamakers.com/">SupaMakers</a> · Reviewed September 9, 2026. Source retrieved
+      September 9, 2026.
+    </p>
+    <figure class="editorial-figure">
+      <img
+        src="/editorial/assets/line.svg"
+        width="1200"
+        height="900"
+        alt="Annual global temperature anomalies from 1960 to 2025, with a marker at 2024"
+      /><figcaption>
+        Annual global land–ocean temperature anomalies. The selected 2024 value is 1.28°C relative to the
+        1951–1980 mean. The note is anchored to that observation.
+      </figcaption>
+    </figure><div class="editorial-links">
+      <a class="button secondary small" href="/line-graph-maker/?publication=1#editor"
+        >Edit this annotated line chart</a
+      >{
+        ['svg', 'png', 'pdf', 'csv', 'json', 'html'].map((format) => (
+          <a href={`/editorial/assets/line.${format}`} download>
+            {format === 'json' ? 'Editable project' : format.toUpperCase()}
+          </a>
+        ))
+      }
+    </div>
+    <h2>What does zero mean?</h2><p>
+      These are anomalies relative to the 1951–1980 average, not absolute temperatures and not a
+      pre-industrial baseline. Zero marks that reference average. The example includes zero on the vertical
+      axis so the reference remains visible. Replacing the baseline label without recalculating the values
+      would misrepresent the data.
+    </p>
+    <h2>Keep the note attached to the observation</h2><p>
+      The numbered marker refers to the Global series in the 2024 row. It moves with that data coordinate when
+      the canvas changes. Its complete text appears below the plot, where it can be read without hover. The
+      editor rejects an annotation that refers to a missing row or series; replacing the data clears previous
+      annotations explicitly.
+    </p><p>
+      A useful note identifies a supported observation. It should not invent a cause for a rise or fall. The
+      line joins consecutive annual estimates and does not claim to describe daily temperatures. The CSV and
+      data table let readers check the point independently of the graphic.
+    </p>
+    <h2>Selection and calculations</h2><p>
+      We selected the J-D annual column for every year from 1960 through 2025: 66 values, with no omissions,
+      interpolation or smoothing. We did not average the monthly columns ourselves. The horizontal scale uses
+      numeric years, and the labels retain the source’s two decimal places. This pinned example does not
+      include incomplete 2026 data or update automatically.
+    </p><p>
+      NASA’s estimates may be revised. A retrieved snapshot makes this chart reproducible; it does not make
+      the values permanently final. This graphic does not include the uncertainty ensemble. Consult the
+      primary method and uncertainty publication when making scientific claims from the record.
+    </p>
+    <h2>Source and scientific citation</h2><p>
+      <a href="https://data.giss.nasa.gov/gistemp/"
+        >GISTEMP Team (2026), GISS Surface Temperature Analysis, version 4, NASA GISS</a
+      >, accessed 2026-09-09. Also cite <a href="https://doi.org/10.1029/2023JD040179"
+        >Lenssen et al. (2024), A GISTEMPv4 observational uncertainty ensemble</a
+      >. NASA’s GISTEMP page provides citation and image-credit guidance; retain the source acknowledgment
+      when reusing this example. ChartsAI created this graphic from the source values; NASA has not endorsed
+      the presentation.
+    </p><div class="editorial-links">
+      <a href="/editorial/data/temperature.csv" download>Selected annual CSV</a><a
+        href="/editorial/data/nasa-temperature-source.csv"
+        download>Original NASA table</a
+      ><a href="/editorial/data/manifest.json" download>Selection and checksums</a>
+    </div>
+    <details id="data">
+      <summary>All 66 source values · anomaly in °C</summary><div class="table-scroll">
+        <table>
+          <caption>NASA GISTEMP v4 annual J-D values · baseline 1951–1980</caption><thead
+            ><tr><th scope="col">Year</th><th scope="col">Global anomaly (°C)</th></tr></thead
+          ><tbody
+            >{
+              data.temperature.slice(1).map((row) => (
+                <tr>
+                  <>
+                    <th scope="row">{row[0]}</th>
+                    <td>{row[1]}</td>
+                  </>
+                </tr>
+              ))
+            }</tbody>
+        </table>
+      </div>
+    </details>
+    <h2>Reuse the workflow</h2><p>
+      Open the <a href="/line-graph-maker/?publication=1#editor">publication line maker</a>, inspect the
+      source example, then import your own table. Keep the unit and reference period close to the headline.
+      The <a href="/editorial-charts/publishing-guide/">publishing guide</a> explains SVG, HTML, captions and the
+      optional AnimCharts file handoff. For multiple overlapping trends, compare the <a
+        href="/small-multiples-chart-maker/">small multiples maker</a
+      >.
+    </p>
+  </article></Layout
+>

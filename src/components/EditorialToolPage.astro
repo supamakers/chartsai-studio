@@ -1,0 +1,109 @@
+---
+import Layout from '../layouts/Layout.astro';
+import EditorialEditor from './EditorialEditor';
+import { editorialPages } from '../data/editorial-pages';
+import { editorialExample } from '../data/editorial-examples';
+import { editorialOption, publicationFrames } from '../lib/editorial';
+import { renderOptionSvg } from '../lib/echarts';
+import '../styles/dot-journey.css';
+import '../styles/editorial.css';
+interface Props {
+  kind: keyof typeof editorialPages;
+}
+const { kind } = Astro.props,
+  p = editorialPages[kind],
+  project = editorialExample(kind),
+  frame = publicationFrames[project.frame];
+const schema = [
+  {
+    '@type': 'SoftwareApplication',
+    name: p.name,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Web browser',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: 0, priceCurrency: 'USD' },
+    description: p.answer,
+    featureList:
+      'CSV and Excel import; data-point annotations; shared native chart renderer; SVG, PNG, PDF, HTML, CSV and editable project downloads',
+  },
+];
+---
+
+<Layout title={p.title} description={p.description} schema={schema} dateModified="2026-09-09">
+  <section class="container tool-intro">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><a href="/editorial-charts/">Editorial charts</a><span>/</span><span
+        >{p.name}</span>
+    </nav><h1>{p.name}<span class="title-dot">.</span></h1><p>{p.answer}</p><p>
+      Upload a file or paste spreadsheet cells. Check the columns, add context, and download your finished
+      chart. Free, with no account or watermark.
+    </p>
+  </section>
+  <section class="container">
+    <EditorialEditor
+      kind={kind}
+      initialSvg={renderOptionSvg(editorialOption(project, frame.width, frame.height), frame.width, frame.height)}
+      client:load
+    /><noscript
+      ><p>
+        Editing requires JavaScript. <a href={`/editorial/assets/${kind}.svg`} download
+          >Download the example SVG</a
+        > or <a href="/editorial-charts/life-expectancy/">read its data and method</a>.
+      </p></noscript>
+  </section>
+  <article class="container editorial-resource">
+    <h2>How to make a {p.name.replace(' maker', '').toLowerCase()}</h2><p>{p.input}</p><ol>
+      <li>
+        Upload CSV, TSV, TXT or Excel, or paste cells from your spreadsheet. Select the sheet, row range,
+        headers and number convention.
+      </li><li>
+        Choose the labels and numeric series. Inspect the complete selection before applying it; errors
+        preserve the current chart.
+      </li><li>
+        Write a descriptive headline, unit, source credit and date. Attach an optional note to a specific row
+        and series.
+      </li><li>
+        Check the preview and source table, then choose the publication size and download format. Keep the
+        editable project if you want to revise it later.
+      </li>
+    </ol>
+    {
+      p.methods.map(([heading, text]) => (
+        <section>
+          <>
+            <h2>{heading}</h2>
+            <p>{text}</p>
+          </>
+        </section>
+      ))
+    }
+    <h2>Try a sourced example</h2><p>
+      Start with the <a href="/editorial-charts/life-expectancy/">World Bank life expectancy comparison</a>.
+      It includes source values, the selected years and countries, calculations, download files and the
+      limitations of each view.
+    </p>
+    <h2>Questions before publishing</h2>{
+      p.faqs.map(([question, answer]) => (
+        <section>
+          <>
+            <h3>{question}</h3>
+            <p>{answer}</p>
+          </>
+        </section>
+      ))
+    }
+    <h3>What can I download?</h3><p>
+      Vector SVG, fixed-size PNG, a PDF containing a raster chart, source CSV, a versioned editable JSON
+      project, and self-contained static HTML with a caption and data table. HTML has no chart scripts or
+      tracking and can be hosted by your publication. See the <a href="/editorial-charts/publishing-guide/"
+        >publishing and accessibility guide</a
+      >. Spreadsheet files are limited to 8 MB, 2,000 preview rows and 100 columns; the smaller chart-specific
+      limits above apply to the selected data.
+    </p>
+    <p>
+      Built by <a href="https://www.supamakers.com/">SupaMakers</a>. <a href="/source/"
+        >Inspect and reuse the source code</a
+      >. <a href="/editorial-charts/">Compare the editorial chart types</a>. Reviewed September 9, 2026.
+    </p>
+  </article>
+</Layout>

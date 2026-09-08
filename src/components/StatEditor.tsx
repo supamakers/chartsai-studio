@@ -1,3 +1,7 @@
+import EditorialEditor from './EditorialEditor';
+import { editorialExample } from '../data/editorial-examples';
+import { projectDefaults, validateProject, type EditorialProject } from '../lib/editorial';
+import '../styles/editorial.css';
 import { datasetIds } from '../lib/resource-paths';
 import { useEffect, useRef, useState } from 'react';
 import type { EChartsType } from 'echarts/core';
@@ -12,6 +16,11 @@ import { DataEntry, JourneyHeading, PreviewHeading, DownloadStep, useChartJourne
 import { chartInputs } from '../lib/chart-journey';
 export default function StatEditor({ kind, initialSvg }: { kind: StatKind; initialSvg: string }) {
   const initial = defaultStat(kind);
+  const [publication, setPublication] = useState<EditorialProject | null>(null);
+  useEffect(() => {
+    if (kind === 'bar' && new URLSearchParams(location.search).get('publication') === '1')
+      setPublication(editorialExample('bar'));
+  }, []);
   const [spec, setSpec] = useState<StatSpec>(initial),
     [raw, setRaw] = useState(csv(initial.table)),
     [message, setMessage] = useState(''),
@@ -76,6 +85,7 @@ export default function StatEditor({ kind, initialSvg }: { kind: StatKind; initi
     };
   }, []);
   useEffect(() => {
+    if (publication) return;
     let cancelled = false;
     let observer: ResizeObserver | undefined;
     void import('../lib/echarts')
@@ -105,7 +115,7 @@ export default function StatEditor({ kind, initialSvg }: { kind: StatKind; initi
       chart.current?.dispose();
       chart.current = null;
     };
-  }, []);
+  }, [publication]);
   useEffect(() => {
     if (!error && host.current && chart.current)
       chart.current.setOption(statOption(spec, host.current.clientWidth, host.current.clientHeight), {
@@ -217,6 +227,8 @@ export default function StatEditor({ kind, initialSvg }: { kind: StatKind; initi
       setBusy(false);
     }
   }
+  if (publication)
+    return <EditorialEditor kind="bar" initialProject={publication} onBack={() => setPublication(null)} />;
   return (
     <div className="stat-editor tool-workspace dot-journey" id="editor">
       <JourneyHeading kind={kind} />
@@ -516,6 +528,39 @@ export default function StatEditor({ kind, initialSvg }: { kind: StatKind; initi
           </div>
         </div>
       </div>
+      {kind === 'bar' && (
+        <div className="publication-entry">
+          <strong>Publishing this chart in an article?</strong>
+          <p>
+            Use grouped horizontal bars with direct labels, annotations, a caption and source link. Your
+            original chart stays here when you return.
+          </p>
+          <button
+            className="button secondary small"
+            disabled={!!error || dirty}
+            onClick={() => {
+              try {
+                setPublication(
+                  validateProject({
+                    ...projectDefaults,
+                    kind: 'bar',
+                    table: spec.table,
+                    title: spec.title,
+                    subtitle: spec.subtitle,
+                    source: spec.source,
+                    unit: spec.yLabel,
+                    theme: spec.theme,
+                  }),
+                );
+              } catch (e) {
+                setMessage((e as Error).message);
+              }
+            }}
+          >
+            Open publication mode with this data
+          </button>
+        </div>
+      )}
       {journey.importing && (
         <ImportData
           kind={kind}

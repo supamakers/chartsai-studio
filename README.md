@@ -106,4 +106,10 @@ Version 0.9 adds [number line worksheets](https://www.chartsai.com/number-line-w
 
 ### Expanded homepage
 
-The homepage introduces charts, math tools and printables with real static previews, a directory of all 15 builders, an interactive example/style handoff, and links to the original resource library. Its printed blue/pink identity is scoped to the homepage; chart and worksheet editing behavior is unchanged. `src/lib/home-figures.ts` generates accurate native chart options at build time. `tests/home-figures.test.ts` and `tests/browser/home.spec.ts` cover data integrity and accessible discovery. Product and design context live in `PRODUCT.md` and `DESIGN.md`.
+The homepage introduces charts, math tools and printables with real static previews, a directory of all 18 builders, an interactive example/style handoff, and links to the original resource library. Its printed blue/pink identity is scoped to the homepage; chart and worksheet editing behavior is unchanged. `src/lib/home-figures.ts` generates accurate native chart options at build time. `tests/home-figures.test.ts` and `tests/browser/home.spec.ts` cover data integrity and accessible discovery. Product and design context live in `PRODUCT.md` and `DESIGN.md`.
+
+## Editorial charts — v0.11.0
+
+Free dumbbell, slopegraph and small-multiples makers join publication mode for existing line/bar charts. Upload or paste, explicitly map columns, add a headline/source/date/caption and data-point notes, then download SVG, PNG, raster PDF, CSV, an editable project or script-free HTML with a data table. A compatible dated line can export a project for AnimCharts; no data is automatically transferred.
+
+Seven new pages bring the sitemap to 116 URLs. The editorial collection includes pinned World Bank and NASA examples with exact retained data, provenance and limitations. See [research](docs/EDITORIAL-RESEARCH-2026-09-09.md) and [measurement](docs/MEASUREMENT.md).

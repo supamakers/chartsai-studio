@@ -17,7 +17,7 @@ const collections = [
   {
     name: 'Chart makers',
     description:
-      'Paste spreadsheet cells or upload CSV or Excel. Choose your columns, check the preview, and export PNG, SVG, PDF or CSV.',
+      'Paste spreadsheet cells or upload CSV or Excel. Choose your columns, check the preview, and export PNG, SVG, PDF or CSV. For articles, explore the editorial collection.',
     tools: [
       ['Dot plot maker', 'dot-plot-maker', 'Show every individual observation.'],
       ['Histogram maker', 'histogram-maker', 'Group measurements into intervals.'],
@@ -26,6 +26,9 @@ const collections = [
       ['Line graph maker', 'line-graph-maker', 'Follow change across ordered points.'],
       ['Bar chart maker', 'bar-chart-maker', 'Compare categories side by side.'],
       ['Radar chart maker', 'radar-chart-maker', 'Compare profiles on a shared scale.'],
+      ['Dumbbell chart maker', 'dumbbell-chart-maker', 'Compare two values for each category.'],
+      ['Slopegraph maker', 'slopegraph-maker', 'Show change between two periods.'],
+      ['Small multiples maker', 'small-multiples-chart-maker', 'Compare separate panels on one scale.'],
       ['Pareto chart maker', 'pareto-chart-maker', 'Rank categories and their cumulative share.'],
     ],
   },
@@ -78,7 +81,7 @@ const schema = [
   schema={schema}
   dateModified="2026-09-09"
   title="Free Chart Makers, Math Tools & Printable Worksheets | ChartsAI"
-  description="Make a chart, explore maths or print a worksheet. Eight chart makers, five math tools, number-line practice and habit trackers. Free downloads, no signup."
+  description="Make a chart, explore maths or print a worksheet. Eleven chart makers, five math tools, number-line practice and habit trackers. Free downloads, no signup."
 >
   <div class="home-library">
     <section class="home-opening" aria-label="Free charts, math tools and printables">
@@ -199,6 +202,10 @@ const schema = [
     </section>
     <section class="home-method" aria-labelledby="method-title">
       <h2 id="method-title">Free tools. Clear methods.</h2><div>
+        <p>
+          <a href="/editorial-charts/"
+            >New: editorial charts for articles, with annotations and source-based examples.</a>
+        </p>
         <p>
           ChartsAI is a free collection of chart makers, math visualization tools and printable resources
           built by <a href="https://www.supamakers.com/">SupaMakers</a>. No account or watermark is required.

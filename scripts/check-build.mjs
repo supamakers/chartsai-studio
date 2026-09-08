@@ -6,7 +6,7 @@ async function walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const p = join(dir, entry.name);
     if (entry.isDirectory()) await walk(p);
-    else if (p.endsWith('.html')) files.push(p);
+    else if (p.endsWith('.html') && !p.startsWith('dist/editorial/assets/')) files.push(p);
   }
 }
 await walk('dist');

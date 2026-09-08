@@ -45,3 +45,11 @@ Public dataset CSV, chart image/config and provenance download clicks reuse Char
 ## Worksheet build phase — September 8, 2026
 
 Continue useful releases while discovery data accumulate, per the user's direction. The worksheet page and `number-line-worksheets` tool identifier join the fixed allowlist. Existing math identifiers are `coordinate-plane`, `number-line`, `slope`, `transformation`, and `quadratic`. Worksheet downloads emit Chart Download with PDF/CSV format; fresh sets emit Example Loaded. No seed, question, learner name or answer is transmitted. These events indicate an action, not learning outcomes. No traffic threshold gates the worksheet release.
+
+## Editorial release — September 9, 2026
+
+Four additional custom goals were configured and verified in Plausible: Import Started, Chart Edited, Project Loaded and AnimCharts Visit. Existing Data Import, Chart Download, Example Loaded, Source Download and SupaMakers Visit remain. Import starts are recorded after choosing a file or opening paste; successful mapping emits Data Import. Design changes emit Chart Edited on blur, annotation additions and explicit raw-table applies have bounded control identifiers. Project Loaded indicates successful validation and restoration. AnimCharts Visit measures a clicked handoff link, not animation creation.
+
+All four breakdown properties were verified configured in Plausible. Breakdowns use fixed `tool`, `format`, `method` (file/paste) and `control` (design/annotation/apply). Canonical page paths identify the new makers and source resources. No private table, title, filename, source URL, note or raw query state is sent. Browser tests intercept production-host analytics to verify this policy without injecting fabricated visitor usage into the dashboard. Goal configuration and event-emission tests do not establish real visitor adoption or end-to-end normal-visitor ingestion.
+
+Read imports, edits, downloads and SupaMakers visits by landing page as discovery accumulates. Source-backed content, extractable methods, accessible values and canonical links support SEO/AEO/GEO; they do not prove indexing, citations or earned authority. Keep shipping useful resources during this measurement period.

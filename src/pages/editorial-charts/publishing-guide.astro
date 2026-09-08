@@ -1,0 +1,128 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/editorial.css';
+---
+
+<Layout
+  title="Publish a Chart: Formats, Sources & Accessibility | ChartsAI"
+  description="Choose SVG, PNG, PDF or self-contained HTML for your article. Learn how to retain chart captions, source data, annotations and editable project files."
+  dateModified="2026-09-09"
+>
+  <article class="container editorial-resource">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/editorial-charts/">Editorial charts</a><span>/</span><span>Publishing guide</span>
+    </nav><h1>From finished chart<br />to published article.</h1><p>
+      The download is part of the story. Readers need a legible graphic, an explanation of what it shows, and
+      a way to inspect the source. ChartsAI’s publication tools package those pieces while keeping the editing
+      process on your device.
+    </p><p>
+      By ChartsAI / <a href="https://www.supamakers.com/">SupaMakers</a> · Reviewed September 9, 2026.
+    </p>
+    <h2>Choose a format your publication supports</h2><div class="table-scroll">
+      <table>
+        <thead><tr><th>Format</th><th>Useful for</th><th>Know before publishing</th></tr></thead><tbody
+          ><tr
+            ><th>SVG</th><td>Sharp graphics at different display sizes</td><td
+              >Vector chart with text and paths. Some content systems restrict SVG uploads; use PNG if yours
+              does.</td
+            ></tr
+          ><tr
+            ><th>PNG</th><td>Article images, newsletters and social posts</td><td
+              >Fixed pixels. Select an appropriate canvas size and avoid enlarging the file beyond its
+              resolution.</td
+            ></tr
+          ><tr
+            ><th>PDF</th><td>Review, distribution and print workflows</td><td
+              >This export contains a raster chart on a canvas-sized page. Choose SVG when editable vector
+              artwork is required.</td
+            ></tr
+          ><tr
+            ><th>HTML</th><td>Hosting a figure with its caption and data table</td><td
+              >Self-contained static document, with an embedded SVG image and no external scripts or tracking.
+              It does not provide interactive hover or automatic updates.</td
+            ></tr
+          ><tr
+            ><th>CSV</th><td>Source inspection and analysis</td><td
+              >Retains the applied values rather than the rounded display labels.</td
+            ></tr
+          ><tr
+            ><th>Chart project</th><td>Reopening and revising the chart</td><td
+              >JSON contains the data, labels, source, annotations and presentation settings. It is different
+              from an ECharts configuration.</td
+            ></tr
+          ></tbody>
+      </table>
+    </div>
+    <h2>Make the chart understandable outside its pixels</h2><p>
+      Write an image description that states the chart’s purpose and main comparison. Include the exact values
+      in nearby text or a data table when they matter to the argument. Our HTML export supplies the underlying
+      table and caption, but you should still review and edit its generated description for your article’s
+      specific claim. See the <a href="https://www.w3.org/WAI/tutorials/images/complex/"
+        >W3C guidance on complex images</a
+      >.
+    </p><p>
+      Check the graphic at the width readers will actually see. A 1,200-pixel download displayed in a narrow
+      newsletter can make labels too small. Shorten labels without making them ambiguous, reduce the selected
+      series deliberately, or use the square canvas to give panels more vertical space. The full source values
+      should remain available even when a chart label is rounded.
+    </p>
+    <h2>Keep annotations and sources together</h2><p>
+      Publication annotations select an existing row and series. Numbered markers locate those observations;
+      the complete notes appear below the plot in every image export. Replacing a dataset clears the previous
+      markers, with an explicit message, to avoid carrying an old claim onto new values. A restored project
+      instead restores the complete chart and its validated annotation references.
+    </p><p>
+      The source credit and data date travel with the graphic. The source URL becomes a link in the HTML
+      document and remains in the editable project. Image pixels and the raster PDF do not promise a clickable
+      source link. If you upload PNG or SVG separately, include a clickable source and any required license
+      attribution in your article caption.
+    </p>
+    <h2>Publish HTML on your own site</h2><ol>
+      <li>
+        Download the self-contained HTML file and open it locally. Check its headline, annotations, table and
+        source link.
+      </li><li>
+        Upload it to hosting you control, or ask your publication to incorporate its figure and table into the
+        article.
+      </li><li>
+        If you use an iframe, give it a descriptive title and enough height for the caption and data. This
+        static document does not automatically resize an embedding iframe.
+      </li><li>
+        Review the published result on a phone and with a keyboard. Provide a direct link to the figure or
+        source values when your content system constrains the table.
+      </li>
+    </ol><p>
+      ChartsAI does not upload or host your private chart. No remote image, font, chart library or analytics
+      is loaded by the HTML file. A source link is visited only when the reader chooses it. There is no forced
+      backlink or watermark; retain the attribution required by your data source.
+    </p>
+    <h2>Save an editable project for revisions</h2><p>
+      The version 1 SupaMakers chart project records the original string table, chart kind, source metadata,
+      display settings and data-point annotation references. Open it with “Open saved chart project” in the
+      matching maker. The importer checks the version, dimensions, numeric values, supported settings and each
+      annotation before replacing the current chart. Unknown or invalid files leave your chart intact.
+    </p><p>
+      This is a local file workflow. Nothing is encoded into a public URL, saved to an account or sent
+      automatically to another service. Sharing the project shares its complete data and notes, so publish
+      only what you intend readers to receive.
+    </p>
+    <h2>Move a dated line chart into AnimCharts</h2><p>
+      The line publication maker also offers an AnimCharts animation project. Open that file using the project
+      control in the <a href="https://animcharts.com/editorial-lab/">AnimCharts editorial lab</a>. The adapter
+      supports up to 150 rows and three series, numeric years or full dates, up to two decimal places, and one
+      annotation per date. It reports incompatible inputs instead of deleting rows or notes.
+    </p><p>
+      AnimCharts uses its own video palettes, sizing and timing. The adapter supplies an 18-second landscape
+      or square starting point and preserves the original ChartsAI project in the file as additional metadata.
+      Source links are retained there; the current animation format uses a visible text credit. This is a
+      dated-line handoff, not a claim that every static chart type can be animated. Inspect the final video
+      and keep a static chart available alongside it.
+    </p>
+    <h2>Explore working examples</h2><p>
+      Try the <a href="/editorial-charts/temperature-record/">annotated NASA temperature series</a> or compare the
+      <a href="/editorial-charts/life-expectancy/">four World Bank views</a>. Both provide pinned source files
+      and reusable chart projects. Browse the <a href="/editorial-charts/">editorial collection</a> or inspect the
+      <a href="/source/">public implementation</a>.
+    </p>
+  </article></Layout
+>

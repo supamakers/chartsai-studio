@@ -191,7 +191,7 @@ Homepage keyboard focus uses a pink 3px outline with 5px offset. Under reduced m
 
 ### Figure fields and directory rows
 
-Figure fields combine a descriptive heading, genuine sample graphics, visible supporting text and direct tool links. Their images have intrinsic dimensions and meaningful alternatives. Directory links use a 25px semibold tool name above a 20px description, with a thin bottom rule and 16px vertical padding. Hover underlines and colors the tool name pink. All 15 current tool links are present in static HTML.
+Figure fields combine a descriptive heading, genuine sample graphics, visible supporting text and direct tool links. Their images have intrinsic dimensions and meaningful alternatives. Directory links use a 25px semibold tool name above a 20px description, with a thin bottom rule and 16px vertical padding. Hover underlines and colors the tool name pink. All 18 current tool links are present in static HTML.
 
 [HomeFigures.astro](src/components/HomeFigures.astro) renders dot, line and slope figures through native ECharts at build time. [home-figures.ts](src/lib/home-figures.ts) retains every sample observation and series mapping. The slope plot uses 300×180 pixels for 10×6 units, preserving equal physical units. Number-line previews reuse the shared SVG renderer. Decorative assets must never become sources for mathematical geometry or labels.
 

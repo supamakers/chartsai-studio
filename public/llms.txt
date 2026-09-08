@@ -47,3 +47,12 @@
 - [Quadratic graph calculator](https://www.chartsai.com/quadratic-graph-calculator/): Standard-form coefficients, vertex, real roots, discriminant and calculated table. Independent axis scales.
 
 - [Number line worksheets](https://www.chartsai.com/number-line-worksheets/): Generate 6–12 integer, fraction or unit-jump questions; A4 and Letter PDFs with separate answer pages and three original downloadable packs.
+
+## Editorial charts
+- [Editorial collection](https://www.chartsai.com/editorial-charts/): Free publication graphics, source credits, annotations, accessible HTML and local project files.
+- [Dumbbell maker](https://www.chartsai.com/dumbbell-chart-maker/): Exactly two values per category.
+- [Slopegraph maker](https://www.chartsai.com/slopegraph-maker/): Two-period categorical comparison, distinct from algebra slope.
+- [Small multiples](https://www.chartsai.com/small-multiples-chart-maker/): Line panels with one shared value scale.
+- [Life expectancy example](https://www.chartsai.com/editorial-charts/life-expectancy/): Pinned World Bank data, 2000–2023; four views, selection, precision and limits.
+- [Temperature example](https://www.chartsai.com/editorial-charts/temperature-record/): NASA GISTEMP annual anomalies, 1960–2025, stated baseline and scientific citation.
+- [Publishing guide](https://www.chartsai.com/editorial-charts/publishing-guide/): Formats, accessibility and a local dated-line handoff to AnimCharts.

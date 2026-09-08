@@ -1,4 +1,35 @@
 export const chartInputs = {
+  dumbbell: {
+    name: 'dumbbell chart',
+    input:
+      'Use one category column and exactly two value columns. Up to 30 categories; extra spreadsheet columns are fine.',
+    mapping: 'Choose category labels and exactly two numeric series. The two values stay paired on each row.',
+    preview: 'Each connected pair compares two values for one category.',
+    unit: 'category',
+    min: 1,
+    max: 30,
+  },
+  slopegraph: {
+    name: 'slopegraph',
+    input:
+      'Use one category column and exactly two value columns. Up to 12 categories for readable endpoint labels.',
+    mapping: 'Choose category labels and two ordered numeric columns, such as 2000 and 2023.',
+    preview: 'Each line compares two endpoints; it does not show the intermediate path.',
+    unit: 'category',
+    min: 1,
+    max: 12,
+  },
+  'small-multiples': {
+    name: 'small multiples chart',
+    input:
+      'Use an ordered label, number or date column and 1–5 numeric series. Up to 300 rows, one panel per series.',
+    mapping: 'Choose ordered horizontal labels and the numeric series to show in separate panels.',
+    preview: 'Every panel uses the same vertical scale.',
+    unit: 'point',
+    min: 2,
+    max: 300,
+  },
+
   dot: {
     name: 'dot plot',
     input: 'Plot up to 300 numbers. Extra columns are fine — you’ll choose which one to use next.',

@@ -8,6 +8,7 @@ import {
   TooltipComponent,
   LegendComponent,
   MarkLineComponent,
+  MarkPointComponent,
   AriaComponent,
 } from 'echarts/components';
 import { SVGRenderer } from 'echarts/renderers';
@@ -24,6 +25,7 @@ use([
   TooltipComponent,
   LegendComponent,
   MarkLineComponent,
+  MarkPointComponent,
   AriaComponent,
   SVGRenderer,
 ]);

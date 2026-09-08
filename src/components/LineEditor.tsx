@@ -1,3 +1,7 @@
+import EditorialEditor from './EditorialEditor';
+import { editorialExample } from '../data/editorial-examples';
+import { projectDefaults, validateProject, type EditorialProject } from '../lib/editorial';
+import '../styles/editorial.css';
 import { findShowcase } from '../lib/showcase-specs';
 import { useEffect, useState } from 'react';
 import { Plus, X, FileSpreadsheet, ArrowDownToLine, Code2 } from 'lucide-react';
@@ -20,6 +24,11 @@ const asTable = (p: LineSpec): Table => [
 ];
 export default function LineEditor({ initialSvg }: { initialSvg?: string }) {
   const initial = lineExample();
+  const [publication, setPublication] = useState<EditorialProject | null>(null);
+  useEffect(() => {
+    if (new URLSearchParams(location.search).get('publication') === '1')
+      setPublication(editorialExample('line'));
+  }, []);
   const [active, setActive] = useState('monthly');
   const [table, setTable] = useState<Table>(asTable(initial));
   const [title, setTitle] = useState(initial.title);
@@ -116,6 +125,8 @@ export default function LineEditor({ initialSvg }: { initialSvg?: string }) {
     const id = query.get('example');
     if (linePresets.some((p) => p.id === id)) preset(id!, false);
   }, []);
+  if (publication)
+    return <EditorialEditor kind="line" initialProject={publication} onBack={() => setPublication(null)} />;
   return (
     <div id="editor" className="tool-workspace dot-journey">
       <JourneyHeading kind="line" />
@@ -334,6 +345,39 @@ export default function LineEditor({ initialSvg }: { initialSvg?: string }) {
       <p className="import-notice" role="status">
         {notice}
       </p>
+      <div className="publication-entry">
+        <strong>Making a chart for an article?</strong>
+        <p>
+          Add direct labels, data-point annotations, a caption and source link. Export an editable project or
+          a self-contained HTML figure.
+        </p>
+        <button
+          className="button secondary small"
+          disabled={!!error}
+          onClick={() => {
+            try {
+              setPublication(
+                validateProject({
+                  ...projectDefaults,
+                  kind: 'line',
+                  table: asTable(spec),
+                  title,
+                  subtitle: spec.subtitle,
+                  source: spec.source,
+                  unit: yLabel,
+                  xMode,
+                  zero: zeroBaseline,
+                  theme: spec.theme,
+                }),
+              );
+            } catch (e) {
+              setNotice((e as Error).message);
+            }
+          }}
+        >
+          Open publication mode with this data
+        </button>
+      </div>
       {journey.importing && (
         <ImportData
           kind="line"

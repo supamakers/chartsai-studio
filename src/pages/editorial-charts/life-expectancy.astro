@@ -1,0 +1,159 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import data from '../../data/editorial-data.json';
+import { editorialExample, editorialRoutes } from '../../data/editorial-examples';
+import { editorialNames } from '../../lib/editorial';
+import '../../styles/editorial.css';
+const kinds = ['dumbbell', 'slopegraph', 'small-multiples', 'bar'] as const;
+const schema = [
+  {
+    '@type': 'Article',
+    headline: 'Life expectancy: four charts, different questions',
+    datePublished: '2026-09-09',
+    dateModified: '2026-09-09',
+    author: { '@id': 'https://www.chartsai.com/#organization' },
+  },
+  {
+    '@type': 'Dataset',
+    name: 'Life expectancy in India, Brazil, Japan and the United States, 2000–2023',
+    description:
+      '96 annual World Bank WDI SP.DYN.LE00.IN observations, deliberately selected for a worked comparison. No averaging or rounding in the CSV.',
+    license: 'https://creativecommons.org/licenses/by/4.0/',
+    creator: { '@type': 'Organization', name: 'World Bank' },
+    isBasedOn: 'https://data.worldbank.org/indicator/SP.DYN.LE00.IN',
+    temporalCoverage: '2000/2023',
+    distribution: {
+      '@type': 'DataDownload',
+      encodingFormat: 'text/csv',
+      contentUrl: 'https://www.chartsai.com/editorial/data/life-expectancy.csv',
+    },
+  },
+];
+---
+
+<Layout
+  title="Life Expectancy Charts: Endpoints vs Trends | ChartsAI"
+  description="Explore four original charts of World Bank life expectancy data. Compare endpoints with annual trends, inspect all values and download editable chart projects."
+  schema={schema}
+  imageHeight={900}
+  imageAlt="Original source-based publication chart by ChartsAI"
+  imagePath="/editorial/assets/dumbbell.png"
+  dateModified="2026-09-09"
+>
+  <article class="container editorial-resource">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/editorial-charts/">Editorial charts</a><span>/</span><span>Life expectancy</span>
+    </nav><h1>Four charts.<br />Different questions.</h1><p>
+      A before-and-after chart can show an increase while hiding a reversal in between. This worked resource
+      uses the same World Bank life expectancy data to compare four useful views: paired endpoints, a
+      slopegraph, full annual paths and a one-year bar chart.
+    </p><p>
+      By ChartsAI / <a href="https://www.supamakers.com/">SupaMakers</a> · Reviewed September 9, 2026. Data: 2000–2023,
+      retrieved September 9, 2026.
+    </p>
+    <h2>What is being measured?</h2><p>
+      The <a href="https://data.worldbank.org/indicator/SP.DYN.LE00.IN">World Bank indicator SP.DYN.LE00.IN</a
+      > reports life expectancy at birth in years, using UN Population Division and national sources. It is a period
+      population estimate based on mortality patterns, not a prediction of an individual person’s lifespan. India,
+      Brazil, Japan and the United States are a deliberate illustrative selection, not a representative sample of
+      the world.
+    </p>
+    {
+      kinds.map((kind, i) => (
+        <section>
+          <>
+            <h2>
+              {
+                [
+                  'Which endpoints changed?',
+                  'How do the two periods compare?',
+                  'What happened between the endpoints?',
+                  'What were the 2023 levels?',
+                ][i]
+              }
+            </h2>
+            <figure class="editorial-figure">
+              <>
+                <img
+                  src={`/editorial/assets/${kind}.svg`}
+                  width="1200"
+                  height={kind === 'small-multiples' ? 1200 : 900}
+                  loading="lazy"
+                  alt={editorialExample(kind).title}
+                />
+                <figcaption>
+                  {
+                    [
+                      'The dumbbell retains each country’s two estimates and separates categories into rows. The width of a connector is an absolute difference in years.',
+                      'The slopegraph places the same endpoint pairs on a shared vertical scale. Crossings describe changes in relative order, not the date those changes occurred.',
+                      'Small multiples retain all 24 annual observations for each country. Every panel has the same value scale, so levels remain comparable. Intermediate reversals are visible here.',
+                      'The bar chart selects 2023 only. Its zero-based axis compares levels, while omitting earlier change. It is a snapshot of this pinned period, not a claim to show the latest available year.',
+                    ][i]
+                  }
+                </figcaption>
+              </>
+            </figure>
+            <div class="editorial-links">
+              <a class="button secondary small" href={editorialRoutes[kind]}>
+                Edit this {editorialNames[kind].toLowerCase()}
+              </a>
+              {['svg', 'png', 'pdf', 'csv', 'json', 'html'].map((format) => (
+                <a href={`/editorial/assets/${kind}.${format}`} download>
+                  {format === 'json' ? 'Editable project' : format.toUpperCase()}
+                </a>
+              ))}
+            </div>
+          </>
+        </section>
+      ))
+    }
+    <h2>Calculate the difference without overstating it</h2><p>
+      For India, the selected estimates are 62.749 years in 2000 and 72.003 in 2023: 72.003 − 62.749 = 9.254
+      years. Brazil’s difference is 75.848 − 69.584 = 6.264 years. These are absolute differences in years,
+      not percentage points. All four selected countries have higher 2023 endpoints; the full annual series is
+      needed to assess the intervening path.
+    </p><p>
+      The source supplies estimates at different decimal precision. Chart labels round to one decimal for
+      reading; downloads preserve the full supplied precision. Precision in the file should not be mistaken
+      for certainty of the estimates. No causal effect, forecast or global average is calculated here.
+    </p>
+    <h2>Data, provenance and reuse</h2><p>
+      We retained all 96 observations from the four-country, 2000–2023 API selection. The endpoint charts
+      select the first and last year; the bar chart selects the last year; the panels retain every annual row.
+      No missing values occurred in this selection and none were filled. Rows are in increasing year order.
+    </p><p>
+      World Bank data is offered under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> on the
+      indicator page. Credit World Bank WDI and its underlying sources, link the indicator and license, and identify
+      your changes. Our charts and selection do not imply World Bank endorsement.
+    </p><div class="editorial-links">
+      <a href="/editorial/data/life-expectancy.csv" download>Full selected CSV</a><a
+        href="/editorial/data/worldbank-life-expectancy-source.json"
+        download>Original API response</a
+      ><a href="/editorial/data/manifest.json" download>Selection and checksums</a>
+    </div>
+    <details open id="data">
+      <summary>All 24 annual rows · unit: years</summary><div class="table-scroll">
+        <table>
+          <caption>Life expectancy at birth, years · World Bank WDI</caption><thead
+            ><tr>{data.life[0].map((v) => <th scope="col">{v}</th>)}</tr></thead
+          ><tbody
+            >{
+              data.life
+                .slice(1)
+                .map((row) => <tr>{row.map((v, i) => (i ? <td>{v}</td> : <th scope="row">{v}</th>))}</tr>)
+            }</tbody>
+        </table>
+      </div>
+    </details>
+    <h2>Use the right chart for the claim</h2><p>
+      Choose a <a href="/dumbbell-chart-maker/">dumbbell</a> when the gap is the focus, a <a
+        href="/slopegraph-maker/">slopegraph</a
+      > when the pair of periods is the organizing idea, or <a href="/small-multiples-chart-maker/"
+        >small multiples</a
+      > when the annual path matters. Read the <a href="/editorial-charts/publishing-guide/"
+        >publishing guide</a
+      > before embedding the result. This is one reusable worked resource, not four competing pages about the same
+      dataset.
+    </p>
+  </article></Layout
+>

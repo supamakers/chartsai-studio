@@ -1,0 +1,23 @@
+{
+  "retrieved": "2026-09-09",
+  "datasets": [
+    {
+      "id": "life-expectancy",
+      "url": "https://api.worldbank.org/v2/country/IND;BRA;JPN;USA/indicator/SP.DYN.LE00.IN?date=2000:2023&format=json&per_page=1000",
+      "source": "World Bank WDI SP.DYN.LE00.IN; UN Population Division and national sources",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://data.worldbank.org/indicator/SP.DYN.LE00.IN",
+      "sha256": "b5ea834ad9a299217b304a02806111bbbcd044a2c9dbbdd6b3575d5bfde25dec",
+      "selection": "All 24 annual values 2000\u20132023 for India, Brazil, Japan and United States. Deliberate illustrative selection, not a world sample. Values retained at source precision."
+    },
+    {
+      "id": "temperature",
+      "url": "https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv",
+      "source": "NASA GISS, GISTEMP v4",
+      "license": "NASA data reuse policy; retain scientific citation",
+      "licenseUrl": "https://data.giss.nasa.gov/gistemp/",
+      "sha256": "6cfa44e7bbacd9b12cb10bdd64b3182c2735fa3f3a95688e1f7bc8e5dfcece93",
+      "selection": "Annual J-D anomalies for 1960\u20132025; baseline 1951\u20131980; no monthly averaging or interpolation by ChartsAI."
+    }
+  ]
+}

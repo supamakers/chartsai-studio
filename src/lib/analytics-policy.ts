@@ -5,6 +5,13 @@ export const productionHosts = ['www.chartsai.com', 'chartsai.com'];
 const pagePaths = new Set([
   '/',
   '/charts/',
+  '/editorial-charts/',
+  '/dumbbell-chart-maker/',
+  '/slopegraph-maker/',
+  '/small-multiples-chart-maker/',
+  '/editorial-charts/life-expectancy/',
+  '/editorial-charts/temperature-record/',
+  '/editorial-charts/publishing-guide/',
   '/coordinate-plane-generator/',
   '/number-line-generator/',
   '/number-line-worksheets/',
@@ -40,6 +47,9 @@ export function usageEvent(detail: unknown) {
   if (!detail || typeof detail !== 'object') return null;
   const { tool, action, format } = detail as Record<string, unknown>;
   const names: Record<string, string> = {
+    dumbbell: 'dumbbell',
+    slopegraph: 'slopegraph',
+    'small-multiples': 'small-multiples',
     'coordinate-plane': 'coordinate-plane',
     'number-line': 'number-line',
     'number-line-worksheets': 'number-line-worksheets',
@@ -61,16 +71,46 @@ export function usageEvent(detail: unknown) {
   if (typeof tool !== 'string' || !Object.hasOwn(names, tool)) return null;
   const props: Record<string, string> = { tool: names[tool] };
   if (action === 'export') {
-    if (typeof format !== 'string' || !['png', 'svg', 'pdf', 'csv', 'json'].includes(format)) return null;
+    if (
+      typeof format !== 'string' ||
+      !['png', 'svg', 'pdf', 'csv', 'json', 'html', 'animcharts'].includes(format)
+    )
+      return null;
     props.format = format;
     return { name: 'Chart Download', props };
   }
   if (action === 'render') return { name: 'Data Import', props };
+  if (action === 'upload-open' || action === 'paste-open')
+    return {
+      name: 'Import Started',
+      props: { ...props, method: action === 'upload-open' ? 'file' : 'paste' },
+    };
+  if (action === 'project-load') return { name: 'Project Loaded', props };
+  if (action === 'annotation' || action === 'design' || action === 'apply')
+    return { name: 'Chart Edited', props: { ...props, control: action } };
   if (action === 'sample') return { name: 'Example Loaded', props };
   return null;
 }
 
 export function showcaseDownloadEvent(pathname: string) {
+  const editorial = pathname.match(
+    /^\/editorial\/assets\/(line|bar|dumbbell|slopegraph|small-multiples)\.(svg|png|csv|json|html|pdf)$/,
+  );
+  if (editorial) return usageEvent({ tool: editorial[1], action: 'export', format: editorial[2] });
+  if (
+    [
+      '/editorial/data/life-expectancy.csv',
+      '/editorial/data/temperature.csv',
+      '/editorial/data/manifest.json',
+      '/editorial/data/worldbank-life-expectancy-source.json',
+      '/editorial/data/nasa-temperature-source.csv',
+    ].includes(pathname)
+  )
+    return {
+      name: 'Chart Download',
+      props: { tool: 'public-dataset', format: pathname.endsWith('.csv') ? 'csv' : 'json' },
+    };
+
   if (
     /^\/worksheets\/assets\/(?:integers|fractions|jumps)(?:-(?:a4|letter)\.pdf|\.(?:svg|csv))$/.test(pathname)
   )

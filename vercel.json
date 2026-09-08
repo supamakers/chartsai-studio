@@ -8,11 +8,20 @@
   "redirects": [
     {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": "chartsai.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "chartsai.com"
+        }
+      ],
       "destination": "https://www.chartsai.com/$1",
       "permanent": true
     },
-    { "source": "/cookies/", "destination": "/privacy/", "permanent": true },
+    {
+      "source": "/cookies/",
+      "destination": "/privacy/",
+      "permanent": true
+    },
     {
       "source": "/contact/",
       "destination": "/about/#contact",
@@ -28,14 +37,39 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
       ]
     },
     {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": ".*\\.vercel\\.app" }],
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
+      "has": [
+        {
+          "type": "host",
+          "value": ".*\\.vercel\\.app"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    },
+    {
+      "source": "/editorial/assets/(.*).html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
     }
   ]
 }

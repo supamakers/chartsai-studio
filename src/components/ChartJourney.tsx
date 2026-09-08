@@ -1,3 +1,4 @@
+import { emitUsage } from '../lib/export';
 import { useRef, useState, type ReactNode } from 'react';
 import { Upload, ClipboardPaste } from 'lucide-react';
 import { chartInputs, type JourneyKind } from '../lib/chart-journey';
@@ -77,6 +78,7 @@ export function DataEntry({
       return;
     }
     setError('');
+    emitUsage(kind, 'upload-open');
     onUpload(files[0]);
   }
   return (
@@ -109,7 +111,13 @@ export function DataEntry({
           }}
         />
       </div>
-      <button className="button secondary dot-paste" onClick={onPaste}>
+      <button
+        className="button secondary dot-paste"
+        onClick={() => {
+          emitUsage(kind, 'paste-open');
+          onPaste();
+        }}
+      >
         <ClipboardPaste size={17} />
         Paste data
       </button>

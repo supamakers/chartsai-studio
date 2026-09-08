@@ -8,7 +8,7 @@ web
 
 ## Users
 
-People making charts for reports, presentations and assignments; students and educators exploring algebra and geometry; people printing practice sheets or personal habit trackers. There is no established customer base or validated primary demographic. The homepage should make the expanded capabilities easy to discover.
+People making charts for articles, newsletters, reports, presentations and assignments; students and educators exploring algebra and geometry; people printing practice sheets or personal habit trackers. There is no established customer base or validated primary demographic. The homepage should make the expanded capabilities easy to discover.
 
 ## Product Purpose
 
@@ -24,7 +24,7 @@ Browser-based tasks end in presentation graphics, assignment figures, lesson dia
 
 ## Capabilities and Constraints
 
-Eight statistical chart makers; five math diagram/calculation tools; a number-line worksheet generator with three original practice packs; a weekly/monthly habit tracker; 50 worked chart examples; 20 guides; five attributed public datasets. Existing Astro/React/ECharts implementation stays browser-local. No login, payment, chat interface or model API dependency. Keep charts mathematically accurate, preview/export consistent, useful defaults visible without JavaScript, and private inputs out of analytics. Preserve canonical URLs and internal linking. The homepage must not load ECharts at runtime.
+Eleven statistical and editorial chart makers, including dumbbell, slopegraph and small multiples; publication mode for line and bar charts with annotations, source context, local editable projects, static HTML and image/PDF exports; two sourced editorial examples and a publishing guide; five math diagram/calculation tools; a number-line worksheet generator with three original practice packs; a weekly/monthly habit tracker; 50 worked chart examples; 20 guides; five attributed public datasets. Existing Astro/React/ECharts implementation stays browser-local. No login, payment, chat interface or model API dependency. Keep charts mathematically accurate, preview/export consistent, useful defaults visible without JavaScript, and private inputs out of analytics. Preserve canonical URLs and internal linking. The homepage must not load ECharts at runtime.
 
 ## Brand Commitments
 

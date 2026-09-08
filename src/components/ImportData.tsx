@@ -128,6 +128,8 @@ export default function ImportData({
   if (body.length < guide.min || body.length > guide.max)
     validation = `A ${guide.name} supports ${guide.min === 1 ? 'up to' : `${guide.min}–`}${guide.min === 1 ? ' ' : ''}${guide.max} ${units(guide.max)}. Select a suitable row range above; no values have been removed.`;
   else if (!selectedColumns.length) validation = 'Choose at least one numeric series.';
+  else if ((kind === 'dumbbell' || kind === 'slopegraph') && selectedColumns.length !== 2)
+    validation = 'Choose exactly two numeric series for this paired comparison.';
   else if (selectedColumns.length > 5) validation = 'Choose at most five numeric series.';
   else if (paired && column === yColumn) validation = 'Choose two different columns for X and Y.';
   else if (oneMeasure && column === labelColumn)
@@ -186,7 +188,7 @@ export default function ImportData({
     ? 'Group column (optional)'
     : kind === 'radar'
       ? 'Which column names the dimensions?'
-      : kind === 'line'
+      : kind === 'line' || kind === 'small-multiples'
         ? 'Which column contains the labels or X values?'
         : 'Category column';
   return (
@@ -408,7 +410,7 @@ export default function ImportData({
                 />
               </label>
             )}
-            {kind === 'line' && (
+            {(kind === 'line' || kind === 'small-multiples') && (
               <label className="mapping-choice">
                 Horizontal spacing
                 <select
