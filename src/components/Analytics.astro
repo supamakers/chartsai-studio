@@ -1,5 +1,11 @@
 <script>
-  import { analyticsUrl, productionHosts, usageEvent, showcaseDownloadEvent } from '../lib/analytics-policy';
+  import {
+    analyticsUrl,
+    productionHosts,
+    usageEvent,
+    showcaseDownloadEvent,
+    datasetDownloadEvent,
+  } from '../lib/analytics-policy';
   type Tracker = ((name: string, options?: Record<string, unknown>) => void) & {
     q?: unknown[];
     o?: Record<string, unknown>;
@@ -55,7 +61,10 @@
       const anchor = event.target instanceof Element ? event.target.closest('a') : null;
       if (!anchor) return;
       const url = new URL(anchor.href);
-      const exampleDownload = url.origin === location.origin ? showcaseDownloadEvent(url.pathname) : null;
+      const exampleDownload =
+        url.origin === location.origin
+          ? (showcaseDownloadEvent(url.pathname) ?? datasetDownloadEvent(url.pathname))
+          : null;
       if (exampleDownload)
         w.plausible?.(exampleDownload.name, {
           props: exampleDownload.props,

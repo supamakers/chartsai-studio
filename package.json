@@ -1,6 +1,6 @@
 {
   "name": "chartsai-studio",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,7 +9,9 @@
     "preview": "astro preview --host 127.0.0.1",
     "test": "vitest run",
     "prepare:assets": "tsx scripts/prepare-assets.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "check:live": "node scripts/site-health.mjs",
+    "report:search": "tsx scripts/search-review.ts"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.5",

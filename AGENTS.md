@@ -15,7 +15,7 @@ Build excellent free chart tools and printable resources that people can discove
 
 ## Current scope and evidence
 
-The implemented initial scope is a dot plot maker, radar/spider chart maker, line graph maker, and weekly/monthly printable habit tracker. Each has a working editor and downloads. Version 0.4.0 adds 20 worked chart examples at `/examples/[slug]/`, three family hubs and `/examples/`. Each has original fictional data, exact editor state, static downloads and visible explanations. See `docs/SHOWCASE-RESEARCH-2026-09-08.md` for country/date/query evidence and exploratory topics. Relationship charts, other printable families, and Power BI/Tableau resources are candidates, not committed work.
+The live v0.5 library includes eight chart makers, 50 fictional worked examples, 20 method/comparison guides, five attributed UCI datasets, and the weekly/monthly printable habit tracker. There are 102 sitemap URLs including hubs and supporting pages. See `docs/EXPANSION-RESEARCH-2026-09.md` and `docs/EXPANSION-INVENTORY.md`. Additional printable families, Power BI/Tableau kits and AnimStats video tools remain research candidates rather than promised implementations.
 
 Local research, when available:
 
@@ -140,3 +140,7 @@ Twenty guides live in `src/data/guides.json`. Five attributed UCI resources use 
 Generated chart images/configurations are rebuilt during asset preparation and excluded from Git and the source ZIP; pinned CSVs and provenance source metadata are included. `tests/statistics.test.ts` and `tests/browser/statistics.spec.ts` cover calculations, exact handoffs, source selections and actual downloads. `scripts/check-expansion.ts` records resource and editorial quality checks. Expansion targets 103 HTML / 102 indexable routes; counts are not a claim of search performance.
 
 The v0.5.0 expansion was verified live on September 8 at 09:42 UTC from code commit `90c8f63`, deployment `dpl_5MAgPeHqthPE1JMkySYR6Sk5vbGi`. All 102 sitemap pages, 150 new linked assets, canonical redirects, crawler files, source ZIP and actual live PDF/CSV exports passed checks. See `docs/EXPANSION-RELEASE-2026-09-08.md`. Search visibility and normal-visitor analytics ingestion remain subsequent measurements.
+
+## Operations follow-up
+
+Version 0.5.1 adds bounded public-dataset download events, GitHub CI and a weekly public production-health check. `docs/OPERATIONS.md` describes schedules, report semantics and the private local Search Console export reporter. Do not confuse the scheduled public checker with authenticated analytics collection. Private search/analytics exports remain in ignored artifacts. Search Console initially showed a sitemap fetch error during the September 8 follow-up; after resubmission the child sitemap reported Success with all 102 discovered pages. Discovery and acknowledged indexing requests are not indexed-page counts. Homepage style previews now use generated native ECharts SVG files; interactive editors still load ECharts. Keep the engine off the homepage and retain the exact example/style handoff.

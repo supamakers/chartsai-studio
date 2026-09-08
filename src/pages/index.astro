@@ -7,12 +7,11 @@ import HeroStudio from '../components/HeroStudio';
 import ChartPreview from '../components/ChartPreview.astro';
 import { TrackerPreview } from '../components/TrackerEditor';
 import { dotExample, radarExample } from '../lib/chart-presets';
-import { renderChartSvg } from '../lib/echarts';
-const radarSvg = renderChartSvg({
-  ...radarExample('products'),
-  theme: 'night',
-});
-const dotSvg = renderChartSvg({ ...dotExample('scores'), theme: 'night' });
+import { chartDescription } from '../lib/chart-options';
+const descriptions = {
+  radar: chartDescription(radarExample('products')),
+  dot: chartDescription(dotExample('scores')),
+};
 ---
 
 <Layout
@@ -41,7 +40,7 @@ const dotSvg = renderChartSvg({ ...dotExample('scores'), theme: 'night' });
         </div>
       </div>
     </div><div class="hero-demo-wrap">
-      <HeroStudio client:visible radarSvg={radarSvg} dotSvg={dotSvg} /><p class="demo-caption">
+      <HeroStudio client:visible descriptions={descriptions} /><p class="demo-caption">
         <span>TRY THE STYLES ↑</span> Real chart. Fictional example data. Fully editable.
       </p>
     </div>
@@ -68,7 +67,8 @@ const dotSvg = renderChartSvg({ ...dotExample('scores'), theme: 'night' });
     </div><StatToolCards /><p>
       <a class="text-link" href="/guides/">Choose a chart with our guides →</a> · <a
         class="text-link"
-        href="/datasets/">Start with attributed public data →</a>
+        href="/datasets/">Start with attributed public data →</a
+      >
     </p>
   </section>
   <section class="container style-section">

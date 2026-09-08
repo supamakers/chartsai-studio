@@ -78,3 +78,10 @@ for (const slug of ['line-graphs', 'dot-plots', 'radar-charts'])
 console.log(
   'Checked all 20 example resources: original assets, exact editor links, dataset schema, accessible tables, social images and sitemap membership.',
 );
+
+for (const kind of ['radar', 'dot']) {
+  for (const theme of ['editorial', 'ocean', 'night']) {
+    const svg = await readFile(`dist/previews/${kind}-${theme}.svg`, 'utf8');
+    assert(svg.includes('<svg') && svg.includes('width="900"') && svg.includes('height="600"'));
+  }
+}

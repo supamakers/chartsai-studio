@@ -31,3 +31,26 @@ it('strips all queries and hashes, and groups unknown paths without exposing ide
   );
   expect(analyticsUrl('https://www.chartsai.com/private-customer-123')).toBe('https://www.chartsai.com/404/');
 });
+
+import { datasetDownloadEvent } from '../src/lib/analytics-policy';
+it('measures only known public dataset assets without transmitting dataset names or inputs', () => {
+  for (const p of [
+    '/datasets/assets/iris.csv',
+    '/datasets/assets/abalone-chart.csv',
+    '/datasets/assets/seeds-manifest.json',
+    '/datasets/assets/wine.png',
+  ])
+    expect(datasetDownloadEvent(p)?.props.tool).toBe('public-dataset');
+  expect(datasetDownloadEvent('/datasets/assets/iris.csv')).toEqual({
+    name: 'Chart Download',
+    props: { tool: 'public-dataset', format: 'csv' },
+  });
+  for (const p of [
+    '/datasets/assets/customer.csv',
+    '/datasets/assets/iris-chart.svg',
+    '/datasets/assets/iris-manifest.csv',
+    '/datasets/assets/iris.csv?secret=1',
+    '/uploads/iris.csv',
+  ])
+    expect(datasetDownloadEvent(p)).toBeNull();
+});

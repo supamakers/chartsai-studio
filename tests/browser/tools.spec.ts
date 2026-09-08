@@ -131,7 +131,9 @@ test('all main pages fit phone screens and ship meaningful HTML without JavaScri
   for (const path of ['/', '/dot-plot-maker/', '/radar-chart-maker/', '/printables/habit-tracker/']) {
     await page.goto(path);
     await page.locator('h1').waitFor();
-    if (path !== '/printables/habit-tracker/')
+    if (path === '/')
+      await expect(page.locator('.hero-chart-preview')).toBeVisible();
+    else if (path !== '/printables/habit-tracker/')
       await expect(page.locator('.echart-view')).toHaveAttribute('data-chart-ready', 'true');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     await page.screenshot({
@@ -143,6 +145,9 @@ test('all main pages fit phone screens and ship meaningful HTML without JavaScri
   await context.close();
   const noJS = await browser.newContext({ javaScriptEnabled: false });
   const staticPage = await noJS.newPage();
+  await staticPage.goto('/');
+  await expect(staticPage.locator('.hero-chart-preview')).toBeVisible();
+  await expect.poll(() => staticPage.locator('.hero-chart-preview').evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
   await staticPage.goto('/dot-plot-maker/');
   await expect(staticPage.locator('h1')).toContainText('Dot plot maker');
   await expect(staticPage.getByRole('heading', { name: 'What is a dot plot?' })).toBeVisible();

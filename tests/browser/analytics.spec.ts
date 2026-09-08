@@ -62,5 +62,20 @@ test('production analytics wires bounded events and canonical URLs while exports
       ),
     )
     .toBe(true);
+  await page.goto('https://www.chartsai.com/datasets/iris/?query=SECRET');
+  const datasetDownload = page.waitForEvent('download');
+  await page.getByRole('link', { name: /Full CSV/ }).click();
+  await datasetDownload;
+  await expect
+    .poll(() =>
+      received.some(
+        (event) =>
+          event.n === 'Chart Download' &&
+          event.u === 'https://www.chartsai.com/datasets/iris/' &&
+          event.p.tool === 'public-dataset' &&
+          event.p.format === 'csv',
+      ),
+    )
+    .toBe(true);
   expect(JSON.stringify(received)).not.toMatch(/SECRET|CONFIDENTIAL/);
 });

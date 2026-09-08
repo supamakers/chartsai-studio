@@ -13,7 +13,7 @@ Plausible property: https://plausible.io/chartsai.com. Website: https://www.char
 | Source Download | The visitor clicks the source ZIP link | None |
 | SupaMakers Visit | The visitor clicks a SupaMakers link | None |
 
-Allowed tools: `dot-plot`, `radar-chart`, `line-graph`, `habit-tracker`. Allowed formats: `png`, `svg`, `pdf`, `csv`, `json`. Input contents, titles, labels, filenames, source notes and habit text are never event properties. Source-download and SupaMakers events count clicks, not confirmed completion on the destination. A chart download means generation succeeded and a download was initiated; browsers do not let us prove that a person saved or opened the file. Data Import does not prove a subsequent chart/export was valid under its chosen scale. Manual edits are not counted on every keystroke.
+Allowed tools: `dot-plot`, `radar-chart`, `line-graph`, `habit-tracker`, `histogram`, `box-plot`, `scatter-plot`, `bar-chart`, `pareto-chart`, and `public-dataset`. Allowed formats: `png`, `svg`, `pdf`, `csv`, `json`. Input contents, titles, labels, filenames, source notes and habit text are never event properties. Source-download and SupaMakers events count clicks, not confirmed completion on the destination. A chart download means generation succeeded and a download was initiated; browsers do not let us prove that a person saved or opened the file. Data Import does not prove a subsequent chart/export was valid under its chosen scale. Manual edits are not counted on every keystroke.
 
 Analytics loads only on `chartsai.com` and `www.chartsai.com`, and is skipped for a URL with `?analytics=off`. Localhost and Vercel hostnames do not load Plausible. QA should use the opt-out except for a small explicit installation test recorded in the launch notes. Fixed paths and referrer origins are sent; query-based campaign attribution is intentionally not collected in this release. External AI referrers may appear where the browser supplies them; direct visits cannot be reliably assigned to AI.
 
@@ -37,3 +37,7 @@ Do not install a second analytics provider by default or send data from imports 
 ## Showcase library — September 8, 2026
 
 The 20 example details, three family hubs and library index have fixed analytics route identifiers. Static SVG/PNG/CSV/JSON download clicks reuse Chart Download with only the tool and format. A click is not proof of a completed save or reuse. Query state, search text and chart values are excluded. Compare example landing-page visits and download clicks separately from maker use. Normal-visitor ingestion remains unverified as recorded in the launch log.
+
+## v0.5.1 operational follow-up
+
+Public dataset CSV, chart image/config and provenance download clicks reuse Chart Download with only `tool=public-dataset` and a whitelisted format. Dataset names are not event properties; the canonical page identifies the landing resource. All 102 current page paths are bounded. See [operations](OPERATIONS.md) for the automated public-health checks and private local Search Console export reports.

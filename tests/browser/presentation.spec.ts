@@ -2,10 +2,24 @@ import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 
 test('the homepage demo opens the same example and style in the editor', async ({ page }) => {
+  const scripts: string[] = [];
+  page.on('request', (request) => {
+    if (request.resourceType() === 'script') scripts.push(request.url());
+  });
   await page.goto('/');
-  await expect(page.locator('.hero-studio [data-chart-ready]')).toHaveAttribute('data-chart-ready', 'true');
+  await expect(page.getByRole('button', { name: 'Dot plot', exact: true })).toBeEnabled();
+  await expect(page.locator('.hero-chart-preview')).toHaveAttribute('src', '/previews/radar-night.svg');
   await page.getByRole('button', { name: 'Dot plot', exact: true }).click();
   await page.getByRole('button', { name: 'Blueprint style' }).click();
+  await expect(page.locator('.hero-chart-preview')).toHaveAttribute('src', '/previews/dot-ocean.svg');
+  await expect
+    .poll(() =>
+      page
+        .locator('.hero-chart-preview')
+        .evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0),
+    )
+    .toBe(true);
+  expect(scripts.some((url) => /\/echarts[.-]/.test(url))).toBe(false);
   await page.getByRole('link', { name: 'Make this yours' }).click();
   await expect(page).toHaveURL(/dot-plot-maker\/\?example=scores&style=ocean#editor/);
   await expect(page.locator('#editor .canvas-status')).toContainText('Blueprint');

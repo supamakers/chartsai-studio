@@ -85,3 +85,7 @@ Five additional native ECharts makers cover histograms, box plots, scatter plots
 Twenty `/guides/` resources provide original comparison and method explanations. Five `/datasets/` resources provide pinned UCI CSVs under CC BY 4.0, separate from MIT application code and fictional teaching data. Source authors, files, checksums and exact plotted row selections are recorded in `src/data/dataset-manifest.json`. Abalone's full 4,177-row CSV exceeds the editor limit; its chart uses an explicitly labelled deterministic 300-row subset. Normal builds do not fetch upstream data; `python scripts/fetch-datasets.py` is an intentional refresh operation that requires revalidation.
 
 The September expansion produces 103 HTML pages including the noindex 404, and 102 sitemap URLs. Page count is an inventory, not evidence of indexing, authority or traffic. See `docs/EXPANSION-RESEARCH-2026-09.md` for observed search evidence.
+
+## Release and measurement operations
+
+GitHub Actions runs the build and browser checks on changes, and checks production after deployment and weekly. `npm run check:live` writes a public-availability report. `npm run report:search -- --current Pages.csv --period YYYY-MM-DD:YYYY-MM-DD` generates a private local topic report from a Search Console Pages export. See [operations](docs/OPERATIONS.md) for inputs, schedules and limits.

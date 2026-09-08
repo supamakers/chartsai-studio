@@ -6,12 +6,19 @@ import sharp from 'sharp';
 import { zipSync } from 'fflate';
 import { dotPresets, radarPresets, linePresets } from '../src/lib/presets.ts';
 import { showcaseSpecs, showcaseTable } from '../src/lib/showcase-specs.ts';
-import { chartFrames, createChartOption } from '../src/lib/chart-options.ts';
-import { radarExample } from '../src/lib/chart-presets.ts';
+import { chartFrames, chartThemes, createChartOption } from '../src/lib/chart-options.ts';
+import { dotExample, radarExample } from '../src/lib/chart-presets.ts';
 import { statPresets } from '../src/lib/stat-presets.ts';
 import { statOption } from '../src/lib/statistics.ts';
 import { renderOptionSvg, renderChartSvg } from '../src/lib/echarts.ts';
 
+// Homepage previews use the same native ECharts renderer without loading its runtime.
+await mkdir('public/previews', { recursive: true });
+for (const [kind, spec] of Object.entries({ radar: radarExample('products'), dot: dotExample('scores') })) {
+  for (const theme of Object.keys(chartThemes)) {
+    await writeFile(`public/previews/${kind}-${theme}.svg`, renderChartSvg({ ...spec, theme }));
+  }
+}
 await mkdir('public/samples', { recursive: true });
 await mkdir('public/downloads', { recursive: true });
 const csv = (rows) =>
@@ -67,13 +74,13 @@ const archive = {};
 async function collect(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = join(directory, entry.name);
-    if (path === 'public/downloads' || path === 'public/examples/assets' || path === 'public/charts/assets') continue;
+    if (path === 'public/previews' || path === 'public/downloads' || path === 'public/examples/assets' || path === 'public/charts/assets') continue;
     if (directory === 'public/datasets/assets' && /\.(svg|png|json)$/.test(path)) continue;
     if (entry.isDirectory()) await collect(path);
     else if (entry.isFile()) archive[`chartsai/${path}`] = new Uint8Array(await readFile(path));
   }
 }
-for (const directory of ['src', 'public', 'scripts', 'tests', 'docs']) await collect(directory);
+for (const directory of ['src', 'public', 'scripts', 'tests', 'docs', '.github/workflows']) await collect(directory);
 for (const path of [
   'README.md',
   '.prettierrc.json',

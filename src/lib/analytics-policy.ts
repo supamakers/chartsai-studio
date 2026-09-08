@@ -67,3 +67,14 @@ export function showcaseDownloadEvent(pathname: string) {
   const spec = findShowcase(match[1]);
   return spec ? usageEvent({ tool: spec.kind, action: 'export', format: match[2] }) : null;
 }
+
+/** Public, fixed dataset files only. Never derive properties from arbitrary filenames. */
+export function datasetDownloadEvent(pathname: string) {
+  const match = pathname.match(/^\/datasets\/assets\/([a-z]+)(-chart|-manifest)?\.(csv|svg|png|json)$/);
+  if (!match || !datasetIds.includes(match[1])) return null;
+  const [, , suffix, format] = match;
+  if (suffix === '-chart' && format !== 'csv') return null;
+  if (suffix === '-manifest' && format !== 'json') return null;
+  if (!suffix && !['csv', 'svg', 'png', 'json'].includes(format)) return null;
+  return { name: 'Chart Download', props: { tool: 'public-dataset', format } };
+}

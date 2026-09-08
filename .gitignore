@@ -25,3 +25,5 @@ public/charts/assets/
 public/datasets/assets/*.svg
 public/datasets/assets/*.png
 public/datasets/assets/*.json
+
+public/previews/
