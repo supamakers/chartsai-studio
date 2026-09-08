@@ -1,16 +1,9 @@
 import { findShowcase } from '../lib/showcase-specs';
-import { useEffect, useState } from 'react';
-import { ArrowDownToLine, Upload, RotateCcw, FileSpreadsheet, ChevronDown, Code2 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowDownToLine, Upload, ClipboardPaste, FileSpreadsheet, ChevronDown, Code2 } from 'lucide-react';
 import EChartView from './EChartView';
 import ImportData from './ImportData';
-import {
-  ExportButton,
-  StylePicker,
-  WorkspaceHeader,
-  SidebarTabs,
-  usePresentation,
-  PreviewStatus,
-} from './ChartControls';
+import { ExportButton, StylePicker, usePresentation } from './ChartControls';
 import { dotPresets } from '../lib/presets';
 import {
   csv,
@@ -22,7 +15,7 @@ import {
   type NumberStyle,
 } from '../lib/data';
 import { download, emitUsage } from '../lib/export';
-import type { DotSpec } from '../lib/chart-options';
+import { chartThemes, type DotSpec } from '../lib/chart-options';
 import { dotExample } from '../lib/chart-presets';
 import { exportChartConfig } from '../lib/chart-export';
 
@@ -34,6 +27,11 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
   const [label, setLabel] = useState(initial.label);
   const [presentation, setPresentation] = usePresentation(initial);
   const [tab, setTab] = useState<'data' | 'design'>('data');
+  const [editing, setEditing] = useState(false);
+  const [initialFile, setInitialFile] = useState<File | undefined>();
+  const [dropError, setDropError] = useState('');
+  const fileInput = useRef<HTMLInputElement>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
   const [mean, setMean] = useState(true);
   const [counts, setCounts] = useState(false);
   const [importing, setImporting] = useState(false);
@@ -42,14 +40,14 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
     error = '';
   try {
     const rows = parseText(raw);
-    if (rows.some((row) => row.length > 1)) error = 'Use Import data to choose a value column from a table.';
+    if (rows.some((row) => row.length > 1)) error = 'Use Paste data to choose a value column from a table.';
     else if (rows.length > 300)
       error = 'Use up to 300 values so individual dots remain useful. No values have been removed.';
     else {
       const parsed = rows.map((row) => readNumber(row[0]));
       const invalid = parsed.findIndex((v) => v === null);
       if (invalid >= 0)
-        error = `Value ${invalid + 1} (“${rows[invalid][0] || 'empty'}”) is not a number. Edit it or use Import data for other number formats.`;
+        error = `Value ${invalid + 1} (“${rows[invalid][0] || 'empty'}”) is not a number. Edit it or use Paste data for other number formats.`;
       else values = parsed as number[];
     }
   } catch (e) {
@@ -72,12 +70,17 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
     setTitle(p.title);
     setLabel(p.label);
     setPresentation((v) => ({ ...v, subtitle: p.subtitle, source: p.source }));
-    setNotice('Example loaded. The sample data is fictional.');
+    setNotice('Example loaded. Replace it with your data whenever you’re ready.');
     if (track) emitUsage('dot-plot', 'sample');
   }
   function customData(text: string) {
     setRaw(text);
     setActive('custom');
+    if (active !== 'custom') {
+      const sample = findShowcase(active, 'dot') ?? dotExample(active);
+      if (title === sample.title) setTitle('Your dot plot');
+      if (sample.kind === 'dot' && label === sample.label) setLabel('Value');
+    }
     if (active !== 'custom')
       setPresentation((v) => ({
         ...v,
@@ -86,9 +89,18 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
       }));
     setNotice('');
   }
-  function importValues(table: Table, style: NumberStyle) {
+  function importValues(table: Table, style: NumberStyle, columnLabel?: string) {
     customData(table.map((row) => String(readNumber(row[0], style))).join('\n'));
-    setNotice(`Imported ${table.length} values. All selected observations are included.`);
+    if (columnLabel) setLabel(columnLabel.slice(0, 60));
+    setEditing(false);
+    setTab('data');
+    setNotice(
+      `Your chart is ready: ${table.length} values added. You can change its labels or download it below.`,
+    );
+    requestAnimationFrame(() => {
+      previewRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      previewRef.current?.focus({ preventScroll: true });
+    });
     emitUsage('dot-plot', 'render');
   }
   useEffect(() => {
@@ -108,23 +120,112 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
     const id = query.get('example');
     if (dotPresets.some((p) => p.id === id)) selectPreset(id!, false);
   }, []);
+  function chooseFile(files: FileList | null) {
+    if (!files?.length) return;
+    if (files.length > 1) {
+      setDropError('Choose one file at a time. You can select its sheet and column next.');
+      return;
+    }
+    setDropError('');
+    setInitialFile(files[0]);
+    setImporting(true);
+  }
   return (
-    <div id="editor" className="tool-workspace">
-      <WorkspaceHeader kind="Dot plot" />
+    <div id="editor" className="tool-workspace dot-journey">
+      <div className="dot-journey-heading">
+        <span>From your spreadsheet to a finished dot plot</span>
+        <span>No signup · Your data stays on your device</span>
+      </div>
       <div className="workspace-body">
-        <aside className="editor-sidebar">
-          <SidebarTabs tab={tab} setTab={setTab} />
-          {tab === 'data' ? (
-            <div className="sidebar-tab-content">
-              <div className="panel-title">
-                <h2>Your observations</h2>
-                <button className="text-button" onClick={() => selectPreset('scores')}>
-                  <RotateCcw size={13} /> Reset
-                </button>
-              </div>
-              <button className="button secondary import-button" onClick={() => setImporting(true)}>
-                <Upload size={15} /> Paste or import a spreadsheet
-              </button>
+        <aside className="editor-sidebar dot-input-panel">
+          <div className="dot-step-title">
+            <span>1</span>
+            <h2>Add your data</h2>
+          </div>
+          <p>Plot up to 300 numbers. Extra columns are fine — you’ll choose which one to use next.</p>
+          <div
+            className="dot-dropzone"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              chooseFile(e.dataTransfer.files);
+            }}
+          >
+            <button className="dot-upload" onClick={() => fileInput.current?.click()}>
+              <Upload size={24} />
+              <strong>Upload a file</strong>
+              <span>or drop it here</span>
+            </button>
+            <span>CSV, Excel (.xlsx), TSV or TXT · Up to 8 MB</span>
+            <input
+              hidden
+              ref={fileInput}
+              type="file"
+              accept=".csv,.tsv,.txt,.xlsx"
+              aria-label="Upload data file"
+              onChange={(e) => {
+                chooseFile(e.target.files);
+                e.target.value = '';
+              }}
+            />
+          </div>
+          <button
+            className="button secondary dot-paste"
+            onClick={() => {
+              setInitialFile(undefined);
+              setImporting(true);
+            }}
+          >
+            <ClipboardPaste size={17} />
+            Paste data
+          </button>
+          <p className="dot-input-help">
+            Copy cells from Excel or Google Sheets, or paste numbers such as 2, 3, 3, 5.
+          </p>
+          {dropError && (
+            <p className="notice error" role="alert">
+              {dropError}
+            </p>
+          )}
+          <div className="dot-example-choice">
+            <label className="field">
+              Just exploring? Try an example
+              <select
+                value={dotPresets.some((p) => p.id === active) ? active : ''}
+                onChange={(e) => selectPreset(e.target.value)}
+              >
+                <option value="" disabled>
+                  {active === 'custom' ? 'Your data is loaded' : 'Worked example loaded'}
+                </option>
+                {dotPresets.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <div className="dot-edit-actions">
+            <button
+              className="text-button"
+              aria-expanded={editing}
+              onClick={() => {
+                setEditing(tab === 'design' ? true : !editing);
+                setTab('data');
+              }}
+            >
+              Edit values
+            </button>
+            <button
+              className="text-button"
+              aria-expanded={tab === 'design'}
+              onClick={() => setTab(tab === 'design' ? 'data' : 'design')}
+            >
+              Design & details
+            </button>
+          </div>
+          {editing && tab === 'data' && (
+            <div className="dot-values">
               <label className="field">
                 Values
                 <textarea
@@ -132,48 +233,53 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
                   aria-describedby="dot-data-hint"
                   value={raw}
                   onChange={(e) => customData(e.target.value)}
-                  rows={8}
+                  rows={5}
                   spellCheck={false}
                 />
               </label>
               <p id="dot-data-hint" className="fine-print">
-                One value per line, or a comma-separated list. Up to 300 observations. Zero is a value; an
-                empty cell needs attention.
+                One value per line or a comma-separated list. Up to 300 values. Each number becomes one dot.
               </p>
-              <label className="field">
-                Axis label
-                <input value={label} maxLength={60} onChange={(e) => setLabel(e.target.value)} />
-              </label>
-              <div className="sidebar-tip">
-                <span>START ANYWHERE</span>
-                <p>
-                  Have a messy table? Import lets you select the sheet, rows, columns and number format before
-                  plotting.
-                </p>
-              </div>
             </div>
-          ) : (
-            <div className="sidebar-tab-content">
+          )}
+          {tab === 'design' && (
+            <div className="dot-design">
               <label className="field">
                 Chart title
                 <input value={title} maxLength={60} onChange={(e) => setTitle(e.target.value)} />
               </label>
+              <label className="field">
+                Axis label
+                <input value={label} maxLength={60} onChange={(e) => setLabel(e.target.value)} />
+              </label>
               <StylePicker value={presentation} onChange={setPresentation} />
               <label className="check-label">
-                <input type="checkbox" checked={mean} onChange={(e) => setMean(e.target.checked)} /> Show the
-                mean reference line
+                <input type="checkbox" checked={mean} onChange={(e) => setMean(e.target.checked)} />
+                Show the mean reference line
               </label>
               <label className="check-label">
-                <input type="checkbox" checked={counts} onChange={(e) => setCounts(e.target.checked)} /> Label
-                repeated-value counts
+                <input type="checkbox" checked={counts} onChange={(e) => setCounts(e.target.checked)} />
+                Label repeated-value counts
               </label>
             </div>
           )}
         </aside>
-        <div className="canvas-panel">
-          <div className="canvas-toolbar">
-            <PreviewStatus presentation={presentation} />
-            <ExportButton spec={spec} disabled={!stats || !!error} />
+        <div className="canvas-panel" ref={previewRef} tabIndex={-1} aria-label="Your dot plot preview">
+          <div className="dot-preview-heading">
+            <div className="dot-step-title">
+              <span>2</span>
+              <h2>Preview your dot plot</h2>
+            </div>
+            <span className={`dot-data-badge ${active === 'custom' ? 'is-custom' : ''}`}>
+              {active === 'custom' ? 'Your data' : 'Sample data · replace with yours'}
+            </span>
+            <p>
+              {notice ||
+                (active === 'custom'
+                  ? 'Each dot is one value. Repeated values stack up. Check your chart and download it below.'
+                  : 'Each dot is one value. Repeated values stack up. Upload or paste your data to replace this example.')}
+            </p>
+            <span className="canvas-status">{chartThemes[presentation.theme].name} style</span>
           </div>
           <div className="chart-stage">
             {error || !stats ? (
@@ -185,6 +291,16 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
             ) : (
               <EChartView spec={spec} initialSvg={initialSvg} />
             )}
+          </div>
+          <div className="dot-download-step">
+            <div>
+              <div className="dot-step-title">
+                <span>3</span>
+                <h2>Download your chart</h2>
+              </div>
+              <p>PNG for slides · SVG for editing · PDF for printing</p>
+            </div>
+            <ExportButton spec={spec} disabled={!stats || !!error} />
           </div>
           <div className="stats-strip">
             {[
@@ -224,19 +340,6 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
           </div>
         </div>
       </div>
-      <div className="preset-bar">
-        <span>Load an example</span>
-        {dotPresets.map((p) => (
-          <button
-            key={p.id}
-            className={`preset ${active === p.id ? 'active' : ''}`}
-            onClick={() => selectPreset(p.id)}
-          >
-            {p.name}
-          </button>
-        ))}
-        <span className="sample-label">Fictional data · editable by you</span>
-      </div>
       <p className="sr-only" aria-live="polite">
         {notice}
       </p>
@@ -268,7 +371,17 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
           </div>
         </details>
       )}
-      {importing && <ImportData kind="dot" onClose={() => setImporting(false)} onImport={importValues} />}
+      {importing && (
+        <ImportData
+          kind="dot"
+          initialFile={initialFile}
+          onClose={() => {
+            setImporting(false);
+            setInitialFile(undefined);
+          }}
+          onImport={importValues}
+        />
+      )}
     </div>
   );
 }

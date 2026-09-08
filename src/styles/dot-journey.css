@@ -1,0 +1,331 @@
+/* The first-time dot-plot journey: input, preview, then export. */
+.dot-journey-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 24px;
+  background: #edf1e7;
+  font-size: 12px;
+  color: #44523d;
+}
+.dot-journey .workspace-body {
+  grid-template-columns: 350px minmax(0, 1fr);
+}
+.dot-journey .dot-input-panel {
+  padding: 26px;
+}
+.dot-step-title {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.dot-step-title > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #e5eddc;
+  color: #374a2f;
+  font-size: 13px;
+  font-weight: 600;
+}
+.dot-step-title h2 {
+  font-size: 20px;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+.dot-input-panel > p {
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 12px 0 18px;
+}
+.dot-dropzone {
+  border: 1.5px dashed #789267;
+  border-radius: 9px;
+  background: #f1f6e9;
+  padding: 18px 12px;
+  text-align: center;
+}
+.dot-upload {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  gap: 7px;
+  border: 0;
+  background: none;
+  color: #263d24;
+  cursor: pointer;
+  padding: 4px 0 10px;
+}
+.dot-upload strong {
+  font-size: 17px;
+}
+.dot-upload span,
+.dot-dropzone > span {
+  font-size: 12px;
+  color: #51634a;
+}
+.dot-paste {
+  width: 100%;
+  margin-top: 12px;
+  font-size: 14px;
+  min-height: 44px;
+}
+.dot-input-panel > .dot-input-help {
+  font-size: 12px;
+  margin: 10px 0 20px;
+}
+.dot-example-choice {
+  border-top: 1px solid #dce2d5;
+  padding-top: 18px;
+}
+.dot-example-choice .field {
+  font-size: 12px;
+  margin: 0;
+}
+.dot-edit-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 0 0;
+}
+.dot-edit-actions button {
+  font-size: 12px;
+  min-height: 36px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.dot-values,
+.dot-design {
+  padding-top: 16px;
+}
+.dot-values textarea {
+  min-height: 120px;
+  font-size: 15px;
+}
+.dot-preview-heading {
+  padding: 24px 24px 16px;
+}
+.dot-preview-heading > p {
+  font-size: 13px;
+  margin: 10px 0;
+  line-height: 1.7;
+}
+.dot-data-badge {
+  display: inline-block;
+  margin-top: 12px;
+  background: #f5eedf;
+  color: #6a4c1c;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+}
+.dot-data-badge.is-custom {
+  background: #e8f0e1;
+  color: #35542a;
+}
+.dot-journey .chart-stage {
+  padding: 16px;
+}
+.dot-download-step {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 24px;
+  border-top: 1px solid #dce2d5;
+}
+.dot-download-step p {
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+.dot-journey .canvas-bottom {
+  flex-wrap: wrap;
+}
+.dot-import-modal .modal-heading h2 {
+  font-size: 28px;
+}
+.dot-import-modal .import-source-entry > .muted {
+  margin: 0 0 16px;
+}
+.dot-import-modal .import-source-entry > textarea {
+  width: 100%;
+  font-size: 16px;
+}
+.dot-import-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+.dot-import-summary p {
+  margin: 0;
+  font-size: 14px;
+}
+.dot-import-summary button {
+  flex-shrink: 0;
+  text-decoration: underline;
+  font-size: 12px;
+}
+.dot-import-modal .mapping-choice {
+  margin: 16px 0;
+}
+.import-advanced {
+  margin: 16px 0;
+}
+.import-advanced > summary {
+  cursor: pointer;
+  font-size: 13px;
+  padding: 8px 0;
+  color: #415b36;
+}
+.import-advanced .mapping-grid {
+  margin-top: 14px;
+}
+.import-advanced:not(:has(> summary)) {
+  display: block;
+}
+.dot-import-modal .mapping-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.dot-import-ready {
+  padding: 14px;
+  background: #eff5e8;
+  color: #35502e;
+  font-size: 14px;
+  border-radius: 6px;
+}
+.dot-import-modal .dot-import-confirm > .button {
+  width: 100%;
+  margin-top: 14px;
+  min-height: 46px;
+}
+.dot-journey .canvas-panel {
+  scroll-margin-top: 20px;
+}
+@media (max-width: 1100px) {
+  .dot-journey .workspace-body {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+  .dot-journey .dot-input-panel {
+    padding: 20px;
+  }
+  .dot-download-step {
+    align-items: start;
+    flex-direction: column;
+  }
+}
+@media (max-width: 760px) {
+  .dot-journey-heading {
+    display: block;
+    padding: 12px 18px;
+  }
+  .dot-journey-heading > span {
+    display: block;
+  }
+  .dot-journey-heading > span:last-child {
+    margin-top: 5px;
+    font-size: 11px;
+  }
+  .dot-journey .workspace-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dot-journey .dot-input-panel {
+    padding: 20px;
+    border-right: 0;
+  }
+  .dot-dropzone {
+    padding: 12px;
+  }
+  .dot-upload {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .dot-upload span {
+    flex-basis: 100%;
+  }
+  .dot-preview-heading,
+  .dot-download-step {
+    padding: 20px;
+  }
+  .dot-step-title h2 {
+    font-size: 18px;
+  }
+  .dot-journey .chart-stage {
+    padding: 10px;
+  }
+  .dot-download-step .export-group {
+    width: 100%;
+  }
+  .dot-download-step .export-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .dot-import-summary {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .dot-import-modal .mapping-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dot-preview-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.dot-preview-heading .dot-step-title {
+  flex: 1 1 auto;
+}
+.dot-preview-heading .dot-data-badge {
+  margin-top: 0;
+}
+.dot-preview-heading > p {
+  flex-basis: 100%;
+  margin: 0;
+}
+.dot-preview-heading .canvas-status {
+  font-size: 11px;
+  letter-spacing: 0;
+  color: #586650;
+}
+.dot-journey .chart-stage > .echart-view {
+  max-width: 660px;
+  margin-inline: auto;
+}
+@media (min-width: 761px) {
+  .dot-tool-intro {
+    padding-top: 20px;
+    padding-bottom: 24px;
+  }
+  .dot-tool-intro .breadcrumbs {
+    margin-bottom: 20px;
+  }
+  .dot-tool-intro h1 {
+    font-size: 48px;
+    margin-block: 12px;
+  }
+}
+
+.dot-import-confirm {
+  position: sticky;
+  bottom: -24px;
+  padding: 12px 0 20px;
+  background: #f8f9f6;
+  z-index: 1;
+}
+.dot-import-modal .dot-import-confirm > .button {
+  margin-top: 0;
+}
+@media (max-width: 760px) {
+  .dot-import-confirm {
+    bottom: -20px;
+  }
+}

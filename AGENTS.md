@@ -144,3 +144,8 @@ The v0.5.0 expansion was verified live on September 8 at 09:42 UTC from code com
 ## Operations follow-up
 
 Version 0.5.1 adds bounded public-dataset download events, GitHub CI and a weekly public production-health check. `docs/OPERATIONS.md` describes schedules, report semantics and the private local Search Console export reporter. Do not confuse the scheduled public checker with authenticated analytics collection. Private search/analytics exports remain in ignored artifacts. Search Console initially showed a sitemap fetch error during the September 8 follow-up; after resubmission the child sitemap reported Success with all 102 discovered pages. Discovery and acknowledged indexing requests are not indexed-page counts. Homepage style previews now use generated native ECharts SVG files; interactive editors still load ECharts. Keep the engine off the homepage and retain the exact example/style handoff.
+
+
+## Dot plot onboarding — v0.5.2
+
+The dot maker begins with explicit Upload a file / Paste data actions, including local drag and drop. `ImportData.tsx` provides a two-step preview for the dot flow; other editors retain their existing import controls. Keep the numeric column and detected-header choice visible, keep row ranges and numeric conventions accessible, and require confirmation before replacing data. File reading and validation still happen locally. Preserve custom titles/source notes, retain zeros and repeated values, and clearly distinguish sample data from user data. On successful import, move focus to the preview; on cancellation, return it to the initiating control. Download follows the preview with an explicit third step. Tests in `tests/browser/dot-journey.spec.ts` cover these behaviors.

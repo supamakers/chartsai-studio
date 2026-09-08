@@ -4,13 +4,16 @@ import { parseText, readFileTables, readNumber, transpose, type Table, type Numb
 
 export default function ImportData({
   kind,
+  initialFile,
   onClose,
   onImport,
 }: {
   kind: 'dot' | 'radar' | 'line' | 'numeric' | 'table';
+  initialFile?: File;
   onClose: () => void;
-  onImport: (table: Table, style: NumberStyle) => void;
+  onImport: (table: Table, style: NumberStyle, columnLabel?: string) => void;
 }) {
+  const guided = kind === 'dot';
   const single = kind === 'dot' || kind === 'numeric';
   const tabular = kind === 'line' || kind === 'table';
   const [text, setText] = useState('');
@@ -40,6 +43,11 @@ export default function ImportData({
     };
   }, []);
   const source = sheets[sheet] ?? [];
+  useEffect(() => {
+    if (!guided) return;
+    if (source.length) dialog.current?.querySelector<HTMLSelectElement>('select')?.focus();
+    else dialog.current?.querySelector<HTMLTextAreaElement>('textarea')?.focus();
+  }, [sheets, sheet, guided]);
   const sourceRows = flipped ? transpose(source) : source;
   const table = useMemo(
     () => (flipped ? transpose(source) : source).slice(start - 1, end || undefined),
@@ -82,6 +90,9 @@ export default function ImportData({
       setBusy(false);
     }
   }
+  useEffect(() => {
+    if (initialFile) void upload(initialFile);
+  }, [initialFile]);
   function preview() {
     try {
       load({ Pasted: parseText(text, separator) });
@@ -99,6 +110,7 @@ export default function ImportData({
     body.length > 0 &&
     selectedColumns.length > 0 &&
     !invalid.length &&
+    (!guided || body.length <= 300) &&
     (single || body.every((row) => !!row[labelColumn]?.trim()));
   function commit() {
     if (!canImport) return;
@@ -122,7 +134,7 @@ export default function ImportData({
           [labels[labelColumn], ...selectedColumns.map((c) => labels[c])],
           ...body.map((row) => [row[labelColumn], ...selectedColumns.map((c) => row[c])]),
         ];
-    onImport(result, style);
+    onImport(result, style, single && header ? labels[column] : undefined);
     onClose();
   }
   return (
@@ -133,7 +145,7 @@ export default function ImportData({
       }}
     >
       <div
-        className="import-modal"
+        className={`import-modal ${guided ? 'dot-import-modal' : ''}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="import-heading"
@@ -142,9 +154,11 @@ export default function ImportData({
         onKeyDown={(e) => {
           if (e.key === 'Escape') onClose();
           if (e.key === 'Tab') {
-            const items = dialog.current?.querySelectorAll<HTMLElement>(
-              'button:not(:disabled), input:not(:disabled), select, textarea, [tabindex="0"]',
-            );
+            const items = Array.from(
+              dialog.current?.querySelectorAll<HTMLElement>(
+                'button:not(:disabled), input:not(:disabled), select, textarea, [tabindex="0"]',
+              ) ?? [],
+            ).filter((el) => el.getClientRects().length > 0);
             if (!items?.length) return;
             const first = items[0],
               last = items[items.length - 1];
@@ -163,70 +177,114 @@ export default function ImportData({
       >
         <div className="modal-heading">
           <div>
-            <span className="eyebrow">YOUR DATA, YOUR DEVICE</span>
-            <h2 id="import-heading">Bring your data along.</h2>
+            <span className="eyebrow">
+              {guided ? `STEP ${source.length ? '2' : '1'} OF 2 · ADD YOUR DATA` : 'YOUR DATA, YOUR DEVICE'}
+            </span>
+            <h2 id="import-heading">
+              {guided
+                ? source.length
+                  ? 'Choose the values to plot'
+                  : initialFile
+                    ? 'Read your spreadsheet'
+                    : 'Paste numbers or cells'
+                : 'Bring your data along.'}
+            </h2>
           </div>
           <button className="icon-button" onClick={onClose} aria-label="Close import">
             <X size={20} />
           </button>
         </div>
-        <p className="muted">
-          Paste cells from a spreadsheet or choose a file. Check the preview before using it.
-        </p>
-        <textarea
-          aria-label="Paste your data"
-          placeholder={
-            single
-              ? 'Paste numbers or spreadsheet cells here…\n64, 68, 72, 72, 76, 80'
-              : tabular
-                ? 'Month\tOrders\tTarget\nJan\t120\t100\nFeb\t145\t125'
-                : 'Dimension\tAlex\tSam\nResearch\t8\t5\nDesign\t9\t6\nWriting\t7\t8'
-          }
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          rows={5}
-        />
-        <div className="import-actions">
-          <label>
-            Separator
-            <select value={separator} onChange={(e) => setSeparator(e.target.value)}>
-              <option value="auto">Detect automatically</option>
-              <option value=",">Comma</option>
-              <option value=";">Semicolon</option>
-              <option value={'\t'}>Tab</option>
-            </select>
-          </label>
-          <button className="button small" onClick={preview} disabled={!text.trim()}>
-            Preview paste <ArrowRight size={16} />
-          </button>
-          <span className="muted">or</span>
-          <button
-            className="button secondary small"
-            onClick={() => fileInput.current?.click()}
-            disabled={busy}
-          >
-            <Upload size={15} />
-            {busy ? 'Reading…' : 'Choose file'}
-          </button>
-          <input
-            hidden
-            ref={fileInput}
-            type="file"
-            accept=".csv,.tsv,.txt,.xlsx"
-            onChange={(e) => {
-              void upload(e.target.files?.[0]);
-              e.target.value = '';
-            }}
-          />
-        </div>
-        <p className="fine-print">
-          CSV, TSV, TXT or Excel (.xlsx), up to 8 MB. Commas separate values unless you choose another
-          separator. No file is uploaded to a server.
-        </p>
+        {(!guided || !source.length) && (
+          <div className="import-source-entry">
+            <p className="muted">
+              {guided
+                ? 'Copy a column or a whole table from Excel or Google Sheets. You can select the column after previewing it.'
+                : 'Paste cells from a spreadsheet or choose a file. Check the preview before using it.'}
+            </p>
+            <textarea
+              aria-label="Paste your data"
+              placeholder={
+                single
+                  ? 'Paste numbers or spreadsheet cells here…\n64, 68, 72, 72, 76, 80'
+                  : tabular
+                    ? 'Month\tOrders\tTarget\nJan\t120\t100\nFeb\t145\t125'
+                    : 'Dimension\tAlex\tSam\nResearch\t8\t5\nDesign\t9\t6\nWriting\t7\t8'
+              }
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              rows={5}
+            />
+            <div className="import-actions">
+              <label>
+                Separator
+                <select value={separator} onChange={(e) => setSeparator(e.target.value)}>
+                  <option value="auto">Detect automatically</option>
+                  <option value=",">Comma</option>
+                  <option value=";">Semicolon</option>
+                  <option value={'\t'}>Tab</option>
+                </select>
+              </label>
+              <button className="button small" onClick={preview} disabled={!text.trim()}>
+                Preview paste <ArrowRight size={16} />
+              </button>
+              <span className="muted">or</span>
+              <button
+                className="button secondary small"
+                onClick={() => fileInput.current?.click()}
+                disabled={busy}
+              >
+                <Upload size={15} />
+                {busy ? 'Reading…' : 'Choose file'}
+              </button>
+              <input
+                hidden
+                ref={fileInput}
+                type="file"
+                accept=".csv,.tsv,.txt,.xlsx"
+                onChange={(e) => {
+                  void upload(e.target.files?.[0]);
+                  e.target.value = '';
+                }}
+              />
+            </div>
+            <p className="fine-print">
+              CSV, TSV, TXT or Excel (.xlsx), up to 8 MB. Commas separate values unless you choose another
+              separator. No file is uploaded to a server.
+            </p>
+          </div>
+        )}
+        {guided && busy && <p role="status">Reading your file on this device…</p>}
         {source.length > 0 && (
           <div className="import-preview">
-            <div className="mapping-grid">
-              <label>
+            {guided && (
+              <div className="dot-import-summary">
+                <p>Your original data is below. Select the column of numbers you want to turn into dots.</p>
+                <button
+                  className="text-button"
+                  onClick={() => {
+                    setSheets({});
+                    setSheet('');
+                    setError('');
+                  }}
+                >
+                  Choose different data
+                </button>
+              </div>
+            )}
+            {guided && (
+              <label className="mapping-choice">
+                Which column contains your values?
+                <select value={column} onChange={(e) => setColumn(Number(e.target.value))}>
+                  {labels.map((label, i) => (
+                    <option key={i} value={i}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+            {guided && Object.keys(sheets).length > 1 && (
+              <label className="mapping-choice">
                 Sheet
                 <select aria-label="Sheet" value={sheet} onChange={(e) => load(sheets, e.target.value)}>
                   {Object.keys(sheets).map((s) => (
@@ -234,34 +292,51 @@ export default function ImportData({
                   ))}
                 </select>
               </label>
-              <label>
-                Start at row
-                <input
-                  type="number"
-                  min="1"
-                  max={sourceRows.length}
-                  value={start}
-                  onChange={(e) => setStart(Math.max(1, Number(e.target.value) || 1))}
-                />
-              </label>
-              <label>
-                End at row
-                <input
-                  type="number"
-                  min={start}
-                  max={sourceRows.length}
-                  value={end || sourceRows.length}
-                  onChange={(e) => setEnd(Math.max(start, Number(e.target.value) || sourceRows.length))}
-                />
-              </label>
-              <label>
-                Number format
-                <select value={style} onChange={(e) => setStyle(e.target.value as NumberStyle)}>
-                  <option value="us">1,234.56</option>
-                  <option value="eu">1.234,56</option>
-                </select>
-              </label>
-            </div>
+            )}
+            <details className="import-advanced" open={guided ? undefined : true}>
+              <summary hidden={!guided}>
+                {guided ? 'Row range & number format (optional)' : 'Import settings'}
+              </summary>
+              <div className="mapping-grid">
+                {!guided && (
+                  <label>
+                    Sheet
+                    <select aria-label="Sheet" value={sheet} onChange={(e) => load(sheets, e.target.value)}>
+                      {Object.keys(sheets).map((s) => (
+                        <option key={s}>{s}</option>
+                      ))}
+                    </select>
+                  </label>
+                )}
+                <label>
+                  Start at row
+                  <input
+                    type="number"
+                    min="1"
+                    max={sourceRows.length}
+                    value={start}
+                    onChange={(e) => setStart(Math.max(1, Number(e.target.value) || 1))}
+                  />
+                </label>
+                <label>
+                  End at row
+                  <input
+                    type="number"
+                    min={start}
+                    max={sourceRows.length}
+                    value={end || sourceRows.length}
+                    onChange={(e) => setEnd(Math.max(start, Number(e.target.value) || sourceRows.length))}
+                  />
+                </label>
+                <label>
+                  Number format
+                  <select value={style} onChange={(e) => setStyle(e.target.value as NumberStyle)}>
+                    <option value="us">1,234.56</option>
+                    <option value="eu">1.234,56</option>
+                  </select>
+                </label>
+              </div>
+            </details>
             <div className="check-row">
               <label>
                 <input type="checkbox" checked={header} onChange={(e) => setHeader(e.target.checked)} /> First
@@ -302,16 +377,18 @@ export default function ImportData({
               </table>
             </div>
             {single ? (
-              <label className="mapping-choice">
-                Which column contains your values?
-                <select value={column} onChange={(e) => setColumn(Number(e.target.value))}>
-                  {labels.map((label, i) => (
-                    <option key={i} value={i}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              guided ? null : (
+                <label className="mapping-choice">
+                  Which column contains your values?
+                  <select value={column} onChange={(e) => setColumn(Number(e.target.value))}>
+                    {labels.map((label, i) => (
+                      <option key={i} value={i}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )
             ) : (
               <>
                 <label className="mapping-choice">
@@ -370,10 +447,26 @@ export default function ImportData({
                 </div>
               </div>
             )}
-            <button className="button" disabled={!canImport || busy} onClick={commit}>
-              Use {body.length} {single ? 'values' : tabular ? 'points' : 'dimensions'}{' '}
-              <ArrowRight size={16} />
-            </button>
+            {guided && body.length > 300 && (
+              <p className="notice error" role="status">
+                A dot plot supports up to 300 values. Select a smaller row range above; no values have been
+                removed.
+              </p>
+            )}
+            {guided && canImport && (
+              <p className="dot-import-ready">
+                Ready to plot <strong>{body.length} values</strong> from <strong>{labels[column]}</strong>.
+                Repeated values and zero are kept.
+              </p>
+            )}
+            <div className={guided ? 'dot-import-confirm' : undefined}>
+              <button className="button" disabled={!canImport || busy} onClick={commit}>
+                {guided
+                  ? `Create dot plot with ${body.length} ${body.length === 1 ? 'value' : 'values'}`
+                  : `Use ${body.length} ${single ? 'values' : tabular ? 'points' : 'dimensions'}`}{' '}
+                <ArrowRight size={16} />
+              </button>
+            </div>
           </div>
         )}
         {error && (

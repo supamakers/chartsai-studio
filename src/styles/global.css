@@ -1637,11 +1637,11 @@ th {
   font-size: 35px;
   margin-top: 7px;
 }
-.import-modal > .muted {
+.import-modal .import-source-entry > .muted {
   font-size: 12px;
   margin-bottom: 17px;
 }
-.import-modal > textarea {
+.import-modal .import-source-entry > textarea {
   font-family: monospace;
   font-size: 12px;
 }
@@ -2693,7 +2693,7 @@ th {
     gap: 11px;
     font-size: 10px;
   }
-  .import-modal > textarea {
+  .import-modal .import-source-entry > textarea {
     font-size: 13px;
   }
   .print-canvas {

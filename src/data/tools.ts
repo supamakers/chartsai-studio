@@ -8,7 +8,7 @@ export const tools = [
     description:
       'Create a free dot plot from pasted numbers, CSV or Excel. Edit labels and colors, see a frequency table, and download PNG, SVG or PDF. No signup or watermark.',
     intro:
-      'Turn a list of numbers into a clear picture. Paste your values, make it yours, and take a finished chart with you.',
+      'Upload a CSV or Excel file, or paste your numbers. Choose a column, preview your dot plot, and download it free.',
     definition:
       'A frequency dot plot places one dot above a number line for each observation. Repeated values stack vertically, so you can see which values occur most often while keeping every observation visible.',
     use: 'Use a dot plot for a small numeric dataset: class scores, counts, waiting times or measurements. Unlike a histogram, it does not group your values into bins. This tool makes frequency dot plots, rather than Cleveland dot plots for comparing categories.',

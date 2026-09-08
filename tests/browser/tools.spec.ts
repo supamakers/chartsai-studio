@@ -6,6 +6,7 @@ test('dot plot preserves observations, validates missing data and exports real f
   const editor = page.locator('#editor');
   await expect(editor.locator('.echart-view')).toHaveAttribute('data-chart-ready', 'true');
   await expect(editor.locator('.echart-view')).toHaveAttribute('data-observation-count', '12');
+  await page.getByRole('button', { name: 'Edit values', exact: true }).click();
   await page.getByLabel('Values', { exact: true }).fill('0\n2\n2\n100');
   await expect(editor.locator('.echart-view')).toHaveAttribute('data-observation-count', '4');
   await expect(editor.locator('.stats-strip')).toContainText('26');
@@ -35,15 +36,17 @@ test('dot plot preserves observations, validates missing data and exports real f
 
 test('import previews quoted European values, selects rows, and preserves zero', async ({ page }) => {
   await page.goto('/dot-plot-maker/');
-  await page.getByRole('button', { name: 'Paste or import a spreadsheet' }).click();
+  await page.getByRole('button', { name: 'Paste data', exact: true }).click();
   const dialog = page.getByRole('dialog');
   await dialog.getByLabel('Paste your data').fill('Name;Value\nA;1.234,50\nB;0\nTotal;1.234,50');
   await dialog.getByRole('button', { name: 'Preview paste' }).click();
+  await dialog.getByText('Row range & number format (optional)', { exact: true }).click();
   await dialog.getByLabel('Number format').selectOption('eu');
   await dialog.getByLabel('First selected row is a header').check();
   await dialog.getByLabel('Which column contains your values?').selectOption('1');
   await dialog.getByLabel('End at row').fill('3');
-  await dialog.getByRole('button', { name: 'Use 2 values' }).click();
+  await dialog.getByRole('button', { name: 'Create dot plot with 2 values' }).click();
+  await page.getByRole('button', { name: 'Edit values', exact: true }).click();
   await expect(page.getByLabel('Values', { exact: true })).toHaveValue('1234.5\n0');
   await expect(page.locator('#editor .echart-view')).toHaveAttribute('data-observation-count', '2');
 });
@@ -63,7 +66,7 @@ test('XLSX sheet selection resets mapping and rejects missing values', async ({ 
     'Second',
   );
   await page.goto('/dot-plot-maker/');
-  await page.getByRole('button', { name: 'Paste or import a spreadsheet' }).click();
+  await page.getByRole('button', { name: 'Paste data', exact: true }).click();
   const dialog = page.getByRole('dialog');
   await dialog.locator('input[type=file]').setInputFiles({
     name: 'scores.xlsx',
@@ -71,10 +74,12 @@ test('XLSX sheet selection resets mapping and rejects missing values', async ({ 
     buffer: XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' }),
   });
   await dialog.getByLabel('Sheet', { exact: true }).selectOption('Second');
-  await expect(dialog.getByRole('button', { name: 'Use 3 values' })).toBeDisabled();
+  await expect(dialog.getByRole('button', { name: 'Create dot plot with 3 values' })).toBeDisabled();
   await expect(dialog.getByRole('status')).toContainText('empty');
+  await dialog.getByText('Row range & number format (optional)', { exact: true }).click();
   await dialog.getByLabel('End at row').fill('2');
-  await dialog.getByRole('button', { name: 'Use 1 values' }).click();
+  await dialog.getByRole('button', { name: 'Create dot plot with 1 value' }).click();
+  await page.getByRole('button', { name: 'Edit values', exact: true }).click();
   await expect(page.getByLabel('Values', { exact: true })).toHaveValue('0');
 });
 
@@ -131,8 +136,7 @@ test('all main pages fit phone screens and ship meaningful HTML without JavaScri
   for (const path of ['/', '/dot-plot-maker/', '/radar-chart-maker/', '/printables/habit-tracker/']) {
     await page.goto(path);
     await page.locator('h1').waitFor();
-    if (path === '/')
-      await expect(page.locator('.hero-chart-preview')).toBeVisible();
+    if (path === '/') await expect(page.locator('.hero-chart-preview')).toBeVisible();
     else if (path !== '/printables/habit-tracker/')
       await expect(page.locator('.echart-view')).toHaveAttribute('data-chart-ready', 'true');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
@@ -147,7 +151,13 @@ test('all main pages fit phone screens and ship meaningful HTML without JavaScri
   const staticPage = await noJS.newPage();
   await staticPage.goto('/');
   await expect(staticPage.locator('.hero-chart-preview')).toBeVisible();
-  await expect.poll(() => staticPage.locator('.hero-chart-preview').evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
+  await expect
+    .poll(() =>
+      staticPage
+        .locator('.hero-chart-preview')
+        .evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0),
+    )
+    .toBe(true);
   await staticPage.goto('/dot-plot-maker/');
   await expect(staticPage.locator('h1')).toContainText('Dot plot maker');
   await expect(staticPage.getByRole('heading', { name: 'What is a dot plot?' })).toBeVisible();

@@ -3,6 +3,7 @@ import ExampleCards from '../components/ExampleCards.astro';
 import { examples } from '../data/showcase';
 import { showcaseGroups } from '../lib/showcase-specs';
 import '../styles/examples.css';
+import '../styles/dot-journey.css';
 import Layout from '../layouts/Layout.astro';
 import { tools } from '../data/tools';
 import { DotEditor, RadarEditor, LineEditor } from '../components/ChartEditor';
@@ -61,7 +62,7 @@ const schema = [
   description={tool.description}
   schema={schema}
 >
-  <section class="container tool-intro">
+  <section class:list={['container tool-intro', { 'dot-tool-intro': tool.type === 'dot' }]}>
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="/">Home</a><span>/</span><a href="/charts/">Chart makers</a><span>/</span><span
         >{tool.name}</span
@@ -189,7 +190,8 @@ const schema = [
       <h2>Worked examples with data</h2><a
         class="text-link"
         href={`/examples/${showcaseGroups[tool.type].slug}/`}
-        >All {showcaseGroups[tool.type].name.toLowerCase()} →</a>
+        >All {showcaseGroups[tool.type].name.toLowerCase()} →</a
+      >
     </div><ExampleCards items={examples.filter((e) => e.spec.kind === tool.type).slice(0, 3)} />
   </section>
 </Layout>

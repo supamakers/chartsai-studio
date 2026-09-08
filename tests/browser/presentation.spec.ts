@@ -66,11 +66,12 @@ test('invalid style query is ignored and custom data clears fictional source not
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/dot-plot-maker/?style=toString');
   await expect(page.locator('#editor .echart-view')).toHaveAttribute('data-chart-ready', 'true');
+  await page.getByRole('button', { name: 'Edit values', exact: true }).click();
   await page.getByLabel('Values', { exact: true }).fill('0\n1\n2');
   await page.getByRole('button', { name: 'Design & details' }).click();
   await expect(page.getByLabel('Source or footnote')).toHaveValue('');
   await page.getByLabel('Source or footnote').fill('Source: my measurements');
-  await page.getByRole('button', { name: 'Data', exact: true }).click();
+  await page.getByRole('button', { name: 'Design & details', exact: true }).click();
   await page.getByLabel('Values', { exact: true }).fill('0\n1\n3');
   await page.getByRole('button', { name: 'Design & details' }).click();
   await expect(page.getByLabel('Source or footnote')).toHaveValue('Source: my measurements');
