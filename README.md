@@ -1,6 +1,6 @@
 # ChartsAI
 
-Free dot plots, radar charts, line graphs and printable habit trackers, made by SupaMakers. Built with Astro, React, TypeScript and Apache ECharts. Data processing and exports run in the visitor's browser. No account, backend or model API is required. Production uses Plausible for aggregate visits and fixed tool events; chart inputs stay on-device.
+Free statistical chart makers, coordinate-plane activities and printable habit trackers, made by SupaMakers. Built with Astro, React, TypeScript and Apache ECharts. Data processing and exports run in the visitor's browser. No account, backend or model API is required. Production uses Plausible for aggregate visits and fixed tool events; chart inputs stay on-device.
 
 ## Run
 
@@ -47,7 +47,7 @@ Specifications live in `src/lib/showcase-specs.ts` and editorial text in `src/da
 
 ## Search and content architecture
 
-The four working tool pages and two category hubs render their descriptions, sample graphics, instructions and FAQs in static HTML. The editors hydrate with React. The homepage demo opens the matching tool, example and visual theme. Titles, descriptions, canonical URLs, Organization/WebSite/WebPage/SoftwareApplication/BreadcrumbList structured data, social images, sitemap and robots directives are included. `/llms.txt` provides a concise optional discovery aid; it is not a ranking mechanism.
+The working tool pages and category hubs render their descriptions, sample graphics, instructions and FAQs in static HTML. The editors hydrate with React. The homepage demo opens the matching tool, example and visual theme. Titles, descriptions, canonical URLs, Organization/WebSite/WebPage/SoftwareApplication/BreadcrumbList structured data, social images, sitemap and robots directives are included. `/llms.txt` provides a concise optional discovery aid; it is not a ranking mechanism.
 
 Preset query links load real examples and canonicalize to their parent tool. User-entered data is never put into URLs or generated SEO pages. `src/data/tools.ts` holds the chart page content. Add a page only when it supplies a distinct working tool or materially distinct useful resource. Avoid generating near-identical pages for every color, date or synonym.
 
@@ -84,8 +84,14 @@ Five additional native ECharts makers cover histograms, box plots, scatter plots
 
 Twenty `/guides/` resources provide original comparison and method explanations. Five `/datasets/` resources provide pinned UCI CSVs under CC BY 4.0, separate from MIT application code and fictional teaching data. Source authors, files, checksums and exact plotted row selections are recorded in `src/data/dataset-manifest.json`. Abalone's full 4,177-row CSV exceeds the editor limit; its chart uses an explicitly labelled deterministic 300-row subset. Normal builds do not fetch upstream data; `python scripts/fetch-datasets.py` is an intentional refresh operation that requires revalidation.
 
-The September expansion produces 103 HTML pages including the noindex 404, and 102 sitemap URLs. Page count is an inventory, not evidence of indexing, authority or traffic. See `docs/EXPANSION-RESEARCH-2026-09.md` for observed search evidence.
+The statistical expansion originally produced 103 HTML pages / 102 sitemap URLs. The coordinate-plane pilot brings the current total to 104 HTML pages including the noindex 404, and 103 sitemap URLs. Page count is an inventory, not evidence of indexing, authority or traffic. See `docs/EXPANSION-RESEARCH-2026-09.md` for observed search evidence.
 
 ## Release and measurement operations
 
 GitHub Actions runs the build and browser checks on changes, and checks production after deployment and weekly. `npm run check:live` writes a public-availability report. `npm run report:search -- --current Pages.csv --period YYYY-MM-DD:YYYY-MM-DD` generates a private local topic report from a Search Console Pages export. See [operations](docs/OPERATIONS.md) for inputs, schedules and limits.
+
+## Coordinate plane pilot and chart-quality skill
+
+`/coordinate-plane-generator/` offers a blank grid, labelled diagram, plotting practice and reading practice. Up to 12 points; signed decimals and fractions; one or four quadrants; equal X/Y unit scales; A4/Letter worksheets with a separate answer key. SVG/PNG diagram and exact numeric CSV downloads are included. The PDF is a high-resolution raster page, SVG is vector. No equation solver or student account is included. Settings remain local and are not indexed as separate pages. Ready-made grids and triangle worksheets are generated from the same renderer at build time.
+
+See `docs/EDUCATION-RESEARCH-2026-09-08.md` for search evidence and adjacent candidates. The experimental repository skill in `.agents/skills/chartsai-chart-quality/` includes a source-projection validator and failure fixtures. `npm test` runs them alongside application tests. This is an internal quality workflow and public source, not a claim of measured LLM improvement; its evaluation protocol describes the evidence needed before promoting a skill release.

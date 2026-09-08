@@ -34,6 +34,7 @@ for (const file of files) {
 const sitemap = await readFile('dist/sitemap-0.xml', 'utf8');
 assert(!sitemap.includes('/404'));
 for (const route of [
+  'coordinate-plane-generator/',
   'line-graph-maker/',
   'dot-plot-maker/',
   'radar-chart-maker/',

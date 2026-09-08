@@ -1,13 +1,13 @@
 {
   "name": "chartsai-studio",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "astro dev --host 127.0.0.1",
     "build": "npm run prepare:assets && astro check && astro build && node scripts/check-build.mjs && tsx scripts/check-expansion.ts",
     "preview": "astro preview --host 127.0.0.1",
-    "test": "vitest run",
+    "test": "vitest run && node --test .agents/skills/chartsai-chart-quality/scripts/check-projection.test.mjs",
     "prepare:assets": "tsx scripts/prepare-assets.mjs",
     "test:e2e": "playwright test",
     "check:live": "node scripts/site-health.mjs",

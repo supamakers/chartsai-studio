@@ -1,0 +1,11 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { checkProjection } from './check-projection.mjs';
+const original = JSON.parse(readFileSync(new URL('../fixtures/identity.json', import.meta.url)));
+test('retains zero and coincident points at equal scale', () => assert.equal(checkProjection(original).passed, true));
+test('rejects a silently dropped repeated position', () => { const j=structuredClone(original);j.plottedRows.pop();assert.equal(checkProjection(j).passed,false); });
+test('rejects changed zero and swapped X/Y', () => {for(const row of [['A',1,2],['A',2,0]]) { const j=structuredClone(original);j.plottedRows[0]=row;assert.equal(checkProjection(j).passed,false); }});
+test('rejects a missing numeric value even when propagated', () => { const j=structuredClone(original);j.sourceRows[0][1]=null;j.plottedRows[0][1]=null;assert.equal(checkProjection(j).passed,false); });
+test('rejects distorted geometry', () => { const j=structuredClone(original);j.coordinateScale.height=560;assert.equal(checkProjection(j).passed,false); });
+test('rejects malformed contracts', () => {for(const j of [null,{}, {...original,columns:[99]}, {...original,numericColumns:[-1]}]) assert.equal(checkProjection(j).passed,false); });

@@ -1,0 +1,206 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CoordinateEditor from '../components/CoordinateEditor';
+import '../styles/coordinate.css';
+const url = 'https://www.chartsai.com/coordinate-plane-generator/';
+const schema = [
+  {
+    '@type': 'SoftwareApplication',
+    name: 'Coordinate Plane Generator',
+    applicationCategory: 'EducationalApplication',
+    operatingSystem: 'Web browser',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    url,
+    author: { '@id': 'https://www.chartsai.com/#organization' },
+    featureList: [
+      'Blank coordinate grids',
+      'Labelled point plotting',
+      'Coordinate practice with answer keys',
+      'A4 and US Letter PDF',
+      'SVG, PNG and CSV export',
+    ],
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.chartsai.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Printables', item: 'https://www.chartsai.com/printables/' },
+      { '@type': 'ListItem', position: 3, name: 'Coordinate plane generator', item: url },
+    ],
+  },
+];
+---
+
+<Layout
+  title="Coordinate Plane Generator — Plot Points & Print Free PDF | ChartsAI"
+  description="Create a blank coordinate plane, plot labelled points or make a practice worksheet with an answer key. Free A4 and Letter PDF, SVG and PNG. No signup."
+  schema={schema}
+  imagePath="/coordinate/assets/quadrants.png"
+  imageAlt="Five labelled points on a coordinate plane, including the origin and all four quadrants"
+  imageWidth={720}
+  imageHeight={720}
+>
+  <section class="container coordinate-intro">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><a href="/printables/">Printables</a><span>/</span><span
+        >Coordinate plane generator</span>
+    </nav>
+    <span class="eyebrow">FREE MATH TOOL · EXPLORE & PRINT</span>
+    <h1>Coordinate plane<br /><em>generator.</em></h1>
+    <p>
+      This free coordinate plane generator makes blank grids, labelled point diagrams and practice worksheets.
+      Choose one or four quadrants, add your points, then download a graph or a printable PDF with an optional
+      answer key.
+    </p>
+  </section>
+  <div class="container editor-container">
+    <CoordinateEditor client:load /><noscript
+      ><p class="notice">
+        Enable JavaScript to customize the grid. The ready-made PDFs and worked example below are available
+        without JavaScript.
+      </p></noscript>
+  </div>
+  <section class="container section" aria-labelledby="ready-title">
+    <span class="eyebrow">NEED A SHEET RIGHT NOW?</span><h2 id="ready-title">Ready to print. Free to use.</h2>
+    <div class="coordinate-activities">
+      <article>
+        <h3>Four-quadrant grid</h3><p>
+          A blank plane from −10 to 10 on both axes, numbered in ones. Space for a name and date.
+        </p><a href="/coordinate/assets/four-quadrants-a4.pdf" download>A4 PDF ↓</a> · <a
+          href="/coordinate/assets/four-quadrants-letter.pdf"
+          download>Letter PDF ↓</a>
+      </article>
+      <article>
+        <h3>First-quadrant grid</h3><p>
+          Axes from 0 to 10, with positive coordinates. A clear starting point for learning ordered pairs.
+        </p><a href="/coordinate/assets/first-quadrant-a4.pdf" download>A4 PDF ↓</a> · <a
+          href="/coordinate/assets/first-quadrant-letter.pdf"
+          download>Letter PDF ↓</a>
+      </article>
+      <article>
+        <h3>Plot a triangle</h3><p>
+          Plot A (1, 1), B (7, 1) and C (4, 6). Connect them to make a triangle. The second page gives the
+          answer.
+        </p><a href="/coordinate/assets/triangle-a4.pdf" download>A4 + answers ↓</a> · <a
+          href="/coordinate/assets/triangle-letter.pdf"
+          download>Letter + answers ↓</a>
+      </article>
+    </div>
+    <p>
+      Portrait orientation. Choose the matching paper size and print at 100% / Actual size. These grids
+      preserve equal X and Y units; a unit is not a fixed millimetre length.
+    </p>
+  </section>
+  <section class="container section coordinate-worked">
+    <div>
+      <span class="eyebrow">A WORKED EXAMPLE</span><h2>Across first.<br /><em>Then up or down.</em></h2><p>
+        An ordered pair (x, y) tells you where a point sits. Start at the origin (0, 0). Move horizontally by
+        x, then vertically by y. Positive x goes right; negative x goes left. Positive y goes up; negative y
+        goes down.
+      </p><p>
+        For A (3, 4), move 3 units right and 4 up. For B (−4, 3), move 4 left and 3 up. Changing the signs
+        changes the quadrant. A point on an axis is not inside a quadrant.
+      </p>
+      <table>
+        <caption>Original teaching example</caption><thead
+          ><tr><th>Point</th><th>Coordinates</th><th>Position</th></tr></thead
+        ><tbody
+          ><tr><td>A</td><td>(3, 4)</td><td>Quadrant I</td></tr><tr
+            ><td>B</td><td>(−4, 3)</td><td>Quadrant II</td></tr
+          ><tr><td>C</td><td>(−3, −4)</td><td>Quadrant III</td></tr><tr
+            ><td>D</td><td>(4, −3)</td><td>Quadrant IV</td></tr
+          ><tr><td>O</td><td>(0, 0)</td><td>Origin</td></tr></tbody>
+      </table>
+      <p>
+        <a href="/coordinate/assets/quadrants.csv" download>Download the example points ↓</a> · <a
+          href="#editor">Try “Explore four quadrants” in the editor ↑</a>
+      </p>
+    </div><img
+      src="/coordinate/assets/quadrants.svg"
+      width="720"
+      height="720"
+      loading="lazy"
+      alt="A at (3, 4), B at (-4, 3), C at (-3, -4), D at (4, -3), and O at the origin, on equally scaled axes."
+    />
+  </section>
+  <section class="container section coordinate-reference">
+    <span class="eyebrow">MAKE A USEFUL LEARNING ACTIVITY</span><h2>
+      One set of points. Several ways to learn.
+    </h2>
+    <p>
+      <strong>For a blank handout:</strong> choose Blank grid, set the range and download PDF. Hide axis numbers
+      if the task is to label them. No point data is needed.
+    </p>
+    <p>
+      <strong>For a diagram:</strong> choose Labelled diagram and open “Edit or paste points.” Enter one point per
+      line, such as <code>A,3,4</code>. Two-column X/Y data is also accepted; labels are assigned A, B, C in
+      row order. CSV commas or pasted spreadsheet tabs separate the columns. An optional header must be X,Y or
+      Label,X,Y.
+    </p>
+    <p>
+      <strong>For practice:</strong> choose plotting to start with ordered pairs and an empty graph, or reading
+      to start with labelled points and blank answers. Reveal the answer on screen after attempting the task. The
+      practice PDF always keeps answers off page 1; the optional answer key is a separate page.
+    </p>
+    <h2>What stays consistent?</h2><p>
+      The diagram, worksheet and answer key use the same validated point values. X and Y use the same distance
+      per unit, even when their ranges differ. Joining points follows the supplied order and closes the shape;
+      it does not sort points or fit a trend line. Repeated positions are preserved, although nearby labels
+      can overlap.
+    </p>
+    <p>
+      Use up to 12 points, unique labels of 1–8 letters or numbers, and coordinates between −50 and 50.
+      Fractions such as 1/2 are accepted and converted to numbers; decimal points use a dot. Diagram labels
+      show up to eight decimal places, while CSV retains the numeric values. Each axis must include zero and
+      contain 2–40 intervals. Limits must align with the interval. Out-of-range points are flagged instead of
+      silently removed.
+    </p>
+    <p>
+      This is a coordinate grid and point-plotting tool. It does not solve algebraic equations or construct
+      geometric proofs. For paired measurements with a regression line, use the <a href="/scatter-plot-maker/"
+        >scatter plot maker</a
+      >; for a series of measurements, use the <a href="/line-graph-maker/">line graph maker</a>.
+    </p>
+    <h2>Questions before you download</h2>
+    <details>
+      <summary>Can I use just the first quadrant?</summary><p>
+        Yes. Select “First quadrant: 0 to 10” under Grid range. If any existing points are negative, edit them
+        or choose the “Plot a triangle” example, which uses positive coordinates. The tool will explain which
+        points do not fit.
+      </p>
+    </details>
+    <details>
+      <summary>Does revealing answers put them on the worksheet?</summary><p>
+        No. PDF practice sheets keep the question page separate from the answer key. SVG and PNG downloads
+        reflect the graph currently shown; CSV always contains the points. Use the PDF worksheet when
+        distributing practice to students.
+      </p>
+    </details>
+    <details>
+      <summary>Are the downloads free for classroom use?</summary><p>
+        Yes. Print and reuse the original grids and activities for lessons, tutoring or personal study. No
+        account, payment or attribution on your worksheet is required. The original source code is available
+        under the MIT license.
+      </p>
+    </details>
+    <details>
+      <summary>What is the difference between PDF, SVG and PNG?</summary><p>
+        PDF contains a high-resolution page at the selected A4 or Letter size, including the activity and
+        optional answer key. SVG is an editable vector graph. PNG is a 2160 × 2160 graph image for slides or
+        documents. CSV contains the labelled numeric coordinates.
+      </p>
+    </details>
+    <details>
+      <summary>Will my work be saved?</summary><p>
+        Your edits stay in this browser tab and are not uploaded or saved to an account. Download your work
+        before refreshing or leaving the page. Aggregate analytics events contain only fixed tool and format
+        identifiers.
+      </p>
+    </details>
+    <p class="byline">
+      Designed and built by <a href="https://www.supamakers.com/">SupaMakers</a> · Reviewed September 8, 2026 ·
+      <a href="/source/">Source and calculation checks</a>
+    </p>
+  </section>
+</Layout>

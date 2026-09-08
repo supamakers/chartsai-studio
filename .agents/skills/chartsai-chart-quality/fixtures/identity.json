@@ -1,0 +1,7 @@
+{
+  "sourceRows": [["A",0,2],["B",2,3],["C",2,3]],
+  "columns": [0,1,2],
+  "numericColumns": [1,2],
+  "plottedRows": [["A",0,2],["B",2,3],["C",2,3]],
+  "coordinateScale": {"xUnits":10,"yUnits":5,"width":560,"height":280}
+}

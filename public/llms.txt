@@ -3,6 +3,7 @@
 > Free browser-based chart makers and printable trackers, designed and built by SupaMakers. Original fictional examples, explicit calculations, and reusable source code.
 
 ## Tools
+- [Coordinate plane generator](https://www.chartsai.com/coordinate-plane-generator/): Equal-scale blank grids and up to 12 labelled points, plotting/reading practice, A4/Letter PDF with separate answer key, SVG/PNG graph and CSV. Coordinates stay local; no equation solving.
 - [Line graph maker](https://www.chartsai.com/line-graph-maker/): 1–5 series, 2–300 ordered points, categorical/numeric/UTC date spacing, PNG/SVG/PDF/CSV export. No guessing or aggregation.
 - [Dot plot maker](https://www.chartsai.com/dot-plot-maker/): Frequency dot plots from up to 300 numeric observations. Editable examples, data table, PNG, SVG, PDF and CSV export.
 - [Radar chart maker](https://www.chartsai.com/radar-chart-maker/): Compare 1–5 series across 3–10 dimensions with an explicit shared scale. PNG, SVG, PDF and CSV export.

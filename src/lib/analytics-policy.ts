@@ -5,6 +5,7 @@ export const productionHosts = ['www.chartsai.com', 'chartsai.com'];
 const pagePaths = new Set([
   '/',
   '/charts/',
+  '/coordinate-plane-generator/',
   '/guides/',
   '/datasets/',
   ...guideSlugs.map((s) => `/guides/${s}/`),
@@ -32,6 +33,7 @@ export function usageEvent(detail: unknown) {
   if (!detail || typeof detail !== 'object') return null;
   const { tool, action, format } = detail as Record<string, unknown>;
   const names: Record<string, string> = {
+    'coordinate-plane': 'coordinate-plane',
     histogram: 'histogram',
     box: 'box-plot',
     scatter: 'scatter-plot',
@@ -57,6 +59,7 @@ export function usageEvent(detail: unknown) {
 }
 
 export function showcaseDownloadEvent(pathname: string) {
+  if (/^\/coordinate\/assets\/(?:quadrants\.(?:svg|png|csv)|(?:four-quadrants|first-quadrant|triangle)-(?:a4|letter)\.pdf)$/.test(pathname)) return usageEvent({ tool: 'coordinate-plane', action: 'export', format: pathname.split('.').pop() });
   const statMatch = pathname.match(/^\/charts\/assets\/([a-z-]+)\.(svg|png|csv|json)$/);
   if (statMatch) {
     const spec = findStatPreset(statMatch[1]);

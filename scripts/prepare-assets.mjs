@@ -1,3 +1,5 @@
+import { coordinateExamples, defaultPlane, parsePoints, planeSvg, pointsCsv, worksheetSvg } from '../src/lib/coordinate-plane.ts';
+import { jsPDF } from 'jspdf';
 import {datasets,datasetSpec} from '../src/data/datasets.ts';
 import {parseText} from '../src/lib/data.ts';
 import { mkdir, readFile, writeFile, readdir } from 'node:fs/promises';
@@ -69,18 +71,42 @@ await sharp(Buffer.from(og))
   .png()
   .toFile('public/og.png');
 
+// Coordinate assets share the exact grid and worksheet renderer with the editor.
+await mkdir('public/coordinate/assets', { recursive: true });
+const cp = parsePoints(coordinateExamples.quadrants.raw);
+const cpSvg = planeSvg(defaultPlane, cp, true);
+await writeFile('public/coordinate/assets/quadrants.svg', cpSvg);
+await sharp(Buffer.from(cpSvg)).png().toFile('public/coordinate/assets/quadrants.png');
+await writeFile('public/coordinate/assets/quadrants.csv', pointsCsv(cp));
+for (const paper of ['a4', 'letter']) {
+  for (const name of ['four-quadrants', 'first-quadrant', 'triangle']) {
+    const triangle = name === 'triangle';
+    const plane = name === 'four-quadrants' ? defaultPlane : { ...defaultPlane, xmin: 0, ymin: 0, connect: triangle };
+    const points = triangle ? parsePoints(coordinateExamples.triangle.raw) : [];
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: paper, compress: true });
+    for (const [i, answer] of (triangle ? [false, true] : [false]).entries()) {
+      if (i) doc.addPage();
+      const markup = worksheetSvg(plane, points, triangle ? 'plot' : 'blank', paper, triangle ? 'Plot a triangle' : 'Coordinate plane', answer);
+      const png = await sharp(Buffer.from(markup)).resize({ width: 2400 }).png().toBuffer();
+      doc.addImage(png, 'PNG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight());
+    }
+    doc.setProperties({ title: 'Coordinate plane', creator: 'ChartsAI by SupaMakers' });
+    await writeFile(`public/coordinate/assets/${name}-${paper}.pdf`, Buffer.from(doc.output('arraybuffer')));
+  }
+}
+
 // Explicit allowlist: research notes, environment files and build artifacts never enter the public source archive.
 const archive = {};
 async function collect(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = join(directory, entry.name);
-    if (path === 'public/previews' || path === 'public/downloads' || path === 'public/examples/assets' || path === 'public/charts/assets') continue;
+    if (path === 'public/coordinate/assets' || path === 'public/previews' || path === 'public/downloads' || path === 'public/examples/assets' || path === 'public/charts/assets') continue;
     if (directory === 'public/datasets/assets' && /\.(svg|png|json)$/.test(path)) continue;
     if (entry.isDirectory()) await collect(path);
     else if (entry.isFile()) archive[`chartsai/${path}`] = new Uint8Array(await readFile(path));
   }
 }
-for (const directory of ['src', 'public', 'scripts', 'tests', 'docs', '.github/workflows']) await collect(directory);
+for (const directory of ['src', 'public', 'scripts', 'tests', 'docs', '.github/workflows', '.agents/skills/chartsai-chart-quality']) await collect(directory);
 for (const path of [
   'README.md',
   '.prettierrc.json',

@@ -18,3 +18,5 @@ public/datasets/assets/*.png
 public/datasets/assets/*.json
 
 public/previews/
+
+public/coordinate/assets/
