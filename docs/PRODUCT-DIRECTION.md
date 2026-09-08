@@ -4,7 +4,7 @@ Updated September 8, 2026. The user's aim is a growing collection of genuinely u
 
 ## Current expansion
 
-The line graph maker is the next ChartsAI tool. The September 7 Ahrefs research recorded Google US volume 6,000/month, global volume 20,000, and KD 13 for `line graph maker`. These are estimates, not visits. The SERP included linegraphmaker.co, Virtual Science Teachers, and linegraphmaker.me; the leading result had hundreds of referring domains. A visible Ahrefs ranking-data disruption notice limits confidence.
+The line graph maker launched with ChartsAI v0.3 on September 8, 2026. The September 7 Ahrefs research recorded Google US volume 6,000/month, global volume 20,000, and KD 13 for `line graph maker`. These are estimates, not visits. The SERP included linegraphmaker.co, Virtual Science Teachers, and linegraphmaker.me; the leading result had hundreds of referring domains. A visible Ahrefs ranking-data disruption notice limits confidence.
 
 A September 8 review of [Line Graph Maker](https://linegraphmaker.co/) and [MakeChart](https://www.makechart.co/line-chart-generator/) confirmed the expected interactive editor and downloadable chart format. Our distinct useful features are multi-series editing, spreadsheet mapping, explicit categorical/numeric/date spacing, source notes, native ECharts exports, and clear validation. This is a more competitive expansion, not an easy-ranking claim.
 

@@ -24,6 +24,7 @@ export async function downloadTracker(config: TrackerConfig, svg: SVGSVGElement)
   const { jsPDF } = await import('jspdf');
   const { svgToPng } = await import('./export');
   const doc = new jsPDF({
+    compress: true,
     orientation: 'landscape',
     unit: 'mm',
     format: config.paper,

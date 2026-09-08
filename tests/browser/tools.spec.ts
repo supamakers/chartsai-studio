@@ -113,6 +113,7 @@ test('tracker honors leap years, weekly links, paper sizes and actual PDF output
     const bytes = await readFile((await download.path())!);
     expect(bytes.subarray(0, 5).toString()).toBe('%PDF-');
     expect(bytes.length).toBeGreaterThan(10_000);
+    expect(bytes.length).toBeLessThan(2_000_000);
     const media = bytes.toString('latin1').match(/\/MediaBox\s*\[0 0 ([\d.]+) ([\d.]+)\]/)!;
     expect(Number(media[1])).toBeCloseTo(paper === 'A4' ? 841.89 : 792, 0);
     expect(Number(media[2])).toBeCloseTo(paper === 'A4' ? 595.28 : 612, 0);

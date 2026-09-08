@@ -17,6 +17,7 @@ export async function exportEChart(spec: ChartSpec, format: ChartExportFormat) {
   }
   const { jsPDF } = await import('jspdf');
   const doc = new jsPDF({
+    compress: true,
     orientation: width >= height ? 'landscape' : 'portrait',
     unit: 'pt',
     format: [width * 0.75, height * 0.75],

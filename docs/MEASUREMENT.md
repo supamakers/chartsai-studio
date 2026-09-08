@@ -21,7 +21,7 @@ Analytics loads only on `chartsai.com` and `www.chartsai.com`, and is skipped fo
 
 ## Dashboard setup and review
 
-Create exact-match custom goals for the five named events above. Register `tool` and `format` as custom properties if available on the existing plan. Do not upgrade a plan silently. Pageviews are built in. Keep historical goals; do not reset the property.
+On September 8, 2026, all five exact-match custom goals and both `tool` and `format` custom properties were created and saved in the existing Plausible property. Do not upgrade a plan silently. Pageviews are built in. Keep historical goals; do not reset the property.
 
 Review weekly by landing page and traffic source:
 
@@ -29,7 +29,7 @@ Review weekly by landing page and traffic source:
 - Download conversion by tool and format, using compatible visit/conversion definitions.
 - Import-to-download behavior; do not call this a session funnel unless the analytics product actually provides one.
 - SupaMakers visits, source downloads, and referring websites.
-- Search Console indexation, impressions, clicks, queries and landing pages.
+- Search Console indexation, impressions, clicks, queries and landing pages. This property also exposes a Generative AI features beta report with impressions; record these separately and do not reinterpret them as clicks or citations.
 - Actual AI referrals and dated manual citation checks. These are partial observations, not a comprehensive GEO score.
 
 Do not install a second analytics provider by default or send data from imports to analytics. Avoid arbitrary targets before the launch baseline exists. A lack of clicks immediately after launch is not a failed SEO experiment; indexing and sufficient exposure must be checked first.

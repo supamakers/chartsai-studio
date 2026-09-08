@@ -48,14 +48,18 @@ Authorship, assumptions, method limitations, original datasets and an MIT source
 
 ## Launch
 
-The intended canonical origin is **https://www.chartsai.com** in `astro.config.mjs`, the layout, robots and llms files. This checkout does not change either live domain. Keep DashDashGo separate until there is evidence for a second product.
+Live at **https://www.chartsai.com** since September 8, 2026. Vercel team `supamakers`, project `chartsai-studio`, Node 24.x, Astro static output. The apex domain redirects to www. Preview hosts carry `noindex`; production remains indexable. DashDashGo and AnimStats are separate sites.
 
-1. Preview the site and downloads, then deploy `dist/` to the chosen ChartsAI host with HTTPS, non-www → www redirects and trailing-slash routing. Review any existing indexed URLs before redirects; do not blanket-redirect unrelated legacy routes.
-2. Keep preview deployments out of search using host-level authentication or an `X-Robots-Tag: noindex` header. Production files are intentionally indexable.
-3. Verify the domain in Google Search Console and Bing Webmaster Tools. Submit `/sitemap-index.xml`, inspect the three tool URLs, and check crawl/access behavior on the live host. No verification credentials are embedded here.
-4. Record a publication baseline. Review indexed pages, query impressions/clicks, referring links, and manual branded AI mentions over time. Expand only where actual query demand and useful functionality overlap.
-5. Review [measurement definitions](docs/MEASUREMENT.md). Plausible runs only on ChartsAI production hostnames. Events use fixed tool/action/format identifiers; no raw data, titles, filenames or habit text. The privacy page describes this measurement.
+The verified Search Console property has processed `/sitemap-index.xml`; the new line graph URL was submitted for indexing. This is discovery setup, not a claim that Google has indexed or ranked the new tools. See the [launch baseline](docs/LAUNCH-2026-09-08.md) and [measurement definitions](docs/MEASUREMENT.md).
 
+The existing Vercel GitHub app does not have this repository available. Automatic deployments on Git push are **not connected**. Deploy through the authenticated CLI after relevant checks and source publication:
+
+```sh
+npx vercel link --yes --project chartsai-studio --scope supamakers
+npx vercel --prod --yes --scope supamakers
+```
+
+Do not commit `.vercel/` or environment files. Preserve legacy deployment information for rollback. After deployment, verify live pages, redirects, headers and downloads.
 
 Public source ZIP generation uses an explicit allowlist. Private research notes, `.seo-cache`, `.env`, `node_modules`, test artifacts and build outputs are excluded. Regenerate the archive whenever the source changes.
 
