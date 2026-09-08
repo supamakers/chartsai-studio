@@ -4,10 +4,10 @@ import { readFile } from 'node:fs/promises';
 test('line import, validation, numeric spacing and real exports', async ({ page }) => {
   await page.goto('/line-graph-maker/');
   await expect(page.locator('[data-chart-ready="true"]')).toBeVisible();
-  await page.getByRole('button', { name: 'Paste or import a spreadsheet' }).click();
+  await page.getByRole('button', { name: 'Paste data', exact: true }).click();
   await page.getByLabel('Paste your data').fill('Minutes\tA\tB\n0\t0\t-5\n2\t12\t9\n20\t24\t18');
   await page.getByRole('button', { name: 'Preview paste' }).click();
-  await page.getByRole('button', { name: 'Use 3 points' }).click();
+  await page.getByRole('button', { name: 'Create line graph with 3 points' }).click();
   await page.getByRole('combobox', { name: /Horizontal spacing/ }).selectOption('number');
   await expect(page.locator('[data-chart-ready="true"]')).toBeVisible();
   const configDownload = page.waitForEvent('download');
@@ -20,6 +20,7 @@ test('line import, validation, numeric spacing and real exports', async ({ page 
     [20, 24],
   ]);
   expect(config.series[1].data[0]).toEqual([0, -5]);
+  await page.getByRole('button', { name: 'Edit values', exact: true }).click();
   await page.getByLabel('A, point 2', { exact: true }).fill('');
   await expect(page.getByRole('alert')).toContainText('Missing values');
   await expect(page.getByRole('button', { name: 'Download', exact: true })).toBeDisabled();

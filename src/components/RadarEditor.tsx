@@ -1,20 +1,15 @@
 import { findShowcase } from '../lib/showcase-specs';
 import { useEffect, useState } from 'react';
-import { ArrowDownToLine, Upload, RotateCcw, Plus, X, FileSpreadsheet, Code2 } from 'lucide-react';
+import { ArrowDownToLine, Plus, X, FileSpreadsheet, Code2 } from 'lucide-react';
 import EChartView from './EChartView';
 import ImportData from './ImportData';
-import {
-  ExportButton,
-  StylePicker,
-  WorkspaceHeader,
-  SidebarTabs,
-  usePresentation,
-  PreviewStatus,
-} from './ChartControls';
+import { DataEntry, JourneyHeading, PreviewHeading, DownloadStep, useChartJourney } from './ChartJourney';
+import type { ImportSettings } from '../lib/chart-journey';
+import { ExportButton, StylePicker, usePresentation } from './ChartControls';
 import { radarPresets } from '../lib/presets';
 import { csv, readNumber, type Table, type NumberStyle } from '../lib/data';
 import { download, emitUsage } from '../lib/export';
-import type { RadarSpec } from '../lib/chart-options';
+import { chartThemes, type RadarSpec } from '../lib/chart-options';
 import { radarExample } from '../lib/chart-presets';
 import { exportChartConfig } from '../lib/chart-export';
 
@@ -31,7 +26,8 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
   const [tab, setTab] = useState<'data' | 'design'>('data');
   const [filled, setFilled] = useState(true);
   const [round, setRound] = useState(false);
-  const [importing, setImporting] = useState(false);
+  const journey = useChartJourney();
+  const [editing, setEditing] = useState(false);
   const [notice, setNotice] = useState('');
   const axes = table.slice(1).map((row) => row[0]);
   const series = table[0].slice(1);
@@ -63,11 +59,15 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
     round,
   };
   function markCustom() {
+    if (active !== 'custom') {
+      const sample = findShowcase(active, 'radar') ?? radarExample(active);
+      if (title === sample.title) setTitle('Your radar chart');
+    }
     setActive('custom');
     if (active !== 'custom')
       setPresentation((v) => ({
         ...v,
-        source: v.source.startsWith('Source: fictional example data.') ? '' : v.source,
+        source: v.source === (findShowcase(active, 'radar') ?? radarExample(active)).source ? '' : v.source,
         subtitle: '',
       }));
   }
@@ -89,14 +89,25 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
       source: example.source,
     }));
     setActive(id);
+    setNotice('Example loaded. The sample data is fictional.');
     if (track) emitUsage('radar-chart', 'sample');
   }
-  function imported(t: Table, style: NumberStyle) {
+  function imported(t: Table, style: NumberStyle, _label?: string, settings?: ImportSettings) {
+    if (
+      t.slice(1).some((r) => !r[0].trim() || r[0].length > 30) ||
+      t[0].slice(1).some((n) => !n.trim() || n.length > 22) ||
+      new Set(t[0].slice(1)).size !== t[0].length - 1
+    )
+      throw Error('Use dimension names up to 30 characters and distinct series names up to 22 characters.');
     setTable(t.map((row, r) => row.map((v, c) => (r && c ? String(readNumber(v, style)) : v))));
+    setMax(String(settings?.radarMax ?? maxNumber));
     markCustom();
     setNotice(
-      'Imported. Check that the shared scale fits your scores and the dimensions use comparable units.',
+      `Your chart is ready: ${t.length - 1} dimensions added. Scores use the declared 0–${settings?.radarMax ?? maxNumber} scale.`,
     );
+    setEditing(false);
+    setTab('data');
+    journey.focusPreview();
     emitUsage('radar-chart', 'render');
   }
   useEffect(() => {
@@ -117,39 +128,45 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
     if (radarPresets.some((p) => p.id === id)) preset(id!, false);
   }, []);
   return (
-    <div id="editor" className="tool-workspace">
-      <WorkspaceHeader kind="Radar chart" />
-      <div className="workspace-body radar-workspace">
-        <aside className="editor-sidebar">
-          <SidebarTabs tab={tab} setTab={setTab} />
-          {tab === 'data' ? (
-            <div className="sidebar-tab-content">
-              <div className="panel-title">
-                <h2>Your comparison</h2>
-                <button className="text-button" onClick={() => preset('skills')}>
-                  <RotateCcw size={13} /> Reset
-                </button>
-              </div>
-              <button className="button secondary import-button" onClick={() => setImporting(true)}>
-                <Upload size={15} /> Paste or import a spreadsheet
-              </button>
-              <label className="field">
-                Shared scale: 0 to
-                <input
-                  type="number"
-                  min="0.01"
-                  max="1000000"
-                  step="any"
-                  value={max}
-                  onChange={(e) => {
-                    setMax(e.target.value);
-                    markCustom();
-                  }}
-                />
-              </label>
-              <p className="fine-print">
-                Compare like-for-like units. Higher should consistently mean more or better.
-              </p>
+    <div id="editor" className="tool-workspace dot-journey">
+      <JourneyHeading kind="radar" />
+      <div className="workspace-body">
+        <aside className="editor-sidebar dot-input-panel">
+          <DataEntry
+            kind="radar"
+            active={active}
+            examples={radarPresets}
+            onExample={preset}
+            editing={editing}
+            design={tab === 'design'}
+            onUpload={journey.upload}
+            onPaste={journey.paste}
+            onEdit={() => {
+              setEditing(tab === 'design' ? true : !editing);
+              setTab('data');
+            }}
+            onDesign={() => setTab(tab === 'design' ? 'data' : 'design')}
+          />
+          <div className="journey-chart-settings">
+            <label className="field">
+              Shared scale: 0 to
+              <input
+                type="number"
+                min="0.01"
+                max="1000000"
+                step="any"
+                value={max}
+                onChange={(e) => {
+                  setMax(e.target.value);
+                }}
+              />
+            </label>
+            <p className="fine-print">
+              Compare like-for-like units. Higher should consistently mean more or better.
+            </p>
+          </div>
+          {editing && tab === 'data' && (
+            <div className="dot-values">
               <div className="table-scroll editable-data">
                 <table>
                   <caption className="sr-only">Edit radar dimensions and series scores</caption>
@@ -241,8 +258,9 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
                 </button>
               </div>
             </div>
-          ) : (
-            <div className="sidebar-tab-content">
+          )}
+          {tab === 'design' && (
+            <div className="dot-design">
               <label className="field">
                 Chart title
                 <input value={title} maxLength={60} onChange={(e) => setTitle(e.target.value)} />
@@ -259,11 +277,18 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
             </div>
           )}
         </aside>
-        <div className="canvas-panel">
-          <div className="canvas-toolbar">
-            <PreviewStatus presentation={presentation} />
-            <ExportButton spec={spec} disabled={!!error} />
-          </div>
+        <div
+          className="canvas-panel"
+          ref={journey.previewRef}
+          tabIndex={-1}
+          aria-label="Your radar chart preview"
+        >
+          <PreviewHeading
+            kind="radar"
+            origin={active === 'custom' ? 'custom' : 'sample'}
+            notice={notice}
+            theme={chartThemes[presentation.theme].name}
+          />
           <div className="chart-stage">
             {error ? (
               <div className="chart-error" role="alert">
@@ -275,6 +300,9 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
               <EChartView spec={spec} initialSvg={initialSvg} />
             )}
           </div>
+          <DownloadStep>
+            <ExportButton spec={spec} disabled={!!error} />
+          </DownloadStep>
           <div className="radar-note">
             <span className="note-dot" />
             <p>
@@ -299,23 +327,18 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
           </div>
         </div>
       </div>
-      <div className="preset-bar">
-        <span>Load an example</span>
-        {radarPresets.map((p) => (
-          <button
-            key={p.id}
-            className={`preset ${active === p.id ? 'active' : ''}`}
-            onClick={() => preset(p.id)}
-          >
-            {p.name}
-          </button>
-        ))}
-        <span className="sample-label">Fictional data · editable by you</span>
-      </div>
       <p className="import-notice" role="status">
         {notice}
       </p>
-      {importing && <ImportData kind="radar" onClose={() => setImporting(false)} onImport={imported} />}
+      {journey.importing && (
+        <ImportData
+          kind="radar"
+          initialFile={journey.initialFile}
+          radarMax={maxNumber}
+          onClose={journey.close}
+          onImport={imported}
+        />
+      )}
     </div>
   );
 }

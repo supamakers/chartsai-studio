@@ -1,23 +1,18 @@
 import { findShowcase } from '../lib/showcase-specs';
 import { useEffect, useState } from 'react';
-import { Upload, RotateCcw, Plus, X, FileSpreadsheet, ArrowDownToLine, Code2 } from 'lucide-react';
+import { Plus, X, FileSpreadsheet, ArrowDownToLine, Code2 } from 'lucide-react';
 import EChartView from './EChartView';
 import ImportData from './ImportData';
-import {
-  ExportButton,
-  StylePicker,
-  WorkspaceHeader,
-  SidebarTabs,
-  usePresentation,
-  PreviewStatus,
-} from './ChartControls';
+import { DataEntry, JourneyHeading, PreviewHeading, DownloadStep, useChartJourney } from './ChartJourney';
+import type { ImportSettings } from '../lib/chart-journey';
+import { ExportButton, StylePicker, usePresentation } from './ChartControls';
 import { linePresets } from '../lib/presets';
 import { lineExample } from '../lib/chart-presets';
 import { validateLineTable } from '../lib/line-data';
 import { csv, readNumber, type Table, type NumberStyle } from '../lib/data';
 import { download, emitUsage } from '../lib/export';
 import { exportChartConfig } from '../lib/chart-export';
-import type { LineSpec } from '../lib/chart-options';
+import { chartThemes, type LineSpec } from '../lib/chart-options';
 
 const asTable = (p: LineSpec): Table => [
   [p.xLabel, ...p.series],
@@ -35,7 +30,8 @@ export default function LineEditor({ initialSvg }: { initialSvg?: string }) {
   const [markers, setMarkers] = useState(true);
   const [presentation, setPresentation] = usePresentation(initial);
   const [tab, setTab] = useState<'data' | 'design'>('data');
-  const [importing, setImporting] = useState(false);
+  const journey = useChartJourney();
+  const [editing, setEditing] = useState(false);
   const [notice, setNotice] = useState('');
   const checked = validateLineTable(table, xMode);
   const { error, labels, series, values } = checked;
@@ -53,12 +49,16 @@ export default function LineEditor({ initialSvg }: { initialSvg?: string }) {
     markers,
   };
   function markCustom() {
+    if (active !== 'custom') {
+      const sample = findShowcase(active, 'line') ?? lineExample(active);
+      if (title === sample.title) setTitle('Your line graph');
+    }
     setActive('custom');
     if (active !== 'custom')
       setPresentation((v) => ({
         ...v,
         subtitle: '',
-        source: v.source.startsWith('Source: fictional example data.') ? '' : v.source,
+        source: v.source === (findShowcase(active, 'line') ?? lineExample(active)).source ? '' : v.source,
       }));
   }
   function edit(r: number, c: number, value: string) {
@@ -77,15 +77,24 @@ export default function LineEditor({ initialSvg }: { initialSvg?: string }) {
     setNotice('');
     if (track) emitUsage('line', 'sample');
   }
-  function imported(t: Table, style: NumberStyle) {
-    setTable(t.map((row, r) => row.map((v, c) => (r && c ? String(readNumber(v, style)) : v))));
+  function imported(t: Table, style: NumberStyle, _label?: string, settings?: ImportSettings) {
+    const mode = settings?.lineMode ?? 'category';
+    const next = t.map((row, r) =>
+      row.map((v, c) => (r && (c || mode === 'number') ? String(readNumber(v, style)) : v)),
+    );
+    const check = validateLineTable(next, mode);
+    if (check.error) throw Error(check.error);
+    setTable(next);
     setXLabel(t[0][0]);
     setYLabel('Value');
-    setXMode('category');
+    setXMode(mode);
     markCustom();
     setNotice(
-      'Imported in the supplied order. Labels are equally spaced; choose numeric or date spacing when distances matter.',
+      `Your chart is ready: ${t.length - 1} points added in the supplied order. Check the horizontal spacing and download below.`,
     );
+    setEditing(false);
+    setTab('data');
+    journey.focusPreview();
     emitUsage('line', 'render');
   }
   useEffect(() => {
@@ -108,34 +117,41 @@ export default function LineEditor({ initialSvg }: { initialSvg?: string }) {
     if (linePresets.some((p) => p.id === id)) preset(id!, false);
   }, []);
   return (
-    <div id="editor" className="tool-workspace">
-      <WorkspaceHeader kind="Line graph" />
-      <div className="workspace-body radar-workspace line-workspace">
-        <aside className="editor-sidebar">
-          <SidebarTabs tab={tab} setTab={setTab} />
-          {tab === 'data' ? (
-            <div className="sidebar-tab-content">
-              <div className="panel-title">
-                <h2>Your series</h2>
-                <button className="text-button" onClick={() => preset('monthly')}>
-                  <RotateCcw size={13} /> Reset
-                </button>
-              </div>
-              <button className="button secondary import-button" onClick={() => setImporting(true)}>
-                <Upload size={15} /> Paste or import a spreadsheet
-              </button>
-              <label className="field">
-                Horizontal spacing
-                <select value={xMode} onChange={(e) => setXMode(e.target.value as LineSpec['xMode'])}>
-                  <option value="category">Equal spacing — labels in row order</option>
-                  <option value="number">Numeric distance</option>
-                  <option value="time">Elapsed days — YYYY-MM-DD dates</option>
-                </select>
-              </label>
-              <p className="fine-print">
-                Use comparable units for all series. Numeric positions and dates must increase; rows are never
-                sorted automatically.
-              </p>
+    <div id="editor" className="tool-workspace dot-journey">
+      <JourneyHeading kind="line" />
+      <div className="workspace-body">
+        <aside className="editor-sidebar dot-input-panel">
+          <DataEntry
+            kind="line"
+            active={active}
+            examples={linePresets}
+            onExample={preset}
+            editing={editing}
+            design={tab === 'design'}
+            onUpload={journey.upload}
+            onPaste={journey.paste}
+            onEdit={() => {
+              setEditing(tab === 'design' ? true : !editing);
+              setTab('data');
+            }}
+            onDesign={() => setTab(tab === 'design' ? 'data' : 'design')}
+          />
+          <div className="journey-chart-settings">
+            <label className="field">
+              Horizontal spacing
+              <select value={xMode} onChange={(e) => setXMode(e.target.value as LineSpec['xMode'])}>
+                <option value="category">Equal spacing — labels in row order</option>
+                <option value="number">Numeric distance</option>
+                <option value="time">Elapsed days — YYYY-MM-DD dates</option>
+              </select>
+            </label>
+            <p className="fine-print">
+              Use comparable units for all series. Numeric positions and dates must increase; rows are never
+              sorted automatically.
+            </p>
+          </div>
+          {editing && tab === 'data' && (
+            <div className="dot-values">
               <div className="table-scroll editable-data line-data-table">
                 <table>
                   <caption className="sr-only">Edit line graph labels and values</caption>
@@ -230,8 +246,9 @@ export default function LineEditor({ initialSvg }: { initialSvg?: string }) {
                 </button>
               </div>
             </div>
-          ) : (
-            <div className="sidebar-tab-content">
+          )}
+          {tab === 'design' && (
+            <div className="dot-design">
               <label className="field">
                 Chart title
                 <input value={title} maxLength={60} onChange={(e) => setTitle(e.target.value)} />
@@ -256,11 +273,18 @@ export default function LineEditor({ initialSvg }: { initialSvg?: string }) {
             </div>
           )}
         </aside>
-        <div className="canvas-panel">
-          <div className="canvas-toolbar">
-            <PreviewStatus presentation={presentation} />
-            <ExportButton spec={spec} disabled={!!error} />
-          </div>
+        <div
+          className="canvas-panel"
+          ref={journey.previewRef}
+          tabIndex={-1}
+          aria-label="Your line chart preview"
+        >
+          <PreviewHeading
+            kind="line"
+            origin={active === 'custom' ? 'custom' : 'sample'}
+            notice={notice}
+            theme={chartThemes[presentation.theme].name}
+          />
           <div className="chart-stage">
             {error ? (
               <div className="chart-error" role="alert">
@@ -272,6 +296,9 @@ export default function LineEditor({ initialSvg }: { initialSvg?: string }) {
               <EChartView spec={spec} initialSvg={initialSvg} />
             )}
           </div>
+          <DownloadStep>
+            <ExportButton spec={spec} disabled={!!error} />
+          </DownloadStep>
           <div className="radar-note">
             <span className="note-dot" />
             <p>
@@ -304,23 +331,17 @@ export default function LineEditor({ initialSvg }: { initialSvg?: string }) {
           </div>
         </div>
       </div>
-      <div className="preset-bar">
-        <span>Load an example</span>
-        {linePresets.map((p) => (
-          <button
-            key={p.id}
-            className={`preset ${active === p.id ? 'active' : ''}`}
-            onClick={() => preset(p.id)}
-          >
-            {p.name}
-          </button>
-        ))}
-        <span className="sample-label">Fictional data · editable by you</span>
-      </div>
       <p className="import-notice" role="status">
         {notice}
       </p>
-      {importing && <ImportData kind="line" onClose={() => setImporting(false)} onImport={imported} />}
+      {journey.importing && (
+        <ImportData
+          kind="line"
+          initialFile={journey.initialFile}
+          onClose={journey.close}
+          onImport={imported}
+        />
+      )}
     </div>
   );
 }

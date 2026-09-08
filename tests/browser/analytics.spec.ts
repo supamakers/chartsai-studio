@@ -32,7 +32,7 @@ test('production analytics wires bounded events and canonical URLs while exports
   });
   await page.goto('https://www.chartsai.com/line-graph-maker/?title=SECRET');
   await expect(page.locator('[data-chart-ready="true"]')).toBeVisible();
-  await page.getByRole('button', { name: 'Timed experiment', exact: true }).click();
+  await page.getByRole('combobox', { name: 'Worked example', exact: true }).selectOption('experiment');
   await page.getByRole('button', { name: 'Design & details' }).click();
   await page.getByLabel('Chart title', { exact: true }).fill('CONFIDENTIAL customer name');
   await page.getByLabel('Download format').selectOption('svg');

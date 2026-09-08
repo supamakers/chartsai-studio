@@ -62,7 +62,7 @@ export const tools = [
     description:
       'Make a free radar or spider chart with multiple series. Paste data or import Excel, edit dimensions and scales, then download PNG, SVG or PDF. No signup.',
     intro:
-      'Compare a few things across the qualities that matter. Start with an example, add your scores, and see the whole profile.',
+      'Upload a CSV or Excel file, or paste your scores. Choose the dimensions, series and shared scale, then preview and download your radar chart.',
     definition:
       'A radar chart, also called a spider chart, places several quantitative dimensions on axes around a common center. Each series connects its scores into a polygon, making it possible to compare profiles across matching dimensions.',
     use: 'Use a radar chart when the dimensions have comparable scales and a consistent direction. For example, five ratings from zero to ten can share a chart. Raw prices, percentages and delivery days should not share a scale without a clearly explained transformation.',
@@ -116,7 +116,7 @@ export const tools = [
     description:
       'Create a free line graph with multiple lines from pasted data, CSV or Excel. Choose numeric or date spacing, style your chart, and download PNG, SVG or PDF.',
     intro:
-      'Turn ordered observations into a clear story. Compare multiple lines, keep the intervals honest, and download a chart ready to use.',
+      'Upload a CSV or Excel file, or paste your table. Choose labels, numeric series and horizontal spacing, then preview and download your line graph.',
     definition:
       'A line graph connects successive observations with straight segments. The horizontal axis shows an ordered variable, such as time, and the vertical axis shows a numeric value. Multiple lines compare series using the same horizontal positions and units.',
     use: 'Use a line graph to show change over time or another ordered variable. Use equal spacing for category labels, numeric spacing for measured intervals, or date spacing for elapsed days. For unrelated categories, a bar chart is usually easier to interpret.',

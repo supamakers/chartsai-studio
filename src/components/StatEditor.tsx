@@ -8,15 +8,22 @@ import { parseText, csv, readNumber, type Table, type NumberStyle } from '../lib
 import { download, svgMarkupToPng, emitUsage } from '../lib/export';
 import { StylePicker } from './ChartControls';
 import ImportData from './ImportData';
+import { DataEntry, JourneyHeading, PreviewHeading, DownloadStep, useChartJourney } from './ChartJourney';
+import { chartInputs } from '../lib/chart-journey';
 export default function StatEditor({ kind, initialSvg }: { kind: StatKind; initialSvg: string }) {
   const initial = defaultStat(kind);
   const [spec, setSpec] = useState<StatSpec>(initial),
     [raw, setRaw] = useState(csv(initial.table)),
     [message, setMessage] = useState(''),
-    [importing, setImporting] = useState(false),
+    [active, setActive] = useState(statPresetIds.find((id) => statPresets[id].kind === kind) ?? ''),
+    [editing, setEditing] = useState(false),
+    [design, setDesign] = useState(false),
     [format, setFormat] = useState('png'),
     [busy, setBusy] = useState(false),
     [ready, setReady] = useState(false);
+  const journey = useChartJourney();
+  const sampleRef = useRef(initial);
+  const dirty = raw !== csv(spec.table);
   const host = useRef<HTMLDivElement>(null),
     chart = useRef<EChartsType | null>(null),
     latest = useRef(spec);
@@ -33,6 +40,8 @@ export default function StatEditor({ kind, initialSvg }: { kind: StatKind; initi
     const q = new URLSearchParams(location.search),
       p = findStatPreset(q.get('example'), kind);
     if (p) {
+      sampleRef.current = p;
+      setActive(q.get('example')!);
       setSpec(p);
       setRaw(csv(p.table));
       setMessage('Worked example loaded. All data is fictional.');
@@ -50,6 +59,8 @@ export default function StatEditor({ kind, initialSvg }: { kind: StatKind; initi
             const next = datasetSpec(id, parseText(text));
             analyzeStat(next);
             if (!cancelled) {
+              sampleRef.current = next;
+              setActive('dataset');
               setSpec(next);
               setRaw(csv(next.table));
               setMessage('UCI dataset selection loaded. Source and selection notes are on the dataset page.');
@@ -103,21 +114,35 @@ export default function StatEditor({ kind, initialSvg }: { kind: StatKind; initi
   }, [spec, error]);
   const change = (patch: Partial<StatSpec>) => setSpec((s) => ({ ...s, ...patch }));
   function applyTable(table: Table) {
+    if (!table[0]?.length)
+      throw Error('Add a header and at least one data row, or use Upload a file / Paste data.');
     const next = {
       ...spec,
       ...(kind === 'histogram' ? { binStart: '', binWidth: '' } : {}),
       table,
+      title: spec.title === sampleRef.current.title ? `Your ${chartInputs[kind].name}` : spec.title,
+      xLabel: spec.xLabel === sampleRef.current.xLabel ? table[0][0].slice(0, 60) : spec.xLabel,
+      yLabel:
+        spec.yLabel === sampleRef.current.yLabel
+          ? kind === 'histogram'
+            ? 'Frequency'
+            : table[0].length === 2
+              ? table[0][1].slice(0, 60)
+              : 'Value'
+          : spec.yLabel,
       subtitle: '',
       source:
-        spec.source.startsWith('Source: fictional') || spec.source.startsWith('Source: UCI')
+        spec.source === sampleRef.current.source &&
+        (spec.source.startsWith('Source: fictional') || spec.source.startsWith('Source: UCI'))
           ? ''
           : spec.source,
     };
     analyzeStat(next);
+    setActive('custom');
     setSpec(next);
     setRaw(csv(table));
     setMessage(
-      'Data applied. Every selected row is included.' +
+      'Your chart is ready. Every selected row is included.' +
         (kind === 'histogram' ? ' Bin start and width reset to automatic for the new values.' : ''),
     );
     emitUsage(kind, 'render');
@@ -129,21 +154,30 @@ export default function StatEditor({ kind, initialSvg }: { kind: StatKind; initi
       setMessage((e as Error).message);
     }
   }
-  function imported(table: Table, style: NumberStyle) {
-    try {
-      const t =
-        kind === 'histogram'
-          ? [[spec.xLabel || 'Value'], ...table.map((row) => [String(readNumber(row[0], style))])]
-          : table.map((row, r) =>
-              row.map((v, c) => (r && (c > 0 || kind === 'scatter') ? String(readNumber(v, style)) : v)),
-            );
-      applyTable(t);
-    } catch (e) {
-      setMessage((e as Error).message);
-    }
+  function imported(table: Table, style: NumberStyle, columnLabel?: string) {
+    const t =
+      kind === 'histogram'
+        ? [[columnLabel || 'Value'], ...table.map((row) => [String(readNumber(row[0], style))])]
+        : table.map((row, r) =>
+            row.map((v, c) => (r && (c > 0 || kind === 'scatter') ? String(readNumber(v, style)) : v)),
+          );
+    applyTable(t);
+    setEditing(false);
+    setDesign(false);
+    journey.focusPreview();
+  }
+  function preset(id: string) {
+    const p = findStatPreset(id, kind);
+    if (!p) return;
+    sampleRef.current = p;
+    setActive(id);
+    setSpec(p);
+    setRaw(csv(p.table));
+    setMessage('Worked example loaded. All data is fictional.');
+    emitUsage(kind, 'sample');
   }
   async function save() {
-    if (error) return;
+    if (error || dirty) return;
     setBusy(true);
     try {
       const { width, height } = chartFrames[spec.frame];
@@ -184,287 +218,309 @@ export default function StatEditor({ kind, initialSvg }: { kind: StatKind; initi
     }
   }
   return (
-    <div className="stat-editor" id="editor">
-      <div className="stat-editor-heading">
-        <span className="eyebrow">{statFamilies[kind].name.toUpperCase()} STUDIO</span>
-        <span>Local data · Free downloads</span>
-      </div>
-      <div className="stat-workspace">
-        <aside className="stat-controls">
-          <label className="field">
-            Start with an example
-            <select
-              aria-label="Worked example"
-              onChange={(e) => {
-                const p = findStatPreset(e.target.value, kind);
-                if (p) {
-                  setSpec(p);
-                  setRaw(csv(p.table));
-                  setMessage('Worked example loaded. All data is fictional.');
-                  emitUsage(kind, 'sample');
-                }
-              }}
-              defaultValue=""
-            >
-              <option value="" disabled>
-                Choose an example
-              </option>
-              {statPresetIds
-                .filter((id) => statPresets[id].kind === kind)
-                .map((id) => (
-                  <option key={id} value={id}>
-                    {statPresets[id].title}
-                  </option>
-                ))}
-            </select>
-          </label>
-          <button className="button secondary" onClick={() => setImporting(true)}>
-            Paste or import a spreadsheet
-          </button>
-          <label className="field">
-            Data table
-            <textarea aria-label="Data table" value={raw} onChange={(e) => setRaw(e.target.value)} rows={8} />
-          </label>
-          <button className="button small" onClick={paste}>
-            Apply data
-          </button>
-          <p className="fine-print">
-            Include the header in this CSV or tab-separated table. Apply to update the chart. Spreadsheet
-            import lets you choose columns and number formats.
-          </p>
-          {kind === 'histogram' && (
-            <>
-              <label className="field">
-                Number of bins
-                <input
-                  aria-label="Number of bins"
-                  type="number"
-                  min="1"
-                  max="50"
-                  value={spec.bins}
-                  onChange={(e) => change({ bins: Number(e.target.value) })}
-                />
-              </label>
-              <label className="field">
-                Bin start (blank uses minimum)
-                <input
-                  aria-label="Bin start"
-                  value={spec.binStart}
-                  onChange={(e) => change({ binStart: e.target.value })}
-                />
-              </label>
-              <label className="field">
-                Bin width (overrides count)
-                <input
-                  aria-label="Bin width"
-                  value={spec.binWidth}
-                  onChange={(e) => change({ binWidth: e.target.value })}
-                />
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={spec.relative}
-                  onChange={(e) => change({ relative: e.target.checked })}
-                />{' '}
-                Show relative frequency (%)
-              </label>
-            </>
-          )}
-          {kind === 'box' && (
-            <>
-              <label className="field">
-                Quartile method
-                <select
-                  aria-label="Quartile method"
-                  value={spec.quartiles}
-                  onChange={(e) => change({ quartiles: e.target.value as StatSpec['quartiles'] })}
-                >
-                  <option value="linear">Linear interpolation (R type 7)</option>
-                  <option value="halves">Median of halves (exclude middle)</option>
-                </select>
-              </label>
-              <label className="field">
-                Whisker rule
-                <select
-                  aria-label="Whisker rule"
-                  value={spec.whiskers}
-                  onChange={(e) => change({ whiskers: e.target.value as StatSpec['whiskers'] })}
-                >
-                  <option value="iqr">Last observations within 1.5 × IQR</option>
-                  <option value="range">Minimum to maximum</option>
-                </select>
-              </label>
-            </>
-          )}
-          {kind === 'scatter' && (
-            <label>
-              <input
-                type="checkbox"
-                checked={spec.regression}
-                onChange={(e) => change({ regression: e.target.checked })}
-              />{' '}
-              Show least-squares line
-            </label>
-          )}
-          {kind === 'bar' && (
-            <>
-              <label className="field">
-                Bar arrangement
-                <select
-                  aria-label="Bar arrangement"
-                  value={spec.barMode}
-                  onChange={(e) => change({ barMode: e.target.value as StatSpec['barMode'] })}
-                >
-                  <option value="grouped">Grouped</option>
-                  <option value="stacked">Stacked values</option>
-                  <option value="percent">100% stacked</option>
-                </select>
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={spec.horizontal}
-                  onChange={(e) => change({ horizontal: e.target.checked })}
-                />{' '}
-                Horizontal bars
-              </label>
-            </>
-          )}
-          <details>
-            <summary>Title, labels and style</summary>
-            <label className="field">
-              Chart title
-              <input
-                aria-label="Chart title"
-                value={spec.title}
-                maxLength={60}
-                onChange={(e) => change({ title: e.target.value })}
-              />
-            </label>
-            <label className="field">
-              X axis label
-              <input
-                value={spec.xLabel}
-                maxLength={60}
-                onChange={(e) => change({ xLabel: e.target.value })}
-              />
-            </label>
-            <label className="field">
-              Y axis label
-              <input
-                value={spec.yLabel}
-                maxLength={60}
-                onChange={(e) => change({ yLabel: e.target.value })}
-              />
-            </label>
-            <StylePicker value={spec} onChange={change} />
-          </details>
-        </aside>
-        <div className="stat-preview">
-          <div
-            className="stat-canvas"
-            style={{
-              aspectRatio: `${chartFrames[spec.frame].width}/${chartFrames[spec.frame].height}`,
-              background: chartThemes[spec.theme].background,
+    <div className="stat-editor tool-workspace dot-journey" id="editor">
+      <JourneyHeading kind={kind} />
+      <div className="workspace-body">
+        <aside className="editor-sidebar dot-input-panel stat-controls">
+          <DataEntry
+            kind={kind}
+            active={active}
+            examples={statPresetIds
+              .filter((id) => statPresets[id].kind === kind)
+              .map((id) => ({ id, name: statPresets[id].title }))}
+            onExample={preset}
+            editing={editing}
+            design={design}
+            onUpload={journey.upload}
+            onPaste={journey.paste}
+            onEdit={() => {
+              setEditing(design ? true : !editing);
+              setDesign(false);
             }}
-            role="img"
-            aria-label={statDescription(spec)}
-            data-stat-ready={ready}
-          >
-            {!ready && <div className="stat-placeholder" dangerouslySetInnerHTML={{ __html: initialSvg }} />}
-            <div className="stat-live" ref={host} style={{ opacity: ready && !error ? 1 : 0 }} />
-            {error && (
-              <p className="stat-error" role="alert">
-                {error}
+            onDesign={() => setDesign(!design)}
+          />
+          {editing && !design && (
+            <div className="dot-values">
+              <label className="field">
+                Data table
+                <textarea
+                  aria-label="Data table"
+                  value={raw}
+                  onChange={(e) => setRaw(e.target.value)}
+                  rows={8}
+                />
+              </label>
+              <button className="button small" onClick={paste}>
+                Apply data
+              </button>
+              <p className="fine-print">
+                Include the header in this CSV or tab-separated table. Apply to update the chart. Spreadsheet
+                import lets you choose columns and number formats.
               </p>
-            )}
-          </div>
-          <div className="stat-download">
-            <label>
-              Download format
-              <select aria-label="Download format" value={format} onChange={(e) => setFormat(e.target.value)}>
-                {['png', 'svg', 'pdf', 'csv', 'json'].map((f) => (
-                  <option key={f} value={f}>
-                    {f === 'json' ? 'ECharts JSON' : f.toUpperCase()}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button className="button" onClick={() => void save()} disabled={!!error || busy}>
-              {busy ? 'Preparing…' : 'Download'}
-            </button>
-          </div>
-          <p className="stat-status" role="status">
-            {message}
-          </p>
-          <h2>Calculated values</h2>
-          <p className="fine-print">
-            {kind === 'histogram'
-              ? 'Bins include their lower boundary; only the last bin includes its upper boundary.'
-              : kind === 'box'
-                ? 'Whiskers end on observations. Flagged values remain in the data and appear as points.'
-                : kind === 'scatter'
-                  ? 'Pearson r measures linear association. A fitted line does not establish causation.'
-                  : kind === 'pareto'
-                    ? 'Categories are sorted by the supplied measure. The 80% reference is a guide, not a rule the data must follow.'
-                    : '100% mode divides each series value by its category total. Other modes preserve the supplied values.'}
-          </p>
-          {analysis && (
-            <div className="table-scroll stat-summary">
-              <table>
-                <thead>
-                  <tr>
-                    {analysis.summary[0].map((h) => (
-                      <th key={h} scope="col">
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {analysis.summary.slice(1).map((row, i) => (
-                    <tr key={i}>
-                      {row.map((v, c) => (
-                        <td key={c}>{v}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
             </div>
           )}
-          <details>
-            <summary>Inspect every input row ({spec.table.length - 1})</summary>
-            <div className="table-scroll stat-summary">
-              <table>
-                <thead>
-                  <tr>
-                    {spec.table[0].map((h, i) => (
-                      <th key={i} scope="col">
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {spec.table.slice(1).map((row, i) => (
-                    <tr key={i}>
-                      {row.map((v, c) => (
-                        <td key={c}>{v}</td>
+          {design && (
+            <div className="dot-design">
+              {kind === 'histogram' && (
+                <>
+                  <label className="field">
+                    Number of bins
+                    <input
+                      aria-label="Number of bins"
+                      type="number"
+                      min="1"
+                      max="50"
+                      value={spec.bins}
+                      onChange={(e) => change({ bins: Number(e.target.value) })}
+                    />
+                  </label>
+                  <label className="field">
+                    Bin start (blank uses minimum)
+                    <input
+                      aria-label="Bin start"
+                      value={spec.binStart}
+                      onChange={(e) => change({ binStart: e.target.value })}
+                    />
+                  </label>
+                  <label className="field">
+                    Bin width (overrides count)
+                    <input
+                      aria-label="Bin width"
+                      value={spec.binWidth}
+                      onChange={(e) => change({ binWidth: e.target.value })}
+                    />
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={spec.relative}
+                      onChange={(e) => change({ relative: e.target.checked })}
+                    />{' '}
+                    Show relative frequency (%)
+                  </label>
+                </>
+              )}
+              {kind === 'box' && (
+                <>
+                  <label className="field">
+                    Quartile method
+                    <select
+                      aria-label="Quartile method"
+                      value={spec.quartiles}
+                      onChange={(e) => change({ quartiles: e.target.value as StatSpec['quartiles'] })}
+                    >
+                      <option value="linear">Linear interpolation (R type 7)</option>
+                      <option value="halves">Median of halves (exclude middle)</option>
+                    </select>
+                  </label>
+                  <label className="field">
+                    Whisker rule
+                    <select
+                      aria-label="Whisker rule"
+                      value={spec.whiskers}
+                      onChange={(e) => change({ whiskers: e.target.value as StatSpec['whiskers'] })}
+                    >
+                      <option value="iqr">Last observations within 1.5 × IQR</option>
+                      <option value="range">Minimum to maximum</option>
+                    </select>
+                  </label>
+                </>
+              )}
+              {kind === 'scatter' && (
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={spec.regression}
+                    onChange={(e) => change({ regression: e.target.checked })}
+                  />{' '}
+                  Show least-squares line
+                </label>
+              )}
+              {kind === 'bar' && (
+                <>
+                  <label className="field">
+                    Bar arrangement
+                    <select
+                      aria-label="Bar arrangement"
+                      value={spec.barMode}
+                      onChange={(e) => change({ barMode: e.target.value as StatSpec['barMode'] })}
+                    >
+                      <option value="grouped">Grouped</option>
+                      <option value="stacked">Stacked values</option>
+                      <option value="percent">100% stacked</option>
+                    </select>
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={spec.horizontal}
+                      onChange={(e) => change({ horizontal: e.target.checked })}
+                    />{' '}
+                    Horizontal bars
+                  </label>
+                </>
+              )}
+              <div className="journey-labels">
+                <label className="field">
+                  Chart title
+                  <input
+                    aria-label="Chart title"
+                    value={spec.title}
+                    maxLength={60}
+                    onChange={(e) => change({ title: e.target.value })}
+                  />
+                </label>
+                <label className="field">
+                  X axis label
+                  <input
+                    value={spec.xLabel}
+                    maxLength={60}
+                    onChange={(e) => change({ xLabel: e.target.value })}
+                  />
+                </label>
+                <label className="field">
+                  Y axis label
+                  <input
+                    value={spec.yLabel}
+                    maxLength={60}
+                    onChange={(e) => change({ yLabel: e.target.value })}
+                  />
+                </label>
+                <StylePicker value={spec} onChange={change} />
+              </div>
+            </div>
+          )}
+        </aside>
+        <div
+          className="stat-preview canvas-panel"
+          ref={journey.previewRef}
+          tabIndex={-1}
+          aria-label={`Your ${chartInputs[kind].name} preview`}
+        >
+          <PreviewHeading
+            kind={kind}
+            origin={active === 'custom' ? 'custom' : active === 'dataset' ? 'dataset' : 'sample'}
+            notice={
+              dirty ? 'You have unapplied edits. Apply the data or fix it before downloading.' : message
+            }
+            theme={chartThemes[spec.theme].name}
+          />
+          <div className="chart-stage">
+            <div
+              className="stat-canvas"
+              style={{
+                aspectRatio: `${chartFrames[spec.frame].width}/${chartFrames[spec.frame].height}`,
+                background: chartThemes[spec.theme].background,
+              }}
+              role="img"
+              aria-label={statDescription(spec)}
+              data-stat-ready={ready}
+            >
+              {!ready && (
+                <div className="stat-placeholder" dangerouslySetInnerHTML={{ __html: initialSvg }} />
+              )}
+              <div className="stat-live" ref={host} style={{ opacity: ready && !error ? 1 : 0 }} />
+              {error && (
+                <p className="stat-error" role="alert">
+                  {error}
+                </p>
+              )}
+            </div>
+          </div>
+          <DownloadStep>
+            <div className="stat-download">
+              <label>
+                Download format
+                <select
+                  aria-label="Download format"
+                  value={format}
+                  onChange={(e) => setFormat(e.target.value)}
+                >
+                  {['png', 'svg', 'pdf', 'csv', 'json'].map((f) => (
+                    <option key={f} value={f}>
+                      {f === 'json' ? 'ECharts JSON' : f.toUpperCase()}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button className="button" onClick={() => void save()} disabled={!!error || dirty || busy}>
+                {busy ? 'Preparing…' : 'Download'}
+              </button>
+            </div>
+          </DownloadStep>
+          <div className="journey-results">
+            <p className="stat-status" role="status">
+              {message}
+            </p>
+            <h2>Calculated values</h2>
+            <p className="fine-print">
+              {kind === 'histogram'
+                ? 'Bins include their lower boundary; only the last bin includes its upper boundary.'
+                : kind === 'box'
+                  ? 'Whiskers end on observations. Flagged values remain in the data and appear as points.'
+                  : kind === 'scatter'
+                    ? 'Pearson r measures linear association. A fitted line does not establish causation.'
+                    : kind === 'pareto'
+                      ? 'Categories are sorted by the supplied measure. The 80% reference is a guide, not a rule the data must follow.'
+                      : '100% mode divides each series value by its category total. Other modes preserve the supplied values.'}
+            </p>
+            {analysis && (
+              <div className="table-scroll stat-summary">
+                <table>
+                  <thead>
+                    <tr>
+                      {analysis.summary[0].map((h) => (
+                        <th key={h} scope="col">
+                          {h}
+                        </th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </details>
+                  </thead>
+                  <tbody>
+                    {analysis.summary.slice(1).map((row, i) => (
+                      <tr key={i}>
+                        {row.map((v, c) => (
+                          <td key={c}>{v}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            <details>
+              <summary>Inspect every input row ({spec.table.length - 1})</summary>
+              <div className="table-scroll stat-summary">
+                <table>
+                  <thead>
+                    <tr>
+                      {spec.table[0].map((h, i) => (
+                        <th key={i} scope="col">
+                          {h}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {spec.table.slice(1).map((row, i) => (
+                      <tr key={i}>
+                        {row.map((v, c) => (
+                          <td key={c}>{v}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </details>
+          </div>
         </div>
       </div>
-      {importing && (
+      {journey.importing && (
         <ImportData
-          kind={kind === 'histogram' ? 'numeric' : 'table'}
-          onClose={() => setImporting(false)}
+          kind={kind}
+          initialFile={journey.initialFile}
+          onClose={journey.close}
           onImport={imported}
         />
       )}

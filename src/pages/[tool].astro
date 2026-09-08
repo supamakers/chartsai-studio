@@ -62,7 +62,7 @@ const schema = [
   description={tool.description}
   schema={schema}
 >
-  <section class:list={['container tool-intro', { 'dot-tool-intro': tool.type === 'dot' }]}>
+  <section class:list={['container tool-intro', { 'dot-tool-intro': true }]}>
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="/">Home</a><span>/</span><a href="/charts/">Chart makers</a><span>/</span><span
         >{tool.name}</span

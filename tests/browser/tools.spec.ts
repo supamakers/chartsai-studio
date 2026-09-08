@@ -85,18 +85,21 @@ test('XLSX sheet selection resets mapping and rejects missing values', async ({ 
 
 test('radar presets, scale validation, and table import work', async ({ page }) => {
   await page.goto('/radar-chart-maker/?example=products');
+  await page.getByRole('button', { name: 'Edit values', exact: true }).click();
   await expect(page.getByLabel('Series 1 name')).toHaveValue('Option A');
   await page.getByLabel('Shared scale: 0 to').fill('5');
   await expect(page.getByRole('alert')).toContainText('Scores must be between');
   await expect(page.getByRole('button', { name: 'Download', exact: true })).toBeDisabled();
   await page.getByLabel('Shared scale: 0 to').fill('10');
-  await page.getByRole('button', { name: 'Paste or import a spreadsheet' }).click();
+  await page.getByRole('button', { name: 'Paste data', exact: true }).click();
   const dialog = page.getByRole('dialog');
   await dialog
     .getByLabel('Paste your data')
     .fill('Dimension\tOne\tTwo\nDesign\t5\t8\nSpeed\t7\t6\nValue\t8\t9');
   await dialog.getByRole('button', { name: 'Preview paste' }).click();
-  await dialog.getByRole('button', { name: 'Use 3 dimensions' }).click();
+  await dialog.getByLabel('Shared scale: 0 to').fill('10');
+  await dialog.getByRole('button', { name: 'Create radar chart with 3 dimensions' }).click();
+  await page.getByRole('button', { name: 'Edit values', exact: true }).click();
   await expect(page.getByLabel('Series 1 name')).toHaveValue('One');
   await expect(page.getByLabel('One, Design', { exact: true })).toHaveValue('5');
   await expect(page.locator('#editor .echart-view')).toHaveAttribute('data-chart-ready', 'true');

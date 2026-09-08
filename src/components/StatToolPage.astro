@@ -9,6 +9,8 @@ import { statMethods, statReferences } from '../data/stat-tools';
 import { statExamples } from '../data/stat-examples';
 import '../styles/statistics.css';
 import '../styles/examples.css';
+import '../styles/dot-journey.css';
+import { chartInputs } from '../lib/chart-journey';
 interface Props {
   kind: StatKind;
 }
@@ -33,12 +35,22 @@ const schema = [
   description={`${f.answer} Import CSV or Excel, inspect the calculations, and download PNG, SVG or PDF free. No account.`}
   schema={schema}
 >
-  <section class="container listing-intro">
-    <span class="eyebrow">FREE · LOCAL DATA · NO WATERMARK</span><h1>{f.name} maker</h1><p>{f.answer}</p><p
-      class="fine-print"
-    >
-      {f.input}
-    </p><a href="#editor" class="text-link">Start with a working example ↓</a>
+  <section class="container tool-intro dot-tool-intro">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><a href="/charts/">Chart makers</a><span>/</span><span
+        >{f.name} maker</span>
+    </nav>
+    <div class="tool-title-line">
+      <div>
+        <span class="eyebrow">FREE ONLINE CHART MAKER</span><h1>
+          {f.name} maker<span class="title-dot">.</span>
+        </h1><p>
+          Upload a CSV or Excel file, or paste your data. Choose the columns to plot, preview your {
+            chartInputs[kind].name
+          }, and download it free.
+        </p>
+      </div><div class="tool-badges"><span>Free to use</span><span>No watermark</span></div>
+    </div>
   </section>
   <section class="container">
     <StatEditor kind={kind} initialSvg={renderOptionSvg(statOption(spec))} client:load /><noscript
@@ -50,8 +62,11 @@ const schema = [
     >
   </section>
   <section class="container prose-section">
-    <h2>How to make a {f.name.toLowerCase()}</h2><ol>
-      <li>Start with a worked example, or paste/import your table and choose columns in the preview.</li><li>
+    <h2>How to make a {f.name.toLowerCase()}</h2><p>{f.answer}</p><ol>
+      <li>
+        Upload a file or paste spreadsheet cells. Choose the columns and check the preview before creating
+        your chart.
+      </li><li>
         Inspect every selected row. Missing or invalid numbers need correction; they are never filled with
         zero.
       </li><li>Set the calculation options, then inspect the calculated values below the chart.</li><li>

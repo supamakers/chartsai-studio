@@ -1,8 +1,9 @@
 import { findShowcase } from '../lib/showcase-specs';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowDownToLine, Upload, ClipboardPaste, FileSpreadsheet, ChevronDown, Code2 } from 'lucide-react';
+import { ArrowDownToLine, FileSpreadsheet, ChevronDown, Code2 } from 'lucide-react';
 import EChartView from './EChartView';
 import ImportData from './ImportData';
+import { DataEntry, JourneyHeading, PreviewHeading, DownloadStep } from './ChartJourney';
 import { ExportButton, StylePicker, usePresentation } from './ChartControls';
 import { dotPresets } from '../lib/presets';
 import {
@@ -29,8 +30,6 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
   const [tab, setTab] = useState<'data' | 'design'>('data');
   const [editing, setEditing] = useState(false);
   const [initialFile, setInitialFile] = useState<File | undefined>();
-  const [dropError, setDropError] = useState('');
-  const fileInput = useRef<HTMLInputElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
   const [mean, setMean] = useState(true);
   const [counts, setCounts] = useState(false);
@@ -84,7 +83,7 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
     if (active !== 'custom')
       setPresentation((v) => ({
         ...v,
-        source: v.source.startsWith('Source: fictional example data.') ? '' : v.source,
+        source: v.source === (findShowcase(active, 'dot') ?? dotExample(active)).source ? '' : v.source,
         subtitle: '',
       }));
     setNotice('');
@@ -120,110 +119,32 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
     const id = query.get('example');
     if (dotPresets.some((p) => p.id === id)) selectPreset(id!, false);
   }, []);
-  function chooseFile(files: FileList | null) {
-    if (!files?.length) return;
-    if (files.length > 1) {
-      setDropError('Choose one file at a time. You can select its sheet and column next.');
-      return;
-    }
-    setDropError('');
-    setInitialFile(files[0]);
-    setImporting(true);
-  }
   return (
     <div id="editor" className="tool-workspace dot-journey">
-      <div className="dot-journey-heading">
-        <span>From your spreadsheet to a finished dot plot</span>
-        <span>No signup · Your data stays on your device</span>
-      </div>
+      <JourneyHeading kind="dot" />
       <div className="workspace-body">
         <aside className="editor-sidebar dot-input-panel">
-          <div className="dot-step-title">
-            <span>1</span>
-            <h2>Add your data</h2>
-          </div>
-          <p>Plot up to 300 numbers. Extra columns are fine — you’ll choose which one to use next.</p>
-          <div
-            className="dot-dropzone"
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => {
-              e.preventDefault();
-              chooseFile(e.dataTransfer.files);
+          <DataEntry
+            kind="dot"
+            active={active}
+            examples={dotPresets}
+            onExample={selectPreset}
+            editing={editing}
+            design={tab === 'design'}
+            onUpload={(file) => {
+              setInitialFile(file);
+              setImporting(true);
             }}
-          >
-            <button className="dot-upload" onClick={() => fileInput.current?.click()}>
-              <Upload size={24} />
-              <strong>Upload a file</strong>
-              <span>or drop it here</span>
-            </button>
-            <span>CSV, Excel (.xlsx), TSV or TXT · Up to 8 MB</span>
-            <input
-              hidden
-              ref={fileInput}
-              type="file"
-              accept=".csv,.tsv,.txt,.xlsx"
-              aria-label="Upload data file"
-              onChange={(e) => {
-                chooseFile(e.target.files);
-                e.target.value = '';
-              }}
-            />
-          </div>
-          <button
-            className="button secondary dot-paste"
-            onClick={() => {
+            onPaste={() => {
               setInitialFile(undefined);
               setImporting(true);
             }}
-          >
-            <ClipboardPaste size={17} />
-            Paste data
-          </button>
-          <p className="dot-input-help">
-            Copy cells from Excel or Google Sheets, or paste numbers such as 2, 3, 3, 5.
-          </p>
-          {dropError && (
-            <p className="notice error" role="alert">
-              {dropError}
-            </p>
-          )}
-          <div className="dot-example-choice">
-            <label className="field">
-              Just exploring? Try an example
-              <select
-                value={dotPresets.some((p) => p.id === active) ? active : ''}
-                onChange={(e) => selectPreset(e.target.value)}
-              >
-                <option value="" disabled>
-                  {active === 'custom' ? 'Your data is loaded' : 'Worked example loaded'}
-                </option>
-                {dotPresets.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <div className="dot-edit-actions">
-            <button
-              className="text-button"
-              aria-expanded={editing}
-              onClick={() => {
-                setEditing(tab === 'design' ? true : !editing);
-                setTab('data');
-              }}
-            >
-              Edit values
-            </button>
-            <button
-              className="text-button"
-              aria-expanded={tab === 'design'}
-              onClick={() => setTab(tab === 'design' ? 'data' : 'design')}
-            >
-              Design & details
-            </button>
-          </div>
+            onEdit={() => {
+              setEditing(tab === 'design' ? true : !editing);
+              setTab('data');
+            }}
+            onDesign={() => setTab(tab === 'design' ? 'data' : 'design')}
+          />
           {editing && tab === 'data' && (
             <div className="dot-values">
               <label className="field">
@@ -265,22 +186,12 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
           )}
         </aside>
         <div className="canvas-panel" ref={previewRef} tabIndex={-1} aria-label="Your dot plot preview">
-          <div className="dot-preview-heading">
-            <div className="dot-step-title">
-              <span>2</span>
-              <h2>Preview your dot plot</h2>
-            </div>
-            <span className={`dot-data-badge ${active === 'custom' ? 'is-custom' : ''}`}>
-              {active === 'custom' ? 'Your data' : 'Sample data · replace with yours'}
-            </span>
-            <p>
-              {notice ||
-                (active === 'custom'
-                  ? 'Each dot is one value. Repeated values stack up. Check your chart and download it below.'
-                  : 'Each dot is one value. Repeated values stack up. Upload or paste your data to replace this example.')}
-            </p>
-            <span className="canvas-status">{chartThemes[presentation.theme].name} style</span>
-          </div>
+          <PreviewHeading
+            kind="dot"
+            origin={active === 'custom' ? 'custom' : 'sample'}
+            notice={notice}
+            theme={chartThemes[presentation.theme].name}
+          />
           <div className="chart-stage">
             {error || !stats ? (
               <div className="chart-error" role="alert">
@@ -292,16 +203,9 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
               <EChartView spec={spec} initialSvg={initialSvg} />
             )}
           </div>
-          <div className="dot-download-step">
-            <div>
-              <div className="dot-step-title">
-                <span>3</span>
-                <h2>Download your chart</h2>
-              </div>
-              <p>PNG for slides · SVG for editing · PDF for printing</p>
-            </div>
+          <DownloadStep>
             <ExportButton spec={spec} disabled={!stats || !!error} />
-          </div>
+          </DownloadStep>
           <div className="stats-strip">
             {[
               { name: 'Observations', value: stats?.count },

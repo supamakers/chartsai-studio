@@ -53,6 +53,7 @@ for (const d of datasets)
 test('invalid input is explained and user data clears the sample attribution', async ({ page }) => {
   await page.goto('/scatter-plot-maker/');
   await expect(page.locator('[data-stat-ready=true]')).toBeVisible();
+  await page.getByRole('button', { name: 'Edit values', exact: true }).click();
   await page.getByLabel('Data table', { exact: true }).fill('X,Y\n1,\n2,3');
   await page.getByRole('button', { name: 'Apply data' }).click();
   await expect(page.getByRole('status')).toContainText('Missing values are not zero');
@@ -102,15 +103,17 @@ test('histogram import maps a European numeric column and includes every selecte
 }) => {
   await page.goto('/histogram-maker/');
   await expect(page.locator('[data-stat-ready=true]')).toBeVisible();
-  await page.getByRole('button', { name: 'Paste or import a spreadsheet' }).click();
+  await page.getByRole('button', { name: 'Paste data', exact: true }).click();
   const dialog = page.getByRole('dialog');
   await dialog.getByLabel('Paste your data').fill('Name;Value\nA;1,5\nB;0\nC;2,5');
   await dialog.getByRole('button', { name: 'Preview paste' }).click();
+  await dialog.getByText('Row range & number format (optional)', { exact: true }).click();
   await dialog.getByLabel('Number format').selectOption('eu');
   await dialog.getByLabel('First selected row is a header').check();
   await dialog.getByLabel('Which column contains your values?').selectOption('1');
-  await dialog.getByRole('button', { name: 'Use 3 values' }).click();
+  await dialog.getByRole('button', { name: 'Create histogram with 3 values' }).click();
   await expect(page.getByRole('status')).toContainText('Every selected row');
+  await page.getByRole('button', { name: 'Design & details', exact: true }).click();
   await page.getByLabel('Bin start').fill('');
   await page.getByLabel('Bin width').fill('');
   await expect(page.getByRole('alert')).toHaveCount(0);
@@ -136,16 +139,14 @@ test('box plot spreadsheet import retains every grouped observation', async ({ p
   );
   await page.goto('/box-plot-maker/');
   await expect(page.locator('[data-stat-ready=true]')).toBeVisible();
-  await page.getByRole('button', { name: 'Paste or import a spreadsheet' }).click();
+  await page.getByRole('button', { name: 'Paste data', exact: true }).click();
   const dialog = page.getByRole('dialog');
-  await dialog
-    .locator('input[type=file]')
-    .setInputFiles({
-      name: 'groups.xlsx',
-      mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      buffer: XLSX.write(book, { type: 'buffer', bookType: 'xlsx' }),
-    });
-  await dialog.getByRole('button', { name: /Use 4/ }).click();
+  await dialog.locator('input[type=file]').setInputFiles({
+    name: 'groups.xlsx',
+    mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    buffer: XLSX.write(book, { type: 'buffer', bookType: 'xlsx' }),
+  });
+  await dialog.getByRole('button', { name: 'Create box plot with 4 values' }).click();
   await expect(page.getByRole('status')).toContainText('Every selected row');
   await expect(page.locator('.stat-summary').first().locator('tbody tr')).toHaveCount(2);
 });
