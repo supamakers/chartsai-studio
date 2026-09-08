@@ -1,0 +1,32 @@
+---
+import { statExamples } from '../data/stat-examples';
+interface Props {
+  items?: typeof statExamples;
+}
+const { items = statExamples } = Astro.props;
+---
+
+<div class="showcase-grid">
+  {
+    items.map((e) => (
+      <a
+        class="showcase-card"
+        href={e.url}
+        data-example-kind={e.spec.kind}
+        data-example-title={e.title.toLowerCase()}
+      >
+        <>
+          <img src={`/charts/assets/${e.id}.svg`} alt={e.title} width="1200" height="800" loading="lazy" />
+          <div class="showcase-card-copy">
+            <>
+              <span class="eyebrow">{e.family.name} · Fictional data</span>
+              <h3>{e.title}</h3>
+              <p>{e.answer}</p>
+              <span class="text-link">Explore chart & data →</span>
+            </>
+          </div>
+        </>
+      </a>
+    ))
+  }
+</div>

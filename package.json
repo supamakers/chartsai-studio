@@ -1,11 +1,11 @@
 {
   "name": "chartsai-studio",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "astro dev --host 127.0.0.1",
-    "build": "npm run prepare:assets && astro check && astro build && node scripts/check-build.mjs",
+    "build": "npm run prepare:assets && astro check && astro build && node scripts/check-build.mjs && tsx scripts/check-expansion.ts",
     "preview": "astro preview --host 127.0.0.1",
     "test": "vitest run",
     "prepare:assets": "tsx scripts/prepare-assets.mjs",

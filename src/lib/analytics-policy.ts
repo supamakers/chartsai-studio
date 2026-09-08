@@ -1,8 +1,16 @@
+import { guideSlugs, datasetIds } from './resource-paths';
+import { statFamilies, statPresetIds, statExamplePath, findStatPreset } from './stat-presets';
 import { showcaseSlugs, showcaseGroups, findShowcase } from './showcase-specs';
 export const productionHosts = ['www.chartsai.com', 'chartsai.com'];
 const pagePaths = new Set([
   '/',
   '/charts/',
+  '/guides/',
+  '/datasets/',
+  ...guideSlugs.map((s) => `/guides/${s}/`),
+  ...datasetIds.map((s) => `/datasets/${s}/`),
+  ...Object.values(statFamilies).flatMap((f) => [`/${f.tool}/`, `/examples/${f.hub}/`]),
+  ...statPresetIds.map(statExamplePath),
   '/examples/',
   ...showcaseSlugs.map((slug) => `/examples/${slug}/`),
   ...Object.values(showcaseGroups).map((group) => `/examples/${group.slug}/`),
@@ -24,6 +32,11 @@ export function usageEvent(detail: unknown) {
   if (!detail || typeof detail !== 'object') return null;
   const { tool, action, format } = detail as Record<string, unknown>;
   const names: Record<string, string> = {
+    histogram: 'histogram',
+    box: 'box-plot',
+    scatter: 'scatter-plot',
+    bar: 'bar-chart',
+    pareto: 'pareto-chart',
     dot: 'dot-plot',
     'dot-plot': 'dot-plot',
     radar: 'radar-chart',
@@ -44,6 +57,11 @@ export function usageEvent(detail: unknown) {
 }
 
 export function showcaseDownloadEvent(pathname: string) {
+  const statMatch = pathname.match(/^\/charts\/assets\/([a-z-]+)\.(svg|png|csv|json)$/);
+  if (statMatch) {
+    const spec = findStatPreset(statMatch[1]);
+    return spec ? usageEvent({ tool: spec.kind, action: 'export', format: statMatch[2] }) : null;
+  }
   const match = pathname.match(/^\/examples\/assets\/([a-z-]+)\.(svg|png|csv|json)$/);
   if (!match) return null;
   const spec = findShowcase(match[1]);

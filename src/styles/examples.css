@@ -373,3 +373,7 @@
 .example-body > * {
   min-width: 0;
 }
+
+.showcase-grid + .showcase-grid {
+  margin-top: 24px;
+}

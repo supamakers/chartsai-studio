@@ -1,3 +1,5 @@
+import {datasets,datasetSpec} from '../src/data/datasets.ts';
+import {parseText} from '../src/lib/data.ts';
 import { mkdir, readFile, writeFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import sharp from 'sharp';
@@ -6,7 +8,9 @@ import { dotPresets, radarPresets, linePresets } from '../src/lib/presets.ts';
 import { showcaseSpecs, showcaseTable } from '../src/lib/showcase-specs.ts';
 import { chartFrames, createChartOption } from '../src/lib/chart-options.ts';
 import { radarExample } from '../src/lib/chart-presets.ts';
-import { renderChartSvg } from '../src/lib/echarts.ts';
+import { statPresets } from '../src/lib/stat-presets.ts';
+import { statOption } from '../src/lib/statistics.ts';
+import { renderOptionSvg, renderChartSvg } from '../src/lib/echarts.ts';
 
 await mkdir('public/samples', { recursive: true });
 await mkdir('public/downloads', { recursive: true });
@@ -34,6 +38,23 @@ for (const [slug, spec] of Object.entries(showcaseSpecs)) {
   await writeFile(`${path}.csv`, csv(showcaseTable(spec)));
   await writeFile(`${path}.json`, JSON.stringify(createChartOption(spec, width, height), null, 2));
 }
+await mkdir('public/charts/assets', { recursive: true });
+for (const [id,spec] of Object.entries(statPresets)) {
+ const {width,height}=chartFrames[spec.frame];
+ const option=statOption(spec,width,height),svg=renderOptionSvg(option,width,height),path=`public/charts/assets/${id}`;
+ await writeFile(`${path}.svg`,svg);
+ await sharp(Buffer.from(svg)).png().toFile(`${path}.png`);
+ await writeFile(`${path}.csv`,csv(spec.table));
+ await writeFile(`${path}.json`,JSON.stringify(option,null,2));
+}
+for(const d of datasets){
+ const table=parseText(await readFile(`public/datasets/assets/${d.id}-chart.csv`,'utf8'));
+ const spec=datasetSpec(d.id,table),option=statOption(spec),svg=renderOptionSvg(option);
+ const path=`public/datasets/assets/${d.id}`;
+ await writeFile(`${path}.svg`,svg);await sharp(Buffer.from(svg)).png().toFile(`${path}.png`);
+ await writeFile(`${path}.json`,JSON.stringify(option,null,2));
+ await writeFile(`${path}-manifest.json`,JSON.stringify(d,null,2));
+}
 const chart = renderChartSvg({ ...radarExample('products'), theme: 'night' }, 570, 430);
 const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#f8f9f6"/><rect x="54" y="54" width="36" height="36" rx="10" fill="#202522"/><path d="M64 80v-9m8 9V63m8 17V68" stroke="#d3ed9c" stroke-width="3" stroke-linecap="round"/><text x="103" y="82" font-family="Arial" font-size="28" font-weight="700" fill="#202522">chartsai.</text><text x="54" y="232" font-family="Arial" font-size="66" font-weight="700" fill="#202522">Your data.</text><text x="54" y="313" font-family="Arial" font-size="66" font-weight="700" fill="#202522">Ready to</text><rect x="54" y="381" width="211" height="16" fill="#d3ed9c"/><text x="54" y="394" font-family="Arial" font-size="66" font-weight="700" fill="#202522">share.</text><text x="57" y="461" font-family="Arial" font-size="19" fill="#606961">Free chart makers &amp; printables.</text><text x="57" y="552" font-family="Arial" font-size="15" fill="#606961">Built by SupaMakers · No signup or watermark</text></svg>`;
 await sharp(Buffer.from(og))
@@ -46,7 +67,8 @@ const archive = {};
 async function collect(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = join(directory, entry.name);
-    if (path === 'public/downloads' || path === 'public/examples/assets') continue;
+    if (path === 'public/downloads' || path === 'public/examples/assets' || path === 'public/charts/assets') continue;
+    if (directory === 'public/datasets/assets' && /\.(svg|png|json)$/.test(path)) continue;
     if (entry.isDirectory()) await collect(path);
     else if (entry.isFile()) archive[`chartsai/${path}`] = new Uint8Array(await readFile(path));
   }
@@ -81,5 +103,5 @@ for (const path of [
 }
 await writeFile('public/downloads/chartsai-source.zip', zipSync(archive, { level: 6 }));
 console.log(
-  `Prepared 9 presets, 20 showcase asset sets, social image and source archive (${Object.keys(archive).length} files).`,
+  `Prepared 9 presets, 50 showcase and 5 public-dataset asset sets, social image and source archive (${Object.keys(archive).length} files).`,
 );

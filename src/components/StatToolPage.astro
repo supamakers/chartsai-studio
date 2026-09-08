@@ -1,0 +1,94 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StatEditor from './StatEditor';
+import StatCards from './StatCards.astro';
+import { statFamilies, defaultStat } from '../lib/stat-presets';
+import { statOption, type StatKind } from '../lib/statistics';
+import { renderOptionSvg } from '../lib/echarts';
+import { statMethods, statReferences } from '../data/stat-tools';
+import { statExamples } from '../data/stat-examples';
+import '../styles/statistics.css';
+import '../styles/examples.css';
+interface Props {
+  kind: StatKind;
+}
+const { kind } = Astro.props,
+  f = statFamilies[kind],
+  spec = defaultStat(kind);
+const schema = [
+  {
+    '@type': 'SoftwareApplication',
+    name: `Free ${f.name} maker`,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Web browser',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: 0, priceCurrency: 'USD' },
+    featureList: 'CSV and Excel import; local data processing; SVG, PNG, PDF, CSV and ECharts JSON downloads',
+  },
+];
+---
+
+<Layout
+  title={`Free ${f.name} Maker — PNG, SVG & PDF | ChartsAI`}
+  description={`${f.answer} Import CSV or Excel, inspect the calculations, and download PNG, SVG or PDF free. No account.`}
+  schema={schema}
+>
+  <section class="container listing-intro">
+    <span class="eyebrow">FREE · LOCAL DATA · NO WATERMARK</span><h1>{f.name} maker</h1><p>{f.answer}</p><p
+      class="fine-print"
+    >
+      {f.input}
+    </p><a href="#editor" class="text-link">Start with a working example ↓</a>
+  </section>
+  <section class="container">
+    <StatEditor kind={kind} initialSvg={renderOptionSvg(statOption(spec))} client:load /><noscript
+      ><p>
+        The interactive maker requires JavaScript. <a href={`/examples/${f.hub}/`}
+          >Browse the complete static examples and download their charts and data.</a
+        >
+      </p></noscript
+    >
+  </section>
+  <section class="container prose-section">
+    <h2>How to make a {f.name.toLowerCase()}</h2><ol>
+      <li>Start with a worked example, or paste/import your table and choose columns in the preview.</li><li>
+        Inspect every selected row. Missing or invalid numbers need correction; they are never filled with
+        zero.
+      </li><li>Set the calculation options, then inspect the calculated values below the chart.</li><li>
+        Edit the title, labels and source note. Download an image, PDF, original CSV or ECharts configuration.
+      </li>
+    </ol><p>
+      The editor accepts up to 2,000 observations for distributions and scatter plots, eight box-plot groups,
+      or 50 bar/Pareto categories. A bar chart can include up to five series. Spreadsheet preview accepts
+      files up to 8 MB, 2,000 rows and 100 columns. Data stays in your browser.
+    </p>{
+      statMethods[kind].map((m) => (
+        <section>
+          <>
+            <h2>{m.title}</h2>
+            <p>{m.text}</p>
+          </>
+        </section>
+      ))
+    }<h2>Method references</h2><ul>
+      {
+        statReferences[kind].map((r) => (
+          <li>
+            <a href={r.url}>{r.name}</a>
+          </li>
+        ))
+      }
+    </ul><p>
+      Built by <a href="https://www.supamakers.com/">SupaMakers</a>. <a href="/source/"
+        >Inspect the open source calculations and reuse terms.</a
+      >
+    </p>
+  </section>
+  <section class="container section">
+    <div class="section-heading">
+      <h2>Worked {f.name.toLowerCase()} examples</h2><a href={`/examples/${f.hub}/`} class="text-link"
+        >Explore the collection →</a
+      >
+    </div><StatCards items={statExamples.filter((e) => e.spec.kind === kind)} />
+  </section>
+</Layout>

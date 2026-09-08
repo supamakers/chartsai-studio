@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { datasets } from '../../data/datasets';
+import '../../styles/statistics.css';
+---
+
+<Layout
+  title="Free Datasets for Charts — CSV & Source Attribution | ChartsAI"
+  description="Download Iris, Wine, Glass, Seeds and Abalone datasets as headered CSVs. Inspect source versions, licenses, exact chart selections and downloadable scatter plots."
+>
+  <section class="container listing-intro">
+    <span class="eyebrow">REAL DATA, CLEAR PROVENANCE</span><h1>
+      Start with data<br /><em>you can trace.</em>
+    </h1><p>
+      Five public UCI datasets, prepared for chart exploration with source attribution, pinned files and
+      explicit selection notes. Download the full CSV or open the documented chart selection.
+    </p>
+  </section><section class="container dataset-grid">
+    {
+      datasets.map((d) => (
+        <article>
+          <>
+            <a href={d.url}>
+              <>
+                <img
+                  src={`/datasets/assets/${d.id}.svg`}
+                  width="1200"
+                  height="800"
+                  alt={`${d.name} scatter plot`}
+                  loading="lazy"
+                />
+                <h2>{d.name}</h2>
+              </>
+            </a>
+            <p>{d.answer}</p>
+            <p class="resource-label">
+              {d.rows.toLocaleString('en-US')} full rows · {d.chartRows} plotted rows · CC BY 4.0
+            </p>
+          </>
+        </article>
+      ))
+    }
+  </section><section class="container prose-section">
+    <h2>What preparation means here</h2><p>
+      ChartsAI adds headers and CSV formatting while preserving the supplied numeric values. Each resource
+      identifies the original file, retrieval date and SHA-256 checksum. Its chart uses two named columns,
+      with every selected source row recorded in the provenance download. Four charts use all source rows.
+      Abalone uses a clearly labelled 300-row deterministic selection because the full file exceeds the editor
+      limit; it is not a random sample.
+    </p><h2>Use the source context with the chart</h2><p>
+      A public dataset is evidence of the supplied observations, not a guarantee that a particular analysis or
+      population claim is appropriate. Read the variable definitions, prior preprocessing and limitations
+      before combining units, interpreting class labels or describing a relationship. Original data remain
+      subject to their CC BY 4.0 attribution terms. Our <a href="/examples/">fictional worked examples</a> form
+      a separate teaching collection.
+    </p><p>
+      <a href="/guides/scatter-plot-vs-line-graph/">Choose the right representation</a> or <a
+        href="/scatter-plot-maker/">open the scatter plot maker</a
+      > with your own paired measurements.
+    </p>
+  </section>
+</Layout>

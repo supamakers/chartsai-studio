@@ -1,8 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ExampleCards from '../../components/ExampleCards.astro';
+import StatCards from '../../components/StatCards.astro';
+import { statExamples } from '../../data/stat-examples';
+import { statFamilies } from '../../lib/stat-presets';
 import { groups } from '../../data/showcase';
 import '../../styles/examples.css';
+const total = 20 + statExamples.length;
 const schema = [
   {
     '@type': 'CollectionPage',
@@ -18,15 +22,15 @@ const schema = [
 ---
 
 <Layout
-  title="20 Chart Examples with Data & Free Downloads | ChartsAI"
-  description="Explore 20 line graph, dot plot and radar chart examples with worked explanations, original CSV data and free SVG and PNG downloads. Edit any chart in your browser."
+  title={`${total} Chart Examples with Data & Free Downloads | ChartsAI`}
+  description="Explore chart examples with worked calculations, original CSV data and free SVG and PNG downloads. Histograms, box plots, scatter plots, bars, Pareto, line, dot and radar charts."
   schema={schema}
 >
   <section class="container example-intro">
-    <span class="eyebrow">THE EXAMPLE LIBRARY / 001–020</span><h1>
+    <span class="eyebrow">THE EXAMPLE LIBRARY</span><h1>
       A good chart starts<br />with a <em>clear question.</em>
     </h1><p>
-      Twenty finished charts. The data behind every point. See how each one works, then make it your own.
+      {total} finished charts. The data behind every point. See how each one works, then make it your own.
     </p><div class="example-promises">
       <span>Free SVG + PNG</span><span>Original CSV data</span><span>No signup</span>
     </div>
@@ -40,6 +44,7 @@ const schema = [
           </a>
         ))
       }
+      {Object.values(statFamilies).map((f) => <a href={`/examples/${f.hub}/`}>{f.name} examples ↗</a>)}
     </div>
     <div class="example-filters" hidden>
       <label for="example-search"
@@ -52,11 +57,13 @@ const schema = [
         >Chart type<select id="example-kind"
           ><option value="all">All types</option><option value="line">Line graphs</option><option value="dot"
             >Dot plots</option
-          ><option value="radar">Radar charts</option></select
+          ><option value="radar">Radar charts</option>{
+            Object.entries(statFamilies).map(([k, f]) => <option value={k}>{f.name}s</option>)
+          }</select
         ></label
-      ><p id="example-count" role="status" aria-live="polite">20 examples</p>
+      ><p id="example-count" role="status" aria-live="polite">{total} examples</p>
     </div>
-    <ExampleCards /><p id="example-empty" hidden>
+    <ExampleCards /><StatCards /><p id="example-empty" hidden>
       No examples match. Try another phrase or choose all types.
     </p>
   </section>

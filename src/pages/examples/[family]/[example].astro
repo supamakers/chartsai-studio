@@ -1,0 +1,168 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import StatCards from '../../../components/StatCards.astro';
+import { statExamples } from '../../../data/stat-examples';
+import { statMethods, statReferences } from '../../../data/stat-tools';
+import { analyzeStat, statDescription } from '../../../lib/statistics';
+import { chartFrames } from '../../../lib/chart-options';
+import '../../../styles/examples.css';
+import '../../../styles/statistics.css';
+export function getStaticPaths() {
+  return statExamples.map((e) => ({ params: { family: e.family.hub, example: e.id }, props: { e } }));
+}
+const { e } = Astro.props,
+  a = analyzeStat(e.spec),
+  asset = `/charts/assets/${e.id}`,
+  url = `https://www.chartsai.com${e.url}`,
+  dim = chartFrames[e.spec.frame];
+const schema = [
+  {
+    '@type': 'Article',
+    headline: e.title,
+    description: e.answer,
+    datePublished: '2026-09-08',
+    dateModified: '2026-09-08',
+    author: { '@id': 'https://www.chartsai.com/#organization' },
+    image: `https://www.chartsai.com${asset}.png`,
+    mainEntityOfPage: { '@id': `${url}#webpage` },
+    isAccessibleForFree: true,
+  },
+  {
+    '@type': 'Dataset',
+    name: `${e.title} — fictional data`,
+    description: `Original fictional teaching data. ${e.answer}`,
+    url: `${url}#data`,
+    creator: { '@id': 'https://www.chartsai.com/#organization' },
+    license: 'https://www.chartsai.com/source/',
+    distribution: {
+      '@type': 'DataDownload',
+      encodingFormat: 'text/csv',
+      contentUrl: `https://www.chartsai.com${asset}.csv`,
+    },
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      ['Chart examples', '/examples/'],
+      [`${e.family.name} examples`, `/examples/${e.family.hub}/`],
+      [e.title, e.url],
+    ].map(([name, path], i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name,
+      item: `https://www.chartsai.com${path}`,
+    })),
+  },
+];
+---
+
+<Layout
+  title={`${e.title} — Data & Downloads | ChartsAI`}
+  description={e.answer}
+  schema={schema}
+  imagePath={`${asset}.png`}
+  imageAlt={statDescription(e.spec)}
+  imageWidth={dim.width}
+  imageHeight={dim.height}
+>
+  <div class="container example-breadcrumb">
+    <nav aria-label="Breadcrumb">
+      <a href="/examples/">Chart examples</a> / <a href={`/examples/${e.family.hub}/`}
+        >{e.family.name} examples</a>
+    </nav>
+  </div>
+  <section class="container example-intro example-detail-intro">
+    <span class="eyebrow">ORIGINAL WORKED EXAMPLE</span><h1>{e.title}</h1><p>{e.answer}</p><div
+      class="example-actions"
+    >
+      <a class="button" href={`/${e.family.tool}/?example=${e.id}#editor`}>Edit this chart ↗</a><a
+        href="#data"
+        class="text-link">Inspect the data ↓</a>
+    </div>
+  </section>
+  <section class="container example-output">
+    <figure>
+      <img
+        src={`${asset}.svg`}
+        width={dim.width}
+        height={dim.height}
+        alt={statDescription(e.spec)}
+        fetchpriority="high"
+      /><figcaption>Original fictional data · Apache ECharts · {dim.width} × {dim.height}</figcaption>
+    </figure><div class="example-downloads">
+      <span>Take the example</span>{
+        ['svg', 'png', 'csv', 'json'].map((f) => (
+          <a href={`${asset}.${f}`} download>
+            {f === 'json' ? 'ECharts JSON' : f.toUpperCase()} ↓
+          </a>
+        ))
+      }
+    </div>
+  </section>
+  <div class="container example-body">
+    <article class="example-explanation">
+      <section><h2>How to read this chart</h2>{e.reading.map((p) => <p>{p}</p>)}</section><section>
+        <h2>Try the calculation yourself</h2><p>{e.practice}</p><p>
+          <a href={`/${e.family.tool}/?example=${e.id}#editor`}>Open this exact example</a>, change the data
+          or calculation settings, and compare the result. The CSV preserves the input rows; the ECharts JSON
+          contains drawing options.
+        </p>
+      </section><section class="example-caution">
+        <h2>What this example cannot tell you</h2><p>{e.limit}</p>
+      </section><section><h2>{e.question}</h2><p>{e.response}</p></section><section>
+        <h2>Calculation convention</h2><p>{statMethods[e.spec.kind][0].text}</p>
+      </section><p class="example-reference">
+        Method background: {statReferences[e.spec.kind].map((r) => <a href={r.url}>{r.name}. </a>)}
+      </p><p class="example-credit">
+        Created by <a href="https://www.supamakers.com/">SupaMakers</a> for ChartsAI · September 8, 2026. <a
+          href="/source/">Source and reuse terms.</a>
+      </p>
+    </article>
+    <aside id="data" class="example-data">
+      <h2>Every input value</h2><p>
+        Fictional teaching data. Repeated observations remain separate rows.
+      </p><div class="table-scroll stat-summary">
+        <table>
+          <thead><tr>{e.spec.table[0].map((c) => <th scope="col">{c}</th>)}</tr></thead><tbody
+            >{
+              e.spec.table.slice(1).map((r) => (
+                <tr>
+                  {r.map((c) => (
+                    <td>{c}</td>
+                  ))}
+                </tr>
+              ))
+            }</tbody>
+        </table>
+      </div><a href={`${asset}.csv`} download class="text-link">Download original CSV ↓</a><h2>
+        Calculated values
+      </h2><div class="table-scroll">
+        <table>
+          <thead><tr>{a.summary[0].map((c) => <th scope="col">{c}</th>)}</tr></thead><tbody
+            >{
+              a.summary.slice(1).map((r) => (
+                <tr>
+                  {r.map((c) => (
+                    <td>{c}</td>
+                  ))}
+                </tr>
+              ))
+            }</tbody>
+        </table>
+      </div><p class="fine-print">
+        {
+          e.spec.kind === 'histogram'
+            ? 'Lower boundaries are inclusive; upper boundaries are exclusive except in the final bin.'
+            : e.spec.kind === 'box'
+              ? `Quartiles: ${e.spec.quartiles === 'linear' ? 'R type 7 interpolation' : 'median of halves, excluding the middle observation'}. Whiskers: ${e.spec.whiskers === 'iqr' ? 'last observations within 1.5 × IQR fences' : 'observed minimum to maximum'}.`
+              : 'The calculated table follows the stated method without removing observations.'
+        }
+      </p>
+    </aside>
+  </div>
+  <section class="container section">
+    <h2>Keep exploring</h2><StatCards
+      items={statExamples.filter((x) => x.spec.kind === e.spec.kind && x.id !== e.id).slice(0, 3)}
+    />
+  </section>
+</Layout>

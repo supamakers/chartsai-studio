@@ -4,19 +4,19 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout
   title="ChartsAI Source Code & Sample Data — Free to Reuse"
-  description="Download the MIT-licensed source for ChartsAI’s dot plot, radar chart, line graph and printable habit tracker tools. Inspect the calculations and reuse original sample datasets."
+  description="Download the MIT-licensed source for ChartsAI’s eight chart makers and printable habit tracker. Inspect the calculations and reuse original sample datasets."
   ><article class="container prose-page">
     <span class="eyebrow">OPEN TO LEARN FROM</span><h1>
       Look under<br /><em>the picture.</em>
     </h1><p class="intro-text">
       The tools are free to use. The implementation is open to inspect, adapt and build on.
-    </p><p class="byline">Version 0.4.0 · SupaMakers · September 8, 2026</p><a
+    </p><p class="byline">Version 0.5.0 · SupaMakers · September 8, 2026</p><a
       class="button"
       href="/downloads/chartsai-source.zip"
       download>Download the source ZIP ↓</a
     ><h2>What is included?</h2><ul>
       <li>
-        The dot-plot, radar-chart and line-graph editors, Apache ECharts configuration, three visual themes
+        Eight chart editors, including histogram, box plot, scatter, bar and Pareto, Apache ECharts configuration, three visual themes
         and export logic.
       </li><li>The spreadsheet import preview, number parsing and data validation.</li><li>
         The printable habit tracker with calendar logic and PDF generation.
@@ -27,7 +27,7 @@ npm run dev</code></pre><p>
       The project uses Astro, React, TypeScript and Apache ECharts. The README contains build instructions,
       input limits and deployment notes. Node.js 22.12 or newer is required by the current build tooling.
     </p><h2>Built on Apache ECharts</h2><p>
-      ChartsAI uses ECharts’ built-in scatter, radar and line series for geometry, axes, tooltips and
+      ChartsAI uses ECharts’ built-in scatter, radar, line, bar and boxplot series for geometry, axes, tooltips and
       rendering. Examples are rendered as SVG during the site build; interactive charts and all user data stay
       in the browser. You can download a chart’s ECharts option JSON from its editor.
     </p><p>
@@ -36,18 +36,18 @@ npm run dev</code></pre><p>
     </p><h2>License and attribution</h2><p>
       The original ChartsAI code and fictional sample data are released under the MIT license. Keep the
       license notice when redistributing substantial portions of the code. Third-party libraries and fonts
-      have their own licenses. Generated charts and PDFs do not require a visible credit.
+      have their own licenses. Charts generated from your own data do not require a ChartsAI credit. Public datasets retain their own attribution requirements.
     </p><p>
       If the tools help your work, a link to <a href="https://www.chartsai.com/">ChartsAI</a> or a mention of <a
         href="https://www.supamakers.com/">SupaMakers</a
       > is appreciated. It is optional for your exported charts and printables.
     </p><p>
       <a href="https://github.com/supamakers/chartsai-studio">Browse the code and contribute on GitHub ↗</a>
-    </p><h2>20 worked chart examples</h2><p>
+    </p><h2>50 worked chart examples</h2><p>
       The <a href="/examples/">example library</a> includes original fictional datasets, worked calculations, reusable
       chart exports and exact editor starting points. Generated showcase assets are recreated by the asset preparation
       command.
-    </p><h2>Small datasets to try</h2><ul>
+    </p><h2>Attributed public datasets</h2><p>The <a href="/datasets/">public-data collection</a> contains Iris, Wine, Glass Identification, Seeds and Abalone from UCI. These datasets are CC BY 4.0, separately from our MIT code and fictional examples. Keep the original authors, source and license attribution and identify your changes. Each resource documents the pinned source file and chart selection.</p><h2>Small fictional datasets to try</h2><ul>
       <li>
         <a href="/samples/dot-scores.csv" download>Class scores — dot-plot CSV</a>
       </li><li>

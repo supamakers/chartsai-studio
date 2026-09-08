@@ -81,14 +81,14 @@ This property has a Search Console “Generative AI features” beta report, obs
 ## Engineering and data integrity
 
 - Stack: Astro static output, React, TypeScript, Apache ECharts. Inspect `package.json` and lockfile for exact versions.
-- The original ChartsAI also used ECharts. This rebuild uses ECharts built-in scatter/radar/line series with SVG rendering. Lieflat Charts is inspiration only; its code is not integrated. Check licenses before copying any external implementation.
+- The original ChartsAI also used ECharts. This rebuild uses ECharts built-in scatter/radar/line/bar/boxplot series with SVG rendering. Lieflat Charts is inspiration only; its code is not integrated. Check licenses before copying any external implementation.
 - Share chart options between preview and export. Do not replace native axes/geometry with a separate hand-drawn engine. A custom printable SVG grid is appropriate.
 - Keep the initial sample visible in static HTML. Load interactive charts, spreadsheet parsing, and PDF generation only where needed.
 - Default flows run locally in the visitor's browser. No backend, account or model API is required. The user authorized Plausible analytics and production deployment on 2026-09-08; keep analytics events limited to fixed identifiers and never transmit entered data. Do not silently introduce data transmission or invalidate privacy claims.
 - Support practical paste/file imports with previews, sheet/column/row selection, transpose, and explicit numeric conventions. Users should not need our internal data format.
 - Never silently drop invalid rows, replace missing values with zero, remove outliers, normalize scores, or choose an aggregation. Show ambiguity and preserve user control.
 - Preserve current explicit size/row/series limits unless intentionally changed and tested. Radar dimensions use a declared common scale; polygon area is not a composite score.
-- Sample datasets are fictional. Remove a fictional sample source note when the visitor replaces its data; preserve a source note they entered themselves.
+- Teaching presets are fictional; the separate UCI collection is attributed CC BY 4.0 public data. Remove a fictional sample source note when the visitor replaces its data; preserve a source note they entered themselves.
 - Keep preview and downloaded values consistent. Verify SVG escaping, PNG dimensions, PDF paper sizes, printable calendar dates, and keyboard-accessible controls when touching those features.
 
 ## File map and checks
@@ -130,3 +130,11 @@ Production went live at `https://www.chartsai.com` on September 8, 2026 in Verce
 Complete authorized local work autonomously. Publishing a repository, pushing, deploying, or sending outreach must follow the user's actual authorization; do not infer these actions from a request for advice about them, and do not ask again when already authorized. Never claim publication without checking its result.
 
 Launch requires checking the production URLs, canonical/redirect behavior, sitemap, search verification, crawler access, and actual downloads. Update this guide's dated status when these steps have really happened.
+
+## Statistical resource expansion — September 8, 2026
+
+`src/lib/statistics.ts` owns the five additional chart calculations and shared native ECharts options. `stat-presets.ts` contains 30 fictional specifications; `src/data/stat-examples.ts` contains their distinct worked interpretations. `StatEditor.tsx` accepts only whitelisted example or dataset query IDs. Dataset source notes are cleared when replacing the loaded data, just as fictional notes are.
+
+Twenty guides live in `src/data/guides.json`. Five attributed UCI resources use `datasets.ts` and `dataset-manifest.json`; pinned full/chart CSVs are public. Refreshing them is explicit via `scripts/fetch-datasets.py`, followed by row-selection, checksum, numerical and license review. Do not treat Abalone's 300-row deterministic chart subset as random or representative. The full CSV retains 4,177 source rows. Keep imported dataset licenses separate from MIT source.
+
+Generated chart images/configurations are rebuilt during asset preparation and excluded from Git and the source ZIP; pinned CSVs and provenance source metadata are included. `tests/statistics.test.ts` and `tests/browser/statistics.spec.ts` cover calculations, exact handoffs, source selections and actual downloads. `scripts/check-expansion.ts` records resource and editorial quality checks. Expansion targets 103 HTML / 102 indexable routes; counts are not a claim of search performance.

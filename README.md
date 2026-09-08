@@ -31,7 +31,7 @@ The browser checks use Playwright Chromium. Install it once with `npx playwright
 - Import: paste or CSV/TSV/TXT/XLSX, sheet selection, row range, transpose, header and column selection, US/European number style. Missing or invalid scores block plotting. Files stay on-device.
 - Habit tracker: weekly or calendar-correct monthly, up to eight habits, title, A4/US Letter landscape, ink-friendly header, PDF download. PDF uses a high-resolution rendering of the same SVG preview.
 
-All nine preset datasets and twenty showcase datasets are original, fictional illustrations. They are not research or benchmark findings. Import limits are 8 MB per file, 2 MB of pasted text, 2,000 data rows and 100 columns; oversized inputs are rejected, not silently truncated. Currency symbols are formatting; percentages remain percentage points (12% → 12). Statistical calculations use ordinary JavaScript floating-point numbers.
+All nine preset datasets and fifty showcase datasets are original, fictional illustrations. They are not research or benchmark findings. Import limits are 8 MB per file, 2 MB of pasted text, 2,000 data rows and 100 columns; oversized inputs are rejected, not silently truncated. Currency symbols are formatting; percentages remain percentage points (12% → 12). Statistical calculations use ordinary JavaScript floating-point numbers.
 
 ## Chart engine and presentation
 
@@ -41,7 +41,7 @@ Three themes (Editorial, Blueprint, After hours), standard/presentation/square e
 
 ## Worked example library
 
-`/examples/` contains 20 original worked examples grouped into line graphs, dot plots and radar charts. Each page includes an accessible data table, method and limitations, static SVG/PNG/CSV/ECharts JSON downloads and an exact editor handoff. Three family hubs organize the collection. All 24 new pages render their main content without JavaScript. Gallery filters have no indexable URL variants.
+`/examples/` contains 50 original worked examples across eight chart families. Each page includes an accessible data table, method and limitations, static SVG/PNG/CSV/ECharts JSON downloads and an exact editor handoff. Eight family hubs organize the collection. All resource pages render their main content without JavaScript. Gallery filters have no indexable URL variants.
 
 Specifications live in `src/lib/showcase-specs.ts` and editorial text in `src/data/showcase.ts`. Run asset preparation before development or asset-dependent tests; production builds do this automatically. Generated `public/examples/assets/` files are omitted from Git and the source ZIP to keep the source small and reproducible. The September research and release criteria are documented in `docs/SHOWCASE-RESEARCH-2026-09-08.md`.
 
@@ -77,3 +77,11 @@ Original code and sample datasets: MIT, copyright 2026 SupaMakers Limited. Depen
 ## Product direction
 
 See [AGENTS.md](AGENTS.md) for ongoing project instructions and [the expansion notes](docs/PRODUCT-DIRECTION.md) for the free-tool portfolio and Remocn/AnimStats assessment.
+
+## Statistical tools and attributed data (v0.5.0)
+
+Five additional native ECharts makers cover histograms, box plots, scatter plots, grouped/stacked/100% bars and Pareto charts. Raw observations are preserved. Bin boundaries, quartile conventions, regression coefficients and transformed percentages are exposed in calculated tables. New distribution/scatter inputs support up to 2,000 observations; bars/Pareto support 50 categories. The original dot/line/radar limits are unchanged.
+
+Twenty `/guides/` resources provide original comparison and method explanations. Five `/datasets/` resources provide pinned UCI CSVs under CC BY 4.0, separate from MIT application code and fictional teaching data. Source authors, files, checksums and exact plotted row selections are recorded in `src/data/dataset-manifest.json`. Abalone's full 4,177-row CSV exceeds the editor limit; its chart uses an explicitly labelled deterministic 300-row subset. Normal builds do not fetch upstream data; `python scripts/fetch-datasets.py` is an intentional refresh operation that requires revalidation.
+
+The September expansion produces 103 HTML pages including the noindex 404, and 102 sitemap URLs. Page count is an inventory, not evidence of indexing, authority or traffic. See `docs/EXPANSION-RESEARCH-2026-09.md` for observed search evidence.

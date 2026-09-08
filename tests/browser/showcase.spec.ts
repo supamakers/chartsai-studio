@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
+import {statExamples} from '../../src/data/stat-examples';
 import { examples } from '../../src/data/showcase';
 import { showcaseGroups } from '../../src/lib/showcase-specs';
 import { createChartOption, chartFrames } from '../../src/lib/chart-options';
@@ -34,7 +35,7 @@ test('all content and actual downloads work without JavaScript', async ({ browse
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto('/examples/');
-  await expect(page.locator('.showcase-card')).toHaveCount(20);
+  await expect(page.locator('.showcase-card')).toHaveCount(20+statExamples.length);
   await page.goto('/examples/dot-plot-fractions/');
   await expect(page.getByRole('heading', { name: 'How to read this chart' })).toBeVisible();
   await expect(page.locator('#data table tbody tr')).toHaveCount(10);

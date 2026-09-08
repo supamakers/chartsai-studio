@@ -1,0 +1,45 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import guides from '../../data/guides.json';
+import '../../styles/statistics.css';
+---
+
+<Layout
+  title="Chart Guides — Comparisons & Worked Calculations | ChartsAI"
+  description="Choose a chart and check its methods. Twenty practical guides cover distributions, correlation, quartiles, percentages, scales and misleading graph choices."
+>
+  <section class="container listing-intro">
+    <span class="eyebrow">CHOOSE, CALCULATE, EXPLAIN</span><h1>
+      Understand the chart<br /><em>before you share it.</em>
+    </h1><p>
+      Practical comparisons and worked calculations, connected to charts you can inspect and edit. Every
+      numerical teaching example is fictional and labelled.
+    </p>
+  </section><section class="container stat-methods">
+    {
+      guides.map((g) => (
+        <article>
+          <>
+            <h2>
+              <a href={`/guides/${g.slug}/`}>{g.title}</a>
+            </h2>
+            <p>{g.answer}</p>
+          </>
+        </article>
+      ))
+    }
+  </section><section class="container prose-section">
+    <h2>Use a guide alongside the data</h2><p>
+      Start with the question you want a reader to answer. A distribution question needs different input and
+      geometry from a comparison between categories or an association between two measurements. These guides
+      explain those choices with explicit arithmetic and point to working examples. They also identify what
+      the current tools support, including the limits of fitted lines, quartile summaries and transformed
+      percentages.
+    </p><p>
+      <a href="/examples/">Browse the chart examples</a>, <a href="/datasets/"
+        >download attributed public datasets</a
+      >, or <a href="/charts/">open a free maker</a>. Preserve the source, units and relevant calculation
+      convention when adapting any example.
+    </p>
+  </section>
+</Layout>

@@ -1,11 +1,12 @@
 ---
 import '../../styles/examples.css';
 import Layout from '../../layouts/Layout.astro';
+import StatToolCards from '../../components/StatToolCards.astro';
 import ToolCards from '../../components/ToolCards.astro';
 ---
 
 <Layout
-  title="Free Online Chart Makers — Dot, Radar & Line Graphs | ChartsAI"
+  title="Free Online Chart Makers — Histograms, Box Plots & More | ChartsAI"
   description="Make a dot plot, radar chart or line graph online. Start with a sample, paste your own values or import CSV and Excel, and download a free PNG, SVG or PDF."
 >
   <section class="container listing-intro">
@@ -17,7 +18,7 @@ import ToolCards from '../../components/ToolCards.astro';
     </p>
   </section>
   <section class="container section listing-cards">
-    <ToolCards show="charts" />
+    <ToolCards show="charts" /><h2>Explore distributions, relationships and categories</h2><StatToolCards/>
   </section>
   <section class="container prose-section">
     <h2>Choose the chart that fits your question</h2><div class="comparison-table">
@@ -45,7 +46,7 @@ import ToolCards from '../../components/ToolCards.astro';
     </p>
   </section>
   <section class="container example-home-link">
-    <span class="eyebrow">20 ORIGINAL WORKED EXAMPLES</span><h2>See the chart. Understand the data.</h2><p>
+    <span class="eyebrow">ORIGINAL WORKED EXAMPLES</span><h2>See the chart. Understand the data.</h2><p>
       Explore distance–time graphs, dot plot distributions and radar profiles. Every example includes the
       original values, a worked explanation and free downloads.
     </p><a class="text-link" href="/examples/">Explore the example library →</a>

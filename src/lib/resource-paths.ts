@@ -1,0 +1,23 @@
+export const guideSlugs = [
+  'histogram-vs-bar-graph',
+  'box-plot-vs-histogram',
+  'dot-plot-vs-histogram',
+  'scatter-plot-vs-line-graph',
+  'bar-graph-vs-line-graph',
+  'pie-chart-vs-bar-graph',
+  'mean-vs-median',
+  'standard-deviation-vs-standard-error',
+  'histogram-bin-width',
+  'box-plot-quartiles',
+  'box-plot-outliers',
+  'line-of-best-fit',
+  'pearson-correlation-coefficient',
+  'correlation-does-not-imply-causation',
+  'relative-frequency-histogram',
+  'frequency-table',
+  'misleading-graphs',
+  'truncated-y-axis',
+  'logarithmic-scale-graph',
+  'radar-chart-disadvantages',
+];
+export const datasetIds = ['iris', 'wine', 'glass', 'seeds', 'abalone'];

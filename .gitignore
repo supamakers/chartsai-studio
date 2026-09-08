@@ -19,3 +19,9 @@ artifacts/
 .vercel/
 
 public/examples/assets/
+
+public/charts/assets/
+
+public/datasets/assets/*.svg
+public/datasets/assets/*.png
+public/datasets/assets/*.json

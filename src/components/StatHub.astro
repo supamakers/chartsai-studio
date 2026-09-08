@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StatCards from './StatCards.astro';
+import { statFamilies } from '../lib/stat-presets';
+import type { StatKind } from '../lib/statistics';
+import { statHubNotes } from '../data/stat-hubs';
+import { statExamples } from '../data/stat-examples';
+import '../styles/examples.css';
+interface Props {
+  kind: StatKind;
+}
+const { kind } = Astro.props,
+  f = statFamilies[kind],
+  items = statExamples.filter((e) => e.spec.kind === kind);
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    name: `${f.name} examples`,
+    hasPart: items.map((e) => ({
+      '@type': 'WebPage',
+      name: e.title,
+      url: `https://www.chartsai.com${e.url}`,
+    })),
+  },
+];
+---
+
+<Layout
+  title={`${f.name} Examples — Worked Data & Free Charts | ChartsAI`}
+  description={`Explore ${f.name.toLowerCase()} examples with original fictional data, checked calculations, limitations and downloadable SVG, PNG, CSV and ECharts JSON.`}
+  schema={schema}
+>
+  <section class="container listing-intro">
+    <span class="eyebrow">THE CHART, THE DATA, THE EXPLANATION</span><h1>{f.name} examples</h1><p>
+      {f.answer} These worked examples make the input values, method and interpretation available together.
+    </p><a class="button" href={`/${f.tool}/`}>Make your own {f.name.toLowerCase()} ↗</a>
+  </section><section class="container section"><StatCards items={items} /></section><section
+    class="container prose-section"
+  >
+    {
+      statHubNotes[kind].map((m) => (
+        <section>
+          <>
+            <h2>{m.title}</h2>
+            <p>{m.text}</p>
+          </>
+        </section>
+      ))
+    }<p>
+      Every dataset in this collection is original and fictional. Use the examples to learn a calculation or
+      start a chart, and replace the source note when adding your own observations. <a href="/examples/"
+        >Explore the complete chart library.</a>
+    </p>
+  </section>
+</Layout>

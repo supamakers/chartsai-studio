@@ -1,0 +1,34 @@
+---
+import { statKinds } from '../lib/statistics';
+import { statFamilies, statPresetIds, statPresets } from '../lib/stat-presets';
+---
+
+<div class="showcase-grid">
+  {
+    statKinds.map((k) => {
+      const f = statFamilies[k],
+        id = statPresetIds.find((id) => statPresets[id].kind === k);
+      return (
+        <a class="showcase-card" href={`/${f.tool}/`}>
+          <>
+            <img
+              src={`/charts/assets/${id}.svg`}
+              alt={`${f.name} example`}
+              width="1200"
+              height="800"
+              loading="lazy"
+            />
+            <div class="showcase-card-copy">
+              <>
+                <span class="eyebrow">FREE TOOL</span>
+                <h3>{f.name} maker</h3>
+                <p>{f.answer}</p>
+                <span class="text-link">Open the maker →</span>
+              </>
+            </div>
+          </>
+        </a>
+      );
+    })
+  }
+</div>

@@ -7,10 +7,12 @@ export default function ImportData({
   onClose,
   onImport,
 }: {
-  kind: 'dot' | 'radar' | 'line';
+  kind: 'dot' | 'radar' | 'line' | 'numeric' | 'table';
   onClose: () => void;
   onImport: (table: Table, style: NumberStyle) => void;
 }) {
+  const single = kind === 'dot' || kind === 'numeric';
+  const tabular = kind === 'line' || kind === 'table';
   const [text, setText] = useState('');
   const [sheets, setSheets] = useState<Record<string, Table>>({});
   const [sheet, setSheet] = useState('');
@@ -87,7 +89,7 @@ export default function ImportData({
       setError((e as Error).message);
     }
   }
-  const selectedColumns = kind === 'dot' ? [column] : selected.filter((i) => i !== labelColumn && i < width);
+  const selectedColumns = single ? [column] : selected.filter((i) => i !== labelColumn && i < width);
   const invalid = body.flatMap((row, r) =>
     selectedColumns
       .filter((c) => readNumber(row[c] ?? '', style) === null)
@@ -97,12 +99,12 @@ export default function ImportData({
     body.length > 0 &&
     selectedColumns.length > 0 &&
     !invalid.length &&
-    (kind === 'dot' || body.every((row) => !!row[labelColumn]?.trim()));
+    (single || body.every((row) => !!row[labelColumn]?.trim()));
   function commit() {
     if (!canImport) return;
-    if (kind === 'dot' && body.length > 300) {
+    if (single && body.length > (kind === 'dot' ? 300 : 2000)) {
       setError(
-        'A dot plot supports up to 300 observations. Select a smaller range; no rows have been removed.',
+        `This ${kind === 'dot' ? 'dot plot supports up to 300' : 'numeric import supports up to 2,000'} observations. Select a smaller range; no rows have been removed.`,
       );
       return;
     }
@@ -114,13 +116,12 @@ export default function ImportData({
       setError('Use 2–300 points and 1–5 numeric series for a line graph. No rows have been removed.');
       return;
     }
-    const result =
-      kind === 'dot'
-        ? body.map((row) => [row[column]])
-        : [
-            [labels[labelColumn], ...selectedColumns.map((c) => labels[c])],
-            ...body.map((row) => [row[labelColumn], ...selectedColumns.map((c) => row[c])]),
-          ];
+    const result = single
+      ? body.map((row) => [row[column]])
+      : [
+          [labels[labelColumn], ...selectedColumns.map((c) => labels[c])],
+          ...body.map((row) => [row[labelColumn], ...selectedColumns.map((c) => row[c])]),
+        ];
     onImport(result, style);
     onClose();
   }
@@ -175,9 +176,9 @@ export default function ImportData({
         <textarea
           aria-label="Paste your data"
           placeholder={
-            kind === 'dot'
+            single
               ? 'Paste numbers or spreadsheet cells here…\n64, 68, 72, 72, 76, 80'
-              : kind === 'line'
+              : tabular
                 ? 'Month\tOrders\tTarget\nJan\t120\t100\nFeb\t145\t125'
                 : 'Dimension\tAlex\tSam\nResearch\t8\t5\nDesign\t9\t6\nWriting\t7\t8'
           }
@@ -300,7 +301,7 @@ export default function ImportData({
                 </tbody>
               </table>
             </div>
-            {kind === 'dot' ? (
+            {single ? (
               <label className="mapping-choice">
                 Which column contains your values?
                 <select value={column} onChange={(e) => setColumn(Number(e.target.value))}>
@@ -314,8 +315,8 @@ export default function ImportData({
             ) : (
               <>
                 <label className="mapping-choice">
-                  {kind === 'line'
-                    ? 'Which column contains the horizontal labels?'
+                  {tabular
+                    ? 'Which column contains the labels or X values?'
                     : 'Which column names the dimensions?'}
                   <select value={labelColumn} onChange={(e) => setLabelColumn(Number(e.target.value))}>
                     {labels.map((label, i) => (
@@ -327,9 +328,7 @@ export default function ImportData({
                 </label>
                 <fieldset>
                   <legend>
-                    {kind === 'line'
-                      ? 'Choose the numeric series to plot'
-                      : 'Choose the score series to compare'}
+                    {tabular ? 'Choose the numeric columns to plot' : 'Choose the score series to compare'}
                   </legend>
                   <div className="check-row">
                     {labels.map(
@@ -357,7 +356,7 @@ export default function ImportData({
               Currency formatting is read as numbers; 12% is read as 12. Choose columns with consistent units.
               Missing values are never replaced with zero.
             </p>
-            {kind !== 'dot' && body.some((row) => !row[labelColumn]?.trim()) && (
+            {!single && body.some((row) => !row[labelColumn]?.trim()) && (
               <p className="notice error" role="status">
                 Every row needs a label. Check the label column or selected rows.
               </p>
@@ -372,7 +371,7 @@ export default function ImportData({
               </div>
             )}
             <button className="button" disabled={!canImport || busy} onClick={commit}>
-              Use {body.length} {kind === 'dot' ? 'values' : kind === 'line' ? 'points' : 'dimensions'}{' '}
+              Use {body.length} {single ? 'values' : tabular ? 'points' : 'dimensions'}{' '}
               <ArrowRight size={16} />
             </button>
           </div>

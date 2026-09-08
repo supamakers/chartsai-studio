@@ -9,7 +9,7 @@
 - [Habit tracker printable](https://www.chartsai.com/printables/habit-tracker/): Custom weekly and monthly blank trackers, up to 8 habits, A4 or US Letter landscape PDF.
 
 ## Worked examples
-- [Chart example library](https://www.chartsai.com/examples/): 20 original fictional datasets with worked interpretations, limits, exact editor links and SVG/PNG/CSV/ECharts JSON downloads.
+- [Chart example library](https://www.chartsai.com/examples/): 50 original fictional datasets with worked interpretations, limits, exact editor links and SVG/PNG/CSV/ECharts JSON downloads.
 - [Line graph examples](https://www.chartsai.com/examples/line-graphs/): Eight examples including numeric/time spacing, motion, grouped cumulative frequency and break-even.
 - [Dot plot examples](https://www.chartsai.com/examples/dot-plots/): Six stacked frequency plots with means, medians, fractions and distribution shapes.
 - [Radar chart examples](https://www.chartsai.com/examples/radar-charts/): Six shared-scale rating profiles. No automatic normalization or composite scores.
@@ -21,9 +21,18 @@
 
 ## Important distinctions
 - Numeric and date line graphs preserve interval spacing; missing values and duplicate positions are flagged.
-- All sample data is fictional, not a research dataset.
+- The worked-example collection is fictional. The separate public-data collection contains attributed UCI datasets under CC BY 4.0; Abalone uses an explicitly labelled 300-row selection for its chart.
 - Missing values are not silently converted to zero.
 - Radar polygon area is not an overall score.
 - The printable tracker is blank; it does not store completion history or provide health advice.
 - No accounts, payments or watermarks are required for current tools.
 - Search visibility or AI citations are not guaranteed by this file.
+
+## More chart tools and references
+- [Histogram maker](https://www.chartsai.com/histogram-maker/): Up to 2,000 observations; explicit equal-width bins and relative frequencies.
+- [Box plot maker](https://www.chartsai.com/box-plot-maker/): Raw grouped observations; two quartile methods and two whisker conventions.
+- [Scatter plot maker](https://www.chartsai.com/scatter-plot-maker/): Paired observations, descriptive Pearson r and optional least-squares line.
+- [Bar chart maker](https://www.chartsai.com/bar-chart-maker/): Grouped, stacked and explicitly normalized 100% bars; horizontal or vertical.
+- [Pareto chart maker](https://www.chartsai.com/pareto-chart-maker/): Descending nonnegative categories and cumulative shares.
+- [Chart guides](https://www.chartsai.com/guides/): Twenty comparison and method guides with original arithmetic and limitations.
+- [Public datasets](https://www.chartsai.com/datasets/): Five UCI resources with complete CSVs, checksums, original author attribution and exact chart selections.

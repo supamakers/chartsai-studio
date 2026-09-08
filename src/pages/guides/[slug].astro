@@ -1,0 +1,123 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import guides from '../../data/guides.json';
+import { statExamples } from '../../data/stat-examples';
+import '../../styles/statistics.css';
+import '../../styles/examples.css';
+export function getStaticPaths() {
+  return guides.map((g) => ({ params: { slug: g.slug }, props: { g } }));
+}
+const { g } = Astro.props,
+  e = statExamples.find((e) => e.id === g.example)!;
+const refs =
+  g.slug === 'standard-deviation-vs-standard-error'
+    ? [['NIST measures of scale', 'https://www.itl.nist.gov/div898/handbook/eda/section3/eda356.htm']]
+    : g.slug === 'mean-vs-median'
+      ? [['NIST measures of location', 'https://www.itl.nist.gov/div898/handbook/eda/section3/eda351.htm']]
+      : g.slug === 'radar-chart-disadvantages'
+        ? [['ChartsAI radar method and source', '/radar-chart-maker/']]
+        : g.slug.includes('quartil')
+          ? [
+              [
+                'R quantile algorithms',
+                'https://stat.ethz.ch/R-manual/R-devel/library/stats/html/quantile.html',
+              ],
+            ]
+          : g.slug.includes('outlier')
+            ? [
+                [
+                  'NIST box plot definition',
+                  'https://www.itl.nist.gov/div898/handbook/eda/section3/boxplot.htm',
+                ],
+              ]
+            : g.slug.includes('histogram') || g.slug === 'frequency-table'
+              ? [
+                  [
+                    'NIST histogram background',
+                    'https://www.itl.nist.gov/div898/handbook/eda/section3/histogra.htm',
+                  ],
+                ]
+              : g.slug.includes('correlation') || g.slug === 'line-of-best-fit'
+                ? [
+                    [
+                      'NIST scatter plot background',
+                      'https://www.itl.nist.gov/div898/handbook/eda/section3/scatterp.htm',
+                    ],
+                  ]
+                : [
+                    [
+                      'ONS guidance on axes',
+                      'https://service-manual.ons.gov.uk/data-visualisation/guidance/axes-and-gridlines',
+                    ],
+                  ];
+const schema = [
+  {
+    '@type': 'Article',
+    headline: g.title,
+    description: g.answer,
+    datePublished: '2026-09-08',
+    dateModified: '2026-09-08',
+    author: { '@id': 'https://www.chartsai.com/#organization' },
+    isAccessibleForFree: true,
+  },
+];
+---
+
+<Layout title={`${g.title} | ChartsAI`} description={g.answer} schema={schema}>
+  <section class="container listing-intro">
+    <span class="eyebrow">CHART CHOICES & CHECKABLE METHODS</span><h1>{g.title}</h1><p>{g.answer}</p><a
+      href="/guides/"
+      class="text-link">All chart guides →</a>
+  </section>
+  <article class="container guide-body">
+    <h2>The comparison at a glance</h2><div class="table-scroll">
+      <table>
+        <thead><tr>{g.table[0].map((c) => <th scope="col">{c}</th>)}</tr></thead><tbody
+          >{
+            g.table.slice(1).map((r) => (
+              <tr>
+                {r.map((c) => (
+                  <td>{c}</td>
+                ))}
+              </tr>
+            ))
+          }</tbody>
+      </table>
+    </div>{
+      g.sections.map((s) => (
+        <section>
+          <>
+            <h2>{s.title}</h2>
+            <p>{s.text}</p>
+          </>
+        </section>
+      ))
+    }<h2>A related chart you can inspect</h2><figure class="guide-figure">
+      <a href={e.url}
+        ><img src={`/charts/assets/${e.id}.svg`} alt={e.title} width="1200" height="800" loading="lazy" /></a
+      ><figcaption>
+        <a href={e.url}>{e.title}</a>. Original fictional data; this linked example has its own complete input
+        and calculation settings.
+      </figcaption>
+    </figure><p>
+      <a class="button" href={`/${e.family.tool}/?example=${e.id}#editor`}>Open the worked example ↗</a>
+    </p><h2>References and reproducibility</h2><p>
+      The worked arithmetic and teaching examples on this page are original. Background reading: {
+        refs.map(([n, u]) => <a href={u}>{n}. </a>)
+      }<a href="/source/">Source code and reuse terms</a> expose the implemented calculations.
+    </p><p class="resource-label">
+      Written by <a href="https://www.supamakers.com/">SupaMakers</a> for ChartsAI · September 8, 2026.
+    </p><h2>Continue with a related question</h2><ul>
+      {
+        g.related
+          .map((slug) => guides.find((g) => g.slug === slug))
+          .filter(Boolean)
+          .map((r) => (
+            <li>
+              <a href={`/guides/${r!.slug}/`}>{r!.title}</a>
+            </li>
+          ))
+      }
+    </ul>
+  </article>
+</Layout>

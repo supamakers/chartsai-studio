@@ -1,0 +1,1104 @@
+[
+  {
+    "slug": "histogram-vs-bar-graph",
+    "title": "Histogram vs bar graph: values or categories?",
+    "answer": "Use a histogram to group individual numeric observations into intervals. Use a bar graph to compare values attached to named categories. The distinction is the meaning of the data, not simply whether the bars touch.",
+    "sections": [
+      {
+        "title": "The same number can play different roles",
+        "text": "A score of 72 is a measurement on a numeric scale. A class named Room 72 is a category label. For scores, a histogram asks how many observations fall between chosen boundaries. For classrooms, a bar chart might compare enrolment counts. Treating a room number as a continuous measurement would create intervals with no useful interpretation."
+      },
+      {
+        "title": "Work through twenty scores",
+        "text": "Our score example has six ten-point bins with counts 2, 3, 4, 5, 4 and 2. The 70–under 80 bin contains five individual scores. If you already have a table of these six counts, a raw-data histogram import should not treat 2, 3, 4, 5, 4 and 2 as six observed scores. That would be a different distribution. Keep raw observations and frequency summaries distinct."
+      },
+      {
+        "title": "Ordering carries information",
+        "text": "Numeric intervals must remain in scale order and preserve empty ranges. Category order can instead follow rank, alphabet or a meaningful sequence. Sorting histogram bins by height would break the distribution shape. Sorting product categories by count can make their comparison easier. Both choices depend on what a horizontal position represents."
+      },
+      {
+        "title": "Prepare the right input",
+        "text": "For the histogram maker, select one numeric column with one observation per row. For the bar maker, provide unique category names and one or more numeric measures. Neither tool should guess whether repeated names need aggregation. If your source is already grouped, document the grouping and retain the original observations when available."
+      }
+    ],
+    "table": [
+      [
+        "Question",
+        "Histogram",
+        "Bar graph"
+      ],
+      [
+        "Horizontal position",
+        "Numeric interval",
+        "Category"
+      ],
+      [
+        "Input",
+        "Individual values",
+        "Category and measure"
+      ],
+      [
+        "Order",
+        "Numeric order",
+        "Deliberate category order"
+      ],
+      [
+        "Empty group",
+        "Keep numeric gap",
+        "Keep known zero categories"
+      ]
+    ],
+    "example": "histogram-class-scores",
+    "related": [
+      "histogram-bin-width",
+      "dot-plot-vs-histogram",
+      "bar-graph-vs-line-graph"
+    ]
+  },
+  {
+    "slug": "box-plot-vs-histogram",
+    "title": "Box plot vs histogram: summary or shape?",
+    "answer": "A box plot summarizes centre and spread with quartiles and whiskers. A histogram displays counts across numeric intervals. Choose a box plot for compact group comparisons and a histogram when distribution shape is central to the question.",
+    "sections": [
+      {
+        "title": "A compact summary leaves details out",
+        "text": "A box plot cannot fully encode peaks, gaps or repeated exact values. Two datasets can share a median and quartiles while having different internal patterns. Our equal-median example gives both groups a median of 10, but their IQRs are 2 and 9. That is already a useful comparison; it still does not show every observation."
+      },
+      {
+        "title": "Binning reveals a different view",
+        "text": "A histogram can expose clusters separated by empty intervals, as in our two-peaks example. Its appearance also depends on bin width and alignment. A very coarse grouping may conceal the gap. When shape matters, compare plausible widths and inspect the raw values rather than relying on one visually convenient version."
+      },
+      {
+        "title": "Compare like with like",
+        "text": "For several groups, box plots use less space and permit side-by-side median and IQR comparisons. State the quartile and whisker conventions, and report each group’s N. When comparing histograms across unequal sample sizes, consistent bins and percentages can help; different widths or raw counts can confound shape with sample size."
+      },
+      {
+        "title": "Use both when the decision needs both",
+        "text": "Begin with a box plot to locate a group with unusual spread, then inspect its histogram or dot plot. This is a complementary workflow rather than a contest with a universal winner. Neither view proves that a group difference is significant or explains what caused it. Preserve the source and calculation settings so the comparison can be reproduced."
+      }
+    ],
+    "table": [
+      [
+        "Feature",
+        "Box plot",
+        "Histogram"
+      ],
+      [
+        "Centre",
+        "Median line",
+        "Inferred from grouped shape"
+      ],
+      [
+        "Spread",
+        "IQR and whiskers",
+        "Range and concentration of bins"
+      ],
+      [
+        "Multiple peaks",
+        "Usually hidden",
+        "Can be visible"
+      ],
+      [
+        "Key convention",
+        "Quartiles and whiskers",
+        "Bin width and boundaries"
+      ]
+    ],
+    "example": "box-plot-equal-medians",
+    "related": [
+      "box-plot-quartiles",
+      "histogram-bin-width",
+      "dot-plot-vs-histogram"
+    ]
+  },
+  {
+    "slug": "dot-plot-vs-histogram",
+    "title": "Dot plot vs histogram: exact values or intervals?",
+    "answer": "A stacked dot plot keeps each observation visible at its exact numeric value. A histogram groups observations into intervals. Dot plots suit small datasets where repeats matter; histograms provide a compact view of larger distributions.",
+    "sections": [
+      {
+        "title": "What one mark represents",
+        "text": "In a stacked dot plot, each dot represents one observation and repeated values stack. In a histogram, one bar can represent several distinct values and repeated observations together. A bar with count six does not mean the same exact number occurred six times. That distinction matters in classroom exercises about the mode."
+      },
+      {
+        "title": "Read a waiting-time example",
+        "text": "Our waiting-time data include two waits at one minute, three at two minutes, two at three minutes and two at four minutes. A five-minute histogram combines these nine observations into its first interval. The histogram makes the short-wait cluster obvious; a dot plot preserves the exact repeat pattern within that cluster."
+      },
+      {
+        "title": "Choose detail deliberately",
+        "text": "For a small integer list, dots may answer both frequency and distribution questions with little explanation. As the number of distinct decimal values grows, individual marks can become crowded. Binning trades exact-value detail for a more compact shape. That is a useful transformation when the grouping is declared and the original data remains available."
+      },
+      {
+        "title": "Do not invent precision",
+        "text": "A histogram does not recover exact observations from grouped counts. Likewise, placing dots at interval midpoints would create representative values that were never measured. If only a frequency table is available, present it as grouped data. In ChartsAI, the dot maker and histogram maker both expect actual observations; use the CSV accompanying each example to preserve their meaning."
+      }
+    ],
+    "table": [
+      [
+        "Need",
+        "Prefer"
+      ],
+      [
+        "Count repeated exact values",
+        "Stacked dot plot"
+      ],
+      [
+        "Inspect a small sample",
+        "Stacked dot plot"
+      ],
+      [
+        "Summarize interval frequencies",
+        "Histogram"
+      ],
+      [
+        "Recover exact values from bins",
+        "Neither: obtain the original data"
+      ]
+    ],
+    "example": "histogram-waiting-times",
+    "related": [
+      "histogram-vs-bar-graph",
+      "frequency-table",
+      "mean-vs-median"
+    ]
+  },
+  {
+    "slug": "scatter-plot-vs-line-graph",
+    "title": "Scatter plot vs line graph: pairs or progression?",
+    "answer": "Use a scatter plot to inspect the relationship between paired numeric variables. Use a line graph when connecting observations expresses a meaningful progression, such as time or distance. A connection is an additional claim about order.",
+    "sections": [
+      {
+        "title": "Check what each row means",
+        "text": "A row containing height and weight for one item is a pair. Reordering complete rows does not change the scatter coordinates. A row containing a date and a measurement belongs to a sequence; order and spacing can matter to a line. Sorting X and Y independently destroys pairing in either case and can manufacture a relationship."
+      },
+      {
+        "title": "Repeated X values are a useful test",
+        "text": "Our repeated-X example has three Y observations at each of X = 1, 2 and 3. The scatter keeps the within-position variation visible. Connecting these rows would create vertical segments and a path determined by arbitrary row order. It would not represent a measured journey or a fitted relationship."
+      },
+      {
+        "title": "A fitted line is a separate layer",
+        "text": "An optional least-squares line summarizes all pairs using a stated calculation. It is not the same as joining consecutive points. The scatter maker draws a fitted line only over the observed X range when X varies. It reports the slope and intercept in a table so a reader can distinguish observations from the model."
+      },
+      {
+        "title": "Respect numeric and time spacing",
+        "text": "A line drawn through dates should use elapsed time when intervals differ. A category axis would give equally spaced positions to unequal gaps. The existing line maker offers numeric and time modes; select the one that matches the meaning of X. A tidy picture cannot compensate for a scale that represents a different question."
+      }
+    ],
+    "table": [
+      [
+        "Aspect",
+        "Scatter",
+        "Line"
+      ],
+      [
+        "Primary question",
+        "Association",
+        "Progression"
+      ],
+      [
+        "Default connections",
+        "None",
+        "Ordered neighbours"
+      ],
+      [
+        "Repeated X",
+        "Multiple paired observations",
+        "Needs a defined sequence"
+      ],
+      [
+        "Optional fitted line",
+        "Model summary",
+        "Different from connecting data"
+      ]
+    ],
+    "example": "scatter-repeated-x-values",
+    "related": [
+      "bar-graph-vs-line-graph",
+      "line-of-best-fit",
+      "pearson-correlation-coefficient"
+    ]
+  },
+  {
+    "slug": "bar-graph-vs-line-graph",
+    "title": "Bar graph vs line graph: comparison or change?",
+    "answer": "Bar graphs emphasize amounts compared from a common baseline. Line graphs emphasize movement across an ordered scale. For a time series either can be useful, but the geometry highlights a different aspect of the same observations.",
+    "sections": [
+      {
+        "title": "Start with the question readers must answer",
+        "text": "If readers need to compare regional counts, bars provide a clear length comparison. If they need to follow the direction of monthly change, connected points may be more direct. Connecting unrelated categories such as departments creates an apparent path with no measured progression. A line should have a reason to connect its neighbours."
+      },
+      {
+        "title": "Two periods do not require a trend line",
+        "text": "Our regional example compares Period 1 and Period 2 using neighbouring bars. North moves from 42 to 55 while South moves from 58 to 52. Grouped bars allow both comparisons without implying that North, South, East and West form a continuous horizontal variable. The region order is a display choice, not elapsed time."
+      },
+      {
+        "title": "The baseline affects interpretation",
+        "text": "A bar’s visible length encodes its amount, so a zero reference is essential for honest length ratios. A line encodes point positions and can use a tighter scale to reveal small movement, provided the axis is explicit. This is why a scale suitable for a line is not automatically suitable for bars built from the same numbers."
+      },
+      {
+        "title": "Handle missing periods explicitly",
+        "text": "An absent observation is not automatically a zero and does not authorize interpolation. If a report has a missing month, inspect the source and choose a display that explains the gap. ChartsAI flags incomplete numeric input rather than inventing a measurement. For irregularly spaced observations, use a numeric or time axis so horizontal distance has the right meaning."
+      }
+    ],
+    "table": [
+      [
+        "Task",
+        "Useful choice"
+      ],
+      [
+        "Compare departments",
+        "Bar graph"
+      ],
+      [
+        "Track ordered movement",
+        "Line graph"
+      ],
+      [
+        "Compare two periods per region",
+        "Grouped bars"
+      ],
+      [
+        "Show elapsed time gaps",
+        "Line with time axis"
+      ]
+    ],
+    "example": "bar-grouped-comparison",
+    "related": [
+      "histogram-vs-bar-graph",
+      "scatter-plot-vs-line-graph",
+      "truncated-y-axis"
+    ]
+  },
+  {
+    "slug": "pie-chart-vs-bar-graph",
+    "title": "Pie chart vs bar graph: parts or precise comparisons?",
+    "answer": "A pie chart represents nonnegative parts of one meaningful whole. A bar graph compares amounts using aligned lengths and can also show parts. Choose bars when exact comparisons, many categories, negative values or multiple series matter.",
+    "sections": [
+      {
+        "title": "Establish the denominator first",
+        "text": "Imagine three fictional counts of 20, 30 and 50. They total 100, so their shares are 20%, 30% and 50%. A pie can represent that whole only if the categories are mutually exclusive and collectively describe the intended total. If respondents can choose several answers, adding selections does not automatically produce a count of people."
+      },
+      {
+        "title": "Compare the close values",
+        "text": "With counts of 31, 33 and 36, all slices would be similar. A sorted bar chart gives each value the same baseline and leaves room for direct labels. The choice is not about decoration: ask whether the reader must identify a dominant share or distinguish small differences among categories. A table can accompany either display for exact values."
+      },
+      {
+        "title": "Some data cannot form a pie",
+        "text": "Negative amounts and a zero total cannot produce valid nonnegative parts of a whole. A diverging bar chart can show signed changes around zero without turning them into positive slices. Several reporting periods also become difficult to compare as separate pies; grouped or percentage-stacked bars may make the question clearer."
+      },
+      {
+        "title": "Use the available tool honestly",
+        "text": "ChartsAI currently provides a bar maker, including 100% stacked mode, and does not claim to offer an interactive pie maker. The worked example below demonstrates shares with unequal denominators. Download the original counts to compare amounts as well as composition, and avoid interpreting equal-height percentage bars as equal sample sizes."
+      }
+    ],
+    "table": [
+      [
+        "Condition",
+        "Pie",
+        "Bars"
+      ],
+      [
+        "One nonnegative whole",
+        "Possible",
+        "Possible"
+      ],
+      [
+        "Negative changes",
+        "Unsuitable",
+        "Diverging bars"
+      ],
+      [
+        "Many close values",
+        "Harder to compare",
+        "Shared baseline helps"
+      ],
+      [
+        "Several groups",
+        "Separate pies complicate comparison",
+        "Grouped or 100% stacked"
+      ]
+    ],
+    "example": "bar-percent-stacked",
+    "related": [
+      "histogram-vs-bar-graph",
+      "misleading-graphs",
+      "relative-frequency-histogram"
+    ]
+  },
+  {
+    "slug": "mean-vs-median",
+    "title": "Mean vs median with a right-skewed example",
+    "answer": "The mean is the sum divided by the number of observations. The median is the middle position in the sorted data. They answer different questions about centre and can differ substantially when a sample has a long tail.",
+    "sections": [
+      {
+        "title": "Calculate both from the same list",
+        "text": "Our sixteen waiting times total 100 minutes, so their mean is 100 ÷ 16 = 6.25 minutes. The eighth and ninth sorted observations are both 4, making the median 4 minutes. Neither result is a mistake: the longer waits contribute to the sum while the median depends on central positions."
+      },
+      {
+        "title": "Change one value to inspect sensitivity",
+        "text": "If the 23-minute wait became 39 minutes, the total would rise by 16 and the mean would rise by one minute to 7.25. The middle positions would remain 4 and 4, so the median would stay 4. This controlled change demonstrates sensitivity without deleting the long experience from the data."
+      },
+      {
+        "title": "Match the summary to the decision",
+        "text": "For total staffing time across these observations, the sum and mean are directly connected. For the central ordered experience, the median may be useful. Neither describes the longest waits or their frequency. A histogram or dot plot alongside both summaries prevents one central number from standing in for the whole distribution."
+      },
+      {
+        "title": "Avoid a universal winner",
+        "text": "The median is not automatically better whenever a histogram looks skewed. The purpose of the measurement matters, as do the sample definition and collection process. Report units, N and the population or period represented. This example is fictional and descriptive; it supports arithmetic practice, not a service benchmark or an inference about a larger population."
+      }
+    ],
+    "table": [
+      [
+        "Statistic",
+        "Calculation",
+        "Result"
+      ],
+      [
+        "N",
+        "Count rows",
+        "16"
+      ],
+      [
+        "Sum",
+        "Add waits",
+        "100 minutes"
+      ],
+      [
+        "Mean",
+        "100 / 16",
+        "6.25 minutes"
+      ],
+      [
+        "Median",
+        "Average positions 8 and 9",
+        "4 minutes"
+      ]
+    ],
+    "example": "histogram-waiting-times",
+    "related": [
+      "histogram-bin-width",
+      "box-plot-vs-histogram",
+      "standard-deviation-vs-standard-error"
+    ]
+  },
+  {
+    "slug": "standard-deviation-vs-standard-error",
+    "title": "Standard deviation vs standard error: spread and precision",
+    "answer": "Standard deviation describes variation among observations. Standard error describes the sampling variability of an estimator. For an independent identically distributed sample with finite variance, the estimated standard error of the mean is sample SD divided by √n.",
+    "sections": [
+      {
+        "title": "Work a four-value example",
+        "text": "For fictional observations 2, 4, 6 and 8, the mean is 5. Deviations are −3, −1, 1 and 3; squared deviations sum to 20. The sample variance uses n − 1 = 3, giving 20/3. Sample SD is √(20/3), approximately 2.582. The estimated standard error of the mean is 2.582/√4, approximately 1.291."
+      },
+      {
+        "title": "Keep the denominator convention visible",
+        "text": "Dividing the squared-deviation sum by four would instead give a population-style variance of 5 and SD √5. That is a different convention. Here the calculation uses sample SD because it feeds an estimated standard error. State which formula you used when reproducing a result in a spreadsheet or comparing published summaries."
+      },
+      {
+        "title": "More rows do not always mean more information",
+        "text": "The s/√n formula assumes an appropriate sampling structure. Repeated records for the same individual, clustered observations or serial dependence can invalidate the naive treatment of every row as independent. Copying the same four values multiple times into a spreadsheet does not create new independent evidence or justify a more confident conclusion."
+      },
+      {
+        "title": "Choose and label error bars carefully",
+        "text": "An SD bar and an SE bar communicate different quantities, and neither is automatically a 95% confidence interval. A confidence interval needs a stated method and assumptions. ChartsAI’s current box plots show quartiles and whiskers rather than SD, SE or confidence intervals; do not relabel those summaries as uncertainty bars."
+      }
+    ],
+    "table": [
+      [
+        "Quantity",
+        "Describes",
+        "Example"
+      ],
+      [
+        "Sample SD",
+        "Observation spread",
+        "2.582"
+      ],
+      [
+        "SE of mean",
+        "Estimated mean sampling variability",
+        "1.291"
+      ],
+      [
+        "IQR",
+        "Middle-half spread",
+        "Different statistic"
+      ],
+      [
+        "Confidence interval",
+        "Method-specific uncertainty interval",
+        "Not calculated here"
+      ]
+    ],
+    "example": "box-plot-two-groups",
+    "related": [
+      "mean-vs-median",
+      "box-plot-quartiles",
+      "misleading-graphs"
+    ]
+  },
+  {
+    "slug": "histogram-bin-width",
+    "title": "Histogram bin width: choose and check the grouping",
+    "answer": "Bin width sets how much numeric range each histogram bar covers. Narrow bins preserve local detail; wider bins combine it. Choose a width tied to the question, then check nearby reasonable settings without changing the underlying observations.",
+    "sections": [
+      {
+        "title": "A width change is a data grouping change",
+        "text": "The twenty fictional scores in our example use width 10 from a start of 40. Their counts are 2, 3, 4, 5, 4 and 2. With width 20 from the same start, adjacent counts combine into 5, 9 and 6. The observations have not changed, but the grouped description has become coarser."
+      },
+      {
+        "title": "Start and width work together",
+        "text": "A width of ten beginning at 40 is not equivalent to a width of ten beginning at 35. Different boundary positions can place observations into different intervals and shift a visible peak. Report the start or full boundaries when reproducibility matters. The calculated table gives both endpoints and makes the inclusion convention explicit."
+      },
+      {
+        "title": "Watch for unstable stories",
+        "text": "If a claimed cluster appears only under one carefully chosen width, inspect the raw data and alternative widths before emphasizing it. Very narrow bins in a small sample can create isolated spikes. Very wide bins can combine distinct groups. A useful choice communicates the relevant scale without pretending that a histogram is independent of its settings."
+      },
+      {
+        "title": "Use the controls predictably",
+        "text": "In this maker an explicit positive bin width overrides the requested bin count. The final interval includes the maximum observation. Clearing width lets the requested count determine an equal width over the chosen range. Settings that would create more than fifty bins are rejected, so no observations disappear merely to satisfy a visual limit."
+      }
+    ],
+    "table": [
+      [
+        "Setting",
+        "Width 10",
+        "Width 20"
+      ],
+      [
+        "Start",
+        "40",
+        "40"
+      ],
+      [
+        "Bin count",
+        "6",
+        "3"
+      ],
+      [
+        "Frequencies",
+        "2, 3, 4, 5, 4, 2",
+        "5, 9, 6"
+      ],
+      [
+        "Total observations",
+        "20",
+        "20"
+      ]
+    ],
+    "example": "histogram-class-scores",
+    "related": [
+      "frequency-table",
+      "relative-frequency-histogram",
+      "histogram-vs-bar-graph"
+    ]
+  },
+  {
+    "slug": "box-plot-quartiles",
+    "title": "Box plot quartiles: two conventions worked by hand",
+    "answer": "Quartiles divide ordered data into positions, but finite-sample algorithms can differ. ChartsAI offers R type 7 linear interpolation and medians of halves excluding an odd sample’s middle observation. State the method when reproducing a box plot.",
+    "sections": [
+      {
+        "title": "Use a sample small enough to inspect",
+        "text": "Take the ordered values 2, 4, 7, 10 and 16. The median is 7. For medians of halves, remove that middle observation from the halves: the lower pair is 2 and 4, the upper pair 10 and 16. Their medians give Q1 = 3 and Q3 = 13, with IQR = 10."
+      },
+      {
+        "title": "Apply linear interpolation separately",
+        "text": "For the default linear method, use a zero-based position (n − 1)p. With n = 5, the quarter positions are 1 and 3, landing exactly on the second and fourth observations. Q1 is therefore 4 and Q3 is 10. The median remains 7, but the IQR becomes 6."
+      },
+      {
+        "title": "Quartile choices affect more than the box",
+        "text": "With 1.5 × IQR whiskers, changing Q1 and Q3 also changes the fences used to flag observations. In this particular sample all values remain within either pair of fences. In another sample an observation might switch flag status. That change would follow from the convention, not from a new measurement."
+      },
+      {
+        "title": "Match a specification rather than a screenshot",
+        "text": "If coursework, a report or another application expects a particular quartile rule, choose and name it explicitly. A screenshot alone may not reveal the algorithm. Download the raw CSV and inspect the calculated table. The editor preserves every observation and lets you compare methods without silently replacing the original list."
+      }
+    ],
+    "table": [
+      [
+        "Summary",
+        "Halves excluding middle",
+        "Linear type 7"
+      ],
+      [
+        "Q1",
+        "3",
+        "4"
+      ],
+      [
+        "Median",
+        "7",
+        "7"
+      ],
+      [
+        "Q3",
+        "13",
+        "10"
+      ],
+      [
+        "IQR",
+        "10",
+        "6"
+      ]
+    ],
+    "example": "box-plot-small-sample",
+    "related": [
+      "box-plot-outliers",
+      "box-plot-vs-histogram",
+      "standard-deviation-vs-standard-error"
+    ]
+  },
+  {
+    "slug": "box-plot-outliers",
+    "title": "Box plot outliers: fences, whiskers and retained values",
+    "answer": "For 1.5 × IQR box plots, an observation is flagged when it falls below Q1 − 1.5 × IQR or above Q3 + 1.5 × IQR. Fences are calculated cutoffs; whiskers end on actual observations inside them.",
+    "sections": [
+      {
+        "title": "Calculate the cutoff before reading the whisker",
+        "text": "Our nine values are 2, 3, 4, 4, 5, 6, 7, 8 and 30. Under linear-interpolated quartiles, Q1 = 4 and Q3 = 7, so IQR = 3. The lower fence is 4 − 4.5 = −0.5 and the upper fence is 7 + 4.5 = 11.5. The value 30 exceeds the upper fence."
+      },
+      {
+        "title": "The fence is not an extra observation",
+        "text": "The smallest eligible observation is 2 and the largest is 8. Those are the whisker endpoints. Drawing a whisker to 11.5 would use the calculated boundary rather than the convention implemented here. The original maximum remains 30 and appears as a separate point. Nothing has been removed from the data."
+      },
+      {
+        "title": "A flag calls for context",
+        "text": "A point beyond a fence may reflect a valid extreme, a recording error, mixed groups or another process. The box plot cannot decide among those explanations. Check the source record and collection method. If you make an exclusion, document the reason and compare results with and without it rather than silently cleaning the picture."
+      },
+      {
+        "title": "Compare display conventions explicitly",
+        "text": "Switching to minimum-to-maximum whiskers makes the upper whisker reach 30 and removes the separate flag in this display. It does not make 30 less extreme or alter the median. The quartile method also matters because it defines the IQR used in the fence calculation. State both conventions when sharing."
+      }
+    ],
+    "table": [
+      [
+        "Quantity",
+        "Value"
+      ],
+      [
+        "Q1 / Q3",
+        "4 / 7"
+      ],
+      [
+        "IQR",
+        "3"
+      ],
+      [
+        "Fences",
+        "−0.5 / 11.5"
+      ],
+      [
+        "Whiskers",
+        "2 / 8"
+      ],
+      [
+        "Flagged observation",
+        "30"
+      ]
+    ],
+    "example": "box-plot-outlier",
+    "related": [
+      "box-plot-quartiles",
+      "box-plot-vs-histogram",
+      "mean-vs-median"
+    ]
+  },
+  {
+    "slug": "line-of-best-fit",
+    "title": "Line of best fit: slope, intercept and residuals",
+    "answer": "An ordinary least-squares line with an intercept minimizes the sum of squared vertical residuals. Its slope is the centred cross-product sum divided by the centred X-square sum. It is a model summary of pairs, not a line joining them.",
+    "sections": [
+      {
+        "title": "Reproduce the fitted coefficients",
+        "text": "Our positive-association example has eight pairs, mean X = 4.5 and mean Y = 6. The sum of (X − 4.5)² is 42 and the sum of (X − 4.5)(Y − 6) is 50. The slope is 50/42 = 25/21, approximately 1.190476. The intercept is 6 − (25/21) × 4.5 = 9/14, approximately 0.642857."
+      },
+      {
+        "title": "Read a residual at one point",
+        "text": "At X = 3, the fitted Y is (25/21) × 3 + 9/14 = 59/14, approximately 4.214286. The observed Y is 5, so the vertical residual is 11/14, approximately 0.785714. Squaring residuals prevents positive and negative deviations from cancelling in the fitting objective."
+      },
+      {
+        "title": "Know what the calculation assumes",
+        "text": "This line includes an intercept and minimizes vertical errors in Y. Fitting through the origin or treating measurement error in both axes produces a different problem. A good-looking line does not establish causality, validate a linear model or supply uncertainty. Inspect curvature and unusual points before treating coefficients as a useful description."
+      },
+      {
+        "title": "Do not extend the claim beyond the data",
+        "text": "The maker draws its fitted line between the smallest and largest observed X values. Extrapolation would require an additional assumption about the relationship outside that range. If all X values are identical, the denominator is zero and the slope is undefined; the editor reports that instead of fabricating a line."
+      }
+    ],
+    "table": [
+      [
+        "Step",
+        "Calculation"
+      ],
+      [
+        "Centred X squares",
+        "42"
+      ],
+      [
+        "Centred cross-products",
+        "50"
+      ],
+      [
+        "Slope",
+        "50/42 = 25/21"
+      ],
+      [
+        "Intercept",
+        "9/14"
+      ],
+      [
+        "Residual at (3,5)",
+        "11/14"
+      ]
+    ],
+    "example": "scatter-positive-correlation",
+    "related": [
+      "pearson-correlation-coefficient",
+      "correlation-does-not-imply-causation",
+      "scatter-plot-vs-line-graph"
+    ]
+  },
+  {
+    "slug": "pearson-correlation-coefficient",
+    "title": "Pearson correlation coefficient: calculate and interpret r",
+    "answer": "Pearson r measures the direction and strength of a linear association between paired numeric variables. It divides the centred cross-product sum by the square root of the two centred sums of squares. It is undefined when either variable is constant.",
+    "sections": [
+      {
+        "title": "Check the arithmetic on an eight-pair example",
+        "text": "For our positive-association pairs, the centred X-square sum is 42, the centred Y-square sum is 64 and the centred cross-product sum is 50. Therefore r = 50/√(42 × 64). The exact expression gives approximately 0.96440. Keeping the unrounded expression avoids a mismatch caused by rounding intermediate means or sums."
+      },
+      {
+        "title": "Units and direction play different roles",
+        "text": "Changing centimetres to millimetres multiplies one variable by a positive constant and leaves r unchanged. Reversing the sign of one variable reverses the correlation sign. Swapping X and Y leaves r unchanged, although the least-squares slope for predicting Y from X generally differs from the slope for predicting X from Y."
+      },
+      {
+        "title": "Zero is a limited statement",
+        "text": "Our curved example uses Y = X² for symmetric X values from −4 to 4. Positive and negative centred cross-products cancel, giving r = 0 even though the coordinates obey an exact relationship. Always inspect the scatter plot before describing a low r as an absence of structure."
+      },
+      {
+        "title": "Avoid unsupported labels",
+        "text": "There is no universal practical threshold that makes a correlation important in every field. Sample size, measurement quality and purpose matter. The maker reports a descriptive sample r and R² but does not calculate a p-value, confidence interval or causal effect. Repeated and influential observations remain visible in the original data."
+      }
+    ],
+    "table": [
+      [
+        "Quantity",
+        "Meaning"
+      ],
+      [
+        "r > 0",
+        "Positive linear direction"
+      ],
+      [
+        "r < 0",
+        "Negative linear direction"
+      ],
+      [
+        "r = 0",
+        "No sample linear correlation"
+      ],
+      [
+        "Constant variable",
+        "r undefined"
+      ],
+      [
+        "r²",
+        "Squared coefficient; not a causal percentage"
+      ]
+    ],
+    "example": "scatter-positive-correlation",
+    "related": [
+      "line-of-best-fit",
+      "correlation-does-not-imply-causation",
+      "scatter-plot-vs-line-graph"
+    ]
+  },
+  {
+    "slug": "correlation-does-not-imply-causation",
+    "title": "Correlation does not imply causation: a chart-reading guide",
+    "answer": "A scatter plot can show association without establishing that changing one variable causes the other to change. A causal claim needs evidence about the data-generating process, plausible alternatives and the comparison being made.",
+    "sections": [
+      {
+        "title": "Separate the observed pattern from an intervention",
+        "text": "In our fictional positive scatter, larger X generally accompanies larger Y. The fitted slope describes that sample pattern. It does not tell us what would happen if someone deliberately increased X while other relevant conditions stayed comparable. The coordinates contain no assignment mechanism, time ordering or background variables."
+      },
+      {
+        "title": "A shared driver can create association",
+        "text": "As an illustrative scenario, two measures might both rise with the size of an event. Their association could reflect event size rather than one measure directly changing the other. Reverse direction is another possibility: the apparent outcome may influence the proposed cause. Selecting only certain observations can also alter the visible relationship."
+      },
+      {
+        "title": "A stronger coefficient does not solve the design problem",
+        "text": "Even a perfect straight-line relationship is insufficient by itself to identify cause. Likewise, a weak linear correlation can coexist with a meaningful nonlinear relationship. Mathematical strength and causal identification are different questions. The chart is useful for describing pairs and checking assumptions, but it does not contain missing design information."
+      },
+      {
+        "title": "Write a claim the evidence can support",
+        "text": "Describe the direction and shape actually observed, specify the sample and units, and state limitations. If an intervention effect is the goal, define the intervention, outcome and comparison group, then evaluate the study design and possible confounding. The teaching chart below is deliberately fictional and supports no real-world causal recommendation."
+      }
+    ],
+    "table": [
+      [
+        "Statement",
+        "Supported by scatter alone?"
+      ],
+      [
+        "Points trend upward",
+        "Can be a descriptive reading"
+      ],
+      [
+        "Changing X will raise Y",
+        "No"
+      ],
+      [
+        "No third variable matters",
+        "No"
+      ],
+      [
+        "The relationship holds outside this range",
+        "No"
+      ],
+      [
+        "The data deserve further investigation",
+        "A reasonable next step"
+      ]
+    ],
+    "example": "scatter-positive-correlation",
+    "related": [
+      "pearson-correlation-coefficient",
+      "line-of-best-fit",
+      "misleading-graphs"
+    ]
+  },
+  {
+    "slug": "relative-frequency-histogram",
+    "title": "Relative frequency histogram: counts to percentages",
+    "answer": "A relative frequency histogram divides each interval count by the total number of observations. In ChartsAI its vertical axis displays that fraction as a percentage. The interval boundaries remain the same as in the count version.",
+    "sections": [
+      {
+        "title": "Work from counts and a known denominator",
+        "text": "Our twenty-value example has four bins with counts 4, 6, 6 and 4. Dividing by 20 gives 0.20, 0.30, 0.30 and 0.20. Multiplying by 100 gives 20%, 30%, 30% and 20%. The total is 100%, apart from possible rounding in other datasets."
+      },
+      {
+        "title": "Compare samples carefully",
+        "text": "Percentages can make distribution shapes easier to compare when sample sizes differ. They do not make a small sample as informative as a large one. Use the same units, bin boundaries and inclusion rules across charts, and state N for each sample. Otherwise a visual difference may reflect the grouping or sampling rather than the underlying distribution."
+      },
+      {
+        "title": "Keep density distinct",
+        "text": "These bars have equal width five. A bin probability of 0.30 corresponds to density 0.30/5 = 0.06 per unit. A density histogram uses height so area represents probability; this relative-frequency display uses percentage height. Do not relabel its axis as density or infer probability from geometric area without accounting for width."
+      },
+      {
+        "title": "Retain the original observations",
+        "text": "The source CSV keeps all twenty numeric values. The calculated table gives boundaries, counts and percentages together so readers can check the denominator. If the input contains a blank, fix the record or explicitly prepare a documented subset; the tool does not silently change N by dropping incomplete rows."
+      }
+    ],
+    "table": [
+      [
+        "Interval count",
+        "Fraction of 20",
+        "Percentage"
+      ],
+      [
+        "4",
+        "0.20",
+        "20%"
+      ],
+      [
+        "6",
+        "0.30",
+        "30%"
+      ],
+      [
+        "6",
+        "0.30",
+        "30%"
+      ],
+      [
+        "4",
+        "0.20",
+        "20%"
+      ]
+    ],
+    "example": "histogram-relative-frequency",
+    "related": [
+      "frequency-table",
+      "histogram-bin-width",
+      "histogram-vs-bar-graph"
+    ]
+  },
+  {
+    "slug": "frequency-table",
+    "title": "Frequency table: exact values, intervals and cumulative counts",
+    "answer": "A frequency table lists how often values or groups occur. An exact-value table preserves repeat counts for each distinct value; a grouped table combines observations into intervals. A cumulative column adds frequencies in a meaningful order.",
+    "sections": [
+      {
+        "title": "Build an exact-value tally first",
+        "text": "For the fictional list 1, 1, 2, 2, 2, 4, 5, 5, the exact frequencies are 1→2, 2→3, 4→1 and 5→2. They sum to eight observations. This table answers which exact value is most common: 2 occurs three times. The sum of the displayed value labels would not answer that question."
+      },
+      {
+        "title": "Group the same observations explicitly",
+        "text": "Using intervals [0, 2), [2, 4) and [4, 6] gives frequencies 2, 3 and 3. The two observations at 1 enter the first interval, the three observations at 2 enter the second, and 4, 5, 5 enter the last. The final interval includes its upper endpoint, although no value equals 6 here."
+      },
+      {
+        "title": "Add a cumulative column only when order means something",
+        "text": "The grouped cumulative counts are 2, 5 and 8. Dividing by eight gives cumulative shares of 25%, 62.5% and 100%. These describe observations below successive boundaries under the stated closure rule. For unordered categories, a cumulative count depends on the chosen order and needs a clear reason, as in a descending Pareto ranking."
+      },
+      {
+        "title": "Use the table to check the chart",
+        "text": "A histogram should reproduce the grouped frequencies exactly. Check that their total matches N and that every boundary observation is assigned once. A frequency table is already a summary: importing its frequency column as raw observations would change the meaning. The maker below expects individual values and generates the grouped table for you."
+      }
+    ],
+    "table": [
+      [
+        "Interval",
+        "Frequency",
+        "Cumulative count",
+        "Cumulative share"
+      ],
+      [
+        "[0, 2)",
+        "2",
+        "2",
+        "25%"
+      ],
+      [
+        "[2, 4)",
+        "3",
+        "5",
+        "62.5%"
+      ],
+      [
+        "[4, 6]",
+        "3",
+        "8",
+        "100%"
+      ]
+    ],
+    "example": "histogram-bin-boundaries",
+    "related": [
+      "histogram-bin-width",
+      "relative-frequency-histogram",
+      "dot-plot-vs-histogram"
+    ]
+  },
+  {
+    "slug": "misleading-graphs",
+    "title": "Misleading graphs: five checks with worked examples",
+    "answer": "A graph can use correct numbers while encouraging an unsupported interpretation. Check the baseline, denominator, order, missing observations and definition of the measure before trusting the visual story.",
+    "sections": [
+      {
+        "title": "Check amounts against their reference",
+        "text": "If bars represent 90 and 100 but start at 80, their visible lengths are 10 and 20. The second looks twice as long even though 100/90 is only about 1.11. The arithmetic of the data is correct, but the visible length ratio answers a different question. Use a zero baseline for amount-encoding bars."
+      },
+      {
+        "title": "Read the denominator behind percentages",
+        "text": "Our percentage-stacked example compares totals of 40, 200 and 100. Every bar reaches 100%, so total size is intentionally hidden. The first series has 20 observations in the small group and 50 in the large group, yet its share is higher in the small group. Keep both counts and shares available to avoid confusing them."
+      },
+      {
+        "title": "Ask what was connected or omitted",
+        "text": "Connecting unrelated categories can imply a progression that does not exist. Removing empty histogram intervals can conceal a gap. Treating a missing cell as zero can invent a change. These are different errors, but each arises from the relationship between data meaning and display geometry. A complete input table helps readers inspect that relationship."
+      },
+      {
+        "title": "Replace accusation with a reproducible check",
+        "text": "A surprising chart is not automatically deceptive. Recreate the plot from its data, state the scale and transformation, and show the specific implication that changes. If source values or definitions are unavailable, describe that limitation. The examples in this library are fictional teaching artifacts with complete input, so the checks can be performed without guessing."
+      }
+    ],
+    "table": [
+      [
+        "Check",
+        "Question"
+      ],
+      [
+        "Baseline",
+        "Do lengths represent the actual amounts?"
+      ],
+      [
+        "Denominator",
+        "What total produces each percentage?"
+      ],
+      [
+        "Order",
+        "Does connection or sorting have meaning?"
+      ],
+      [
+        "Missingness",
+        "Were blanks turned into zeros?"
+      ],
+      [
+        "Measure",
+        "Are all values comparable units?"
+      ]
+    ],
+    "example": "bar-percent-stacked",
+    "related": [
+      "truncated-y-axis",
+      "pie-chart-vs-bar-graph",
+      "correlation-does-not-imply-causation"
+    ]
+  },
+  {
+    "slug": "truncated-y-axis",
+    "title": "Truncated y-axis: when a shorter scale changes the story",
+    "answer": "A truncated axis starts above the natural zero reference. It can help reveal small positional changes in a line or scatter plot, but it distorts the visible length ratios of bars that represent amounts.",
+    "sections": [
+      {
+        "title": "Calculate the visual ratio",
+        "text": "Suppose two fictional values are 90 and 100. From zero, their bar lengths have ratio 100/90 ≈ 1.111. If the visible baseline is 80, lengths become 10 and 20, with ratio 2. The numerical difference remains ten units, but the shape now suggests a doubling of visible length. That is why the baseline is part of the encoding."
+      },
+      {
+        "title": "Point position differs from filled length",
+        "text": "A line graph locates observations on an axis and connects ordered neighbours. A tighter range can make small differences visible without claiming that the vertical distance from the plot edge represents a total amount. Readers still need clear ticks, units and context, especially when several charts use different scales for comparable measures."
+      },
+      {
+        "title": "Keep the comparison purpose explicit",
+        "text": "If a report asks whether a measurement moved by a few units around a stable level, a clearly labelled close view may be useful. If it asks how large two quantities are relative to one another, a baseline-preserving view is more direct. Showing a full context view alongside a close view can serve both questions without hiding the scale choice."
+      },
+      {
+        "title": "Use the maker’s defaults deliberately",
+        "text": "ChartsAI’s bar maker includes zero for positive amounts and extends to signed values when needed. The line maker has an explicit zero-baseline option. Neither a default nor a visually dramatic result replaces judgement about the claim. Inspect ticks and source values before exporting, and retain a table for readers who need exact differences."
+      }
+    ],
+    "table": [
+      [
+        "Values",
+        "Baseline",
+        "Visible lengths",
+        "Length ratio"
+      ],
+      [
+        "90 and 100",
+        "0",
+        "90 and 100",
+        "1.111…"
+      ],
+      [
+        "90 and 100",
+        "80",
+        "10 and 20",
+        "2"
+      ],
+      [
+        "Difference",
+        "Either",
+        "10 units",
+        "Unchanged"
+      ]
+    ],
+    "example": "bar-diverging-values",
+    "related": [
+      "misleading-graphs",
+      "bar-graph-vs-line-graph",
+      "logarithmic-scale-graph"
+    ]
+  },
+  {
+    "slug": "logarithmic-scale-graph",
+    "title": "Logarithmic scale graph: equal ratios instead of equal differences",
+    "answer": "On a logarithmic axis, equal distances represent equal ratios. On a linear axis, equal distances represent equal differences. Ordinary real-valued log scales require positive values; zero and negative observations cannot be placed on them directly.",
+    "sections": [
+      {
+        "title": "Compare a simple four-value sequence",
+        "text": "The fictional values 1, 10, 100 and 1,000 have base-10 logarithms 0, 1, 2 and 3. They are equally spaced on a log axis because each value is ten times the previous one. On a linear axis their successive gaps are 9, 90 and 900, making the largest increase visually dominate."
+      },
+      {
+        "title": "Read the question implied by distance",
+        "text": "A move from 2 to 4 and a move from 20 to 40 both double the value. They span the same log distance but different linear distances. A logarithmic view can help compare multiplicative growth across very different levels. A linear view is more direct when absolute changes are the decision measure."
+      },
+      {
+        "title": "Do not hide incompatible observations",
+        "text": "The logarithm of zero is not finite, and negative values do not have an ordinary real logarithm. Dropping such rows or adding a constant changes the dataset or transformation. If an alternative transformation is used, name it and explain how values near zero behave. A log axis is not a cosmetic setting that applies meaningfully to every list."
+      },
+      {
+        "title": "Current tool support and a safe next step",
+        "text": "ChartsAI’s interactive makers currently use linear numeric axes; this guide does not claim a log-axis control exists. The table supplies the exact transformation for this worked sequence. If plotting transformed values in a linear maker, label the axis log10(value) and retain the original values separately. That produces transformed coordinates, not automatically an axis with original-value tick labels."
+      }
+    ],
+    "table": [
+      [
+        "Original value",
+        "log10(value)",
+        "Ratio from previous"
+      ],
+      [
+        "1",
+        "0",
+        "—"
+      ],
+      [
+        "10",
+        "1",
+        "10"
+      ],
+      [
+        "100",
+        "2",
+        "10"
+      ],
+      [
+        "1000",
+        "3",
+        "10"
+      ]
+    ],
+    "example": "scatter-positive-correlation",
+    "related": [
+      "truncated-y-axis",
+      "bar-graph-vs-line-graph",
+      "misleading-graphs"
+    ]
+  },
+  {
+    "slug": "radar-chart-disadvantages",
+    "title": "Radar chart disadvantages: scale, order and area",
+    "answer": "Radar charts can summarize a profile across several dimensions, but their shapes depend on axis scales and order. Use them cautiously for broad patterns, and use aligned bars or a table when precise dimension-by-dimension comparison is the main task.",
+    "sections": [
+      {
+        "title": "Comparable numbers need comparable meaning",
+        "text": "A five-axis profile might contain ratings on a shared 0–10 scale. Combining raw revenue, response time and satisfaction on separate unlabeled scales would instead mix unlike measures. Even a shared numeric range does not make the underlying rubric objective. Record how each score was assigned and whether a larger value means better performance on every axis."
+      },
+      {
+        "title": "Axis order changes the polygon",
+        "text": "Consider ratings 10, 10, 1 and 1 on four equally spaced axes. Reordering them to 10, 1, 10 and 1 preserves every rating but changes which large and small values are adjacent. The polygon shape changes even though the per-dimension data do not. Treating filled area as an overall score would therefore introduce an order-dependent quantity."
+      },
+      {
+        "title": "Overlaps can conceal the comparison",
+        "text": "Several filled profiles may obscure one another, particularly where dimensions have similar values. A reader can mistake a prominent shape for a consistently better profile. Reduce the number of series, keep labels clear, and provide the exact score table. If readers need small differences, grouped bars often make those comparisons easier to inspect."
+      },
+      {
+        "title": "Use a radar for the question it can answer",
+        "text": "A radar can help discuss a qualitative profile when dimensions and scales are already understood. It does not calculate a validated composite score, establish a fair benchmark or remove uncertainty in subjective ratings. ChartsAI preserves supplied scores and asks for a shared maximum; it does not silently normalize mixed units into an apparently comparable shape."
+      }
+    ],
+    "table": [
+      [
+        "Limitation",
+        "Practical response"
+      ],
+      [
+        "Different units",
+        "Define a defensible common rubric"
+      ],
+      [
+        "Order-dependent shape",
+        "Keep order fixed; compare dimensions"
+      ],
+      [
+        "Overlapping fills",
+        "Use fewer series and exact tables"
+      ],
+      [
+        "Area mistaken for score",
+        "Do not rank by polygon area"
+      ],
+      [
+        "Close values",
+        "Consider grouped bars"
+      ]
+    ],
+    "example": "bar-grouped-comparison",
+    "related": [
+      "bar-graph-vs-line-graph",
+      "misleading-graphs",
+      "pie-chart-vs-bar-graph"
+    ]
+  }
+]

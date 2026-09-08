@@ -1,0 +1,147 @@
+---
+import { readFile } from 'node:fs/promises';
+import Layout from '../../layouts/Layout.astro';
+import { datasets } from '../../data/datasets';
+import { parseText } from '../../lib/data';
+import '../../styles/statistics.css';
+export function getStaticPaths() {
+  return datasets.map((d) => ({ params: { slug: d.id }, props: { d } }));
+}
+const { d } = Astro.props,
+  chart = parseText(await readFile(`public/datasets/assets/${d.id}-chart.csv`, 'utf8'));
+const summary = chart[0].map((name, i) => {
+  const v = chart.slice(1).map((r) => Number(r[i]));
+  return [
+    name,
+    String(v.length),
+    String(Math.min(...v)),
+    String(Math.max(...v)),
+    String(v.reduce((s, n) => s + n, 0) / v.length),
+  ];
+});
+const schema = [
+  {
+    '@type': 'Dataset',
+    name: `UCI ${d.name} — headered CSV`,
+    description: d.answer,
+    url: `https://www.chartsai.com${d.url}`,
+    sameAs: `https://doi.org/${d.doi}`,
+    creator: d.creator
+      .replace(/ \(\d{4}\)/, '')
+      .split(/, | and /)
+      .map((name) => ({ '@type': 'Person', name })),
+    license: 'https://creativecommons.org/licenses/by/4.0/',
+    variableMeasured: d.columns,
+    distribution: {
+      '@type': 'DataDownload',
+      encodingFormat: 'text/csv',
+      contentUrl: `https://www.chartsai.com/datasets/assets/${d.id}.csv`,
+    },
+    isAccessibleForFree: true,
+  },
+];
+---
+
+<Layout
+  title={`${d.name} Dataset — CSV, Charts & Source Notes | ChartsAI`}
+  description={d.answer}
+  schema={schema}
+  imagePath={`/datasets/assets/${d.id}.png`}
+  imageWidth={1200}
+  imageHeight={800}
+  imageAlt={`${d.name} scatter plot of ${d.x} and ${d.y}`}
+>
+  <section class="container listing-intro">
+    <span class="eyebrow">PUBLIC DATA · ATTRIBUTED & REPRODUCIBLE</span><h1>{d.name} dataset</h1><p>
+      {d.answer}
+    </p><div class="dataset-downloads">
+      <a class="button" href={`/datasets/assets/${d.id}.csv`} download
+        >Full CSV · {d.rows.toLocaleString('en-US')} rows ↓</a
+      ><a class="text-link" href={`/scatter-plot-maker/?dataset=${d.id}#editor`}>Edit this scatter plot ↗</a>
+    </div>
+  </section>
+  <article class="container guide-body">
+    <figure class="guide-figure">
+      <img
+        src={`/datasets/assets/${d.id}.svg`}
+        width="1200"
+        height="800"
+        alt={`${d.x} against ${d.y}; ${d.chartRows} source observations`}
+        fetchpriority="high"
+      /><figcaption>
+        {d.selection}. Source: <a href={d.sourceUrl}>UCI {d.name}</a>, <a
+          href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a
+        >. {d.units}
+      </figcaption>
+    </figure><div class="dataset-downloads">
+      {
+        ['svg', 'png', 'json'].map((f) => (
+          <a href={`/datasets/assets/${d.id}.${f}`} download>
+            {f === 'json' ? 'ECharts JSON' : f.toUpperCase()} ↓
+          </a>
+        ))
+      }<a href={`/datasets/assets/${d.id}-chart.csv`} download>Chart CSV · {d.chartRows} rows ↓</a><a
+        href={`/datasets/assets/${d.id}-manifest.json`}
+        download>Provenance JSON ↓</a>
+    </div><h2>What the columns mean</h2><p>{d.columnNotes}</p><h2>What this chart helps you inspect</h2><p>
+      {d.interpretation}
+    </p><h2>Limits of this resource</h2><p>{d.limitation}</p><h2>Calculated from the plotted rows</h2><div
+      class="table-scroll"
+    >
+      <table>
+        <thead
+          ><tr>{['Variable', 'N', 'Minimum', 'Maximum', 'Mean'].map((c) => <th scope="col">{c}</th>)}</tr
+          ></thead
+        ><tbody
+          >{
+            summary.map((r) => (
+              <tr>
+                {r.map((c) => (
+                  <td>{c}</td>
+                ))}
+              </tr>
+            ))
+          }</tbody>
+      </table>
+    </div><p>
+      These descriptive values are computed from the chart CSV at build time. They summarize the plotted
+      selection only and are not population estimates. No rows are removed during chart preparation beyond the
+      explicit selection rule above.
+    </p><h2>Preview of the full CSV</h2><p>
+      The first eight source rows are shown here; the download contains the complete {
+        d.rows.toLocaleString('en-US')
+      }-row file with a header.
+    </p><div class="table-scroll">
+      <table>
+        <thead><tr>{d.columns.map((c) => <th scope="col">{c}</th>)}</tr></thead><tbody
+          >{
+            d.preview.map((r) => (
+              <tr>
+                {r.map((c) => (
+                  <td>{c}</td>
+                ))}
+              </tr>
+            ))
+          }</tbody>
+      </table>
+    </div><h2>Source, version and reuse</h2><p>
+      {d.creator}. {d.name} [Dataset]. UCI Machine Learning Repository. <a href={`https://doi.org/${d.doi}`}
+        >{d.doi}</a
+      >. Licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Retain attribution and
+      identify changes when reusing.
+    </p><p>
+      ChartsAI adds column headers and CSV formatting, selects the declared chart columns and rows, and
+      generates the visual and summaries. Original numeric strings are preserved in the full CSV. Source file: <code
+        >{d.sourceFile}</code
+      >; retrieved {d.retrieved}; empty or question-mark cells found in this file: {d.missingCells}. <a
+        href={d.archiveUrl}>Download the original archive from UCI.</a>
+    </p><p class="dataset-meta">SHA-256 of the source data file:</p><pre>{d.sha256}</pre><p>
+      The downloadable provenance JSON records the checksum and every selected source row. <a href="/source/"
+        >The source archive</a
+      > includes the refresh script and pinned data, so normal builds do not depend on a live upstream download.
+    </p><p>
+      Resource and chart by <a href="https://www.supamakers.com/">SupaMakers</a>; original data authors
+      credited above. <a href="/datasets/">Explore all public datasets →</a>
+    </p>
+  </article>
+</Layout>
