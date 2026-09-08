@@ -106,7 +106,7 @@ test('gallery charts scale inside their cards without cropping at phone and desk
 }) => {
   for (const width of [390, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    for (const path of ['/', '/examples/']) {
+    for (const path of ['/examples/']) {
       await page.goto(path);
       const charts = page.locator('.showcase-card > img');
       expect(await charts.count()).toBeGreaterThan(0);

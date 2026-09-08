@@ -1,200 +1,216 @@
 ---
-import '../styles/examples.css';
 import Layout from '../layouts/Layout.astro';
-import StatToolCards from '../components/StatToolCards.astro';
-import ToolCards from '../components/ToolCards.astro';
 import HeroStudio from '../components/HeroStudio';
-import ChartPreview from '../components/ChartPreview.astro';
-import { TrackerPreview } from '../components/TrackerEditor';
 import { dotExample, radarExample } from '../lib/chart-presets';
 import { chartDescription } from '../lib/chart-options';
+import HomeFigures from '../components/HomeFigures.astro';
+import '../styles/home.css';
+import '@fontsource/anton/400.css';
+import '@fontsource/barlow-condensed/400.css';
+import '@fontsource/barlow-condensed/500.css';
+import '@fontsource/barlow-condensed/600.css';
 const descriptions = {
   radar: chartDescription(radarExample('products')),
   dot: chartDescription(dotExample('scores')),
 };
+const collections = [
+  {
+    name: 'Chart makers',
+    description:
+      'Paste spreadsheet cells or upload CSV or Excel. Choose your columns, check the preview, and export PNG, SVG, PDF or CSV.',
+    tools: [
+      ['Dot plot maker', 'dot-plot-maker', 'Show every individual observation.'],
+      ['Histogram maker', 'histogram-maker', 'Group measurements into intervals.'],
+      ['Box plot maker', 'box-plot-maker', 'Compare medians, quartiles and outliers.'],
+      ['Scatter plot maker', 'scatter-plot-maker', 'Explore paired X and Y values.'],
+      ['Line graph maker', 'line-graph-maker', 'Follow change across ordered points.'],
+      ['Bar chart maker', 'bar-chart-maker', 'Compare categories side by side.'],
+      ['Radar chart maker', 'radar-chart-maker', 'Compare profiles on a shared scale.'],
+      ['Pareto chart maker', 'pareto-chart-maker', 'Rank categories and their cumulative share.'],
+    ],
+  },
+  {
+    name: 'Math tools',
+    description:
+      'Change the numbers and see the result. Explore the method, practise on paper, or print a worksheet with a separate answer key.',
+    tools: [
+      ['Coordinate plane generator', 'coordinate-plane-generator', 'Plot points or print a blank grid.'],
+      ['Number line generator', 'number-line-generator', 'Explore fractions, jumps and intervals.'],
+      ['Slope calculator', 'slope-calculator', 'Connect two points to rise and run.'],
+      [
+        'Geometry transformations',
+        'geometry-transformation-calculator',
+        'Translate, reflect, rotate and dilate.',
+      ],
+      [
+        'Quadratic graph calculator',
+        'quadratic-graph-calculator',
+        'See the parabola, vertex and real roots.',
+      ],
+    ],
+  },
+  {
+    name: 'Printables',
+    description:
+      'Make a practice set or a tracker to fill in by hand. Preview the pages, choose A4 or US Letter, and download your PDF.',
+    tools: [
+      ['Number line worksheets', 'number-line-worksheets', 'Create 6–12 questions with separate answers.'],
+      ['Habit tracker printable', 'printables/habit-tracker', 'Plan a week or month of daily habits.'],
+    ],
+  },
+];
+const allTools = collections.flatMap((c) => c.tools);
+const schema = [
+  {
+    '@type': 'ItemList',
+    name: 'Free ChartsAI tools',
+    itemListElement: allTools.map(([name, path], i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name,
+      url: `https://www.chartsai.com/${path}/`,
+    })),
+  },
+];
 ---
 
 <Layout
-  title="Free Chart Makers & Printable Trackers — Create, Style, Download | ChartsAI"
-  description="Make charts worth sharing. Eight free chart makers with spreadsheet import, three styles and PNG, SVG or PDF downloads. Plus printable habit trackers."
+  schema={schema}
+  dateModified="2026-09-09"
+  title="Free Chart Makers, Math Tools & Printable Worksheets | ChartsAI"
+  description="Make a chart, explore maths or print a worksheet. Eight chart makers, five math tools, number-line practice and habit trackers. Free downloads, no signup."
 >
-  <section class="studio-hero container">
-    <div class="studio-hero-copy">
-      <span class="eyebrow"><span class="status-dot"></span> FREE TOOLS. FINISHED RESULTS.</span><h1>
-        Your data.<br />Ready to <span>share.</span>
-      </h1><p>
-        Make a chart that belongs in your next presentation, assignment or report. Start with an example.
-        Bring your own data. Take it with you.
-      </p><div class="hero-actions">
-        <a class="button" href="#tools">Explore the tools <span>↗</span></a><a
-          class="text-link"
-          href="/radar-chart-maker/">Start a chart →</a
-        >
-      </div><div class="hero-proof">
-        <span>✓ Free exports</span><span>✓ No signup</span><span>✓ No watermark</span>
-      </div><div class="hero-byline">
-        <span class="maker-monogram">S</span><div>
-          A project by <a href="https://www.supamakers.com/">SupaMakers ↗</a><small
-            >Practical tools. Open source. Yours to use.</small
+  <div class="home-library">
+    <section class="home-opening" aria-label="Free charts, math tools and printables">
+      <div class="home-intro">
+        <h1>
+          <span
+            ><span class="home-print-word home-registration">GOOD</span>{' '}<span class="home-print-word"
+              >TOOLS</span
+            ><span class="home-dot">.</span></span
+          ><span
+            ><span class="home-print-word home-registration">CLEAR</span>{' '}<span class="home-print-word"
+              >IDEAS</span
+            ><span class="home-dot">.</span></span
+          >
+        </h1>
+        <p class="home-description">
+          Free chart makers, math tools and printables.<br class="home-desktop-break" /> Start with an example.
+          Customize it. Download it.
+        </p>
+        <nav class="home-launches" aria-label="Choose what to make">
+          <a href="/charts/" data-home-focus="chart"
+            ><span>Make a chart</span><svg viewBox="0 0 40 32" aria-hidden="true"
+              ><path d="M2 16h33M22 3l13 13-13 13"></path></svg
+            ></a
+          >
+          <a href="/math-tools/" data-home-focus="math"
+            ><span>Explore math tools</span><svg viewBox="0 0 40 32" aria-hidden="true"
+              ><path d="M2 16h33M22 3l13 13-13 13"></path></svg
+            ></a
+          >
+          <a href="/printables/" data-home-focus="print"
+            ><span>Find a printable</span><svg viewBox="0 0 40 32" aria-hidden="true"
+              ><path d="M2 16h33M22 3l13 13-13 13"></path></svg
+            ></a
+          >
+        </nav>
+        <p class="home-assurance">No signup. Free downloads.</p>
+        <div class="home-resource-links">
+          <a href="/examples/"
+            >Worked examples <svg viewBox="0 0 32 24" aria-hidden="true"
+              ><path d="M1 12h27M18 2l10 10-10 10"></path></svg
+            ></a
+          ><span class="home-resource-group"
+            ><a href="/guides/">Guides</a><span>&</span><a href="/datasets/"
+              >datasets <svg viewBox="0 0 32 24" aria-hidden="true"
+                ><path d="M1 12h27M18 2l10 10-10 10"></path></svg
+              ></a
+            ></span
           >
         </div>
       </div>
-    </div><div class="hero-demo-wrap">
-      <HeroStudio client:visible descriptions={descriptions} /><p class="demo-caption">
-        <span>TRY THE STYLES ↑</span> Real chart. Fictional example data. Fully editable.
-      </p>
-    </div>
-  </section>
-  <div class="capability-strip">
-    <div class="container">
-      <span>YOUR SPREADSHEET, WELCOME HERE.</span><p>
-        Paste a table <b>/</b> CSV & Excel <b>/</b> Preview before plotting <b>/</b> Data stays in your browser
-      </p>
-    </div>
-  </div>
-  <section id="tools" class="section container">
-    <div class="section-heading">
-      <div>
-        <span class="eyebrow">THE TOOLKIT / 01–03</span><h2>What are you making?</h2>
-      </div><p>
-        Pick a starting point.<br />Every example opens a working editor.
-      </p>
-    </div><ToolCards />
-  </section>
-  <section class="container section">
-    <div class="section-heading">
-      <h2>Explore more of your data.</h2><a href="/charts/" class="text-link">All eight makers →</a>
-    </div><StatToolCards /><p>
-      <a class="text-link" href="/guides/">Choose a chart with our guides →</a> · <a
-        class="text-link"
-        href="/datasets/">Start with attributed public data →</a
-      >
+      <HomeFigures />
+    </section>
+    <p class="home-signoff">
+      Made by <a href="https://www.supamakers.com/">SupaMakers</a>. <a href="/source/">Open source</a>. Yours
+      to use.
     </p>
-  </section>
-  <section class="container style-section">
-    <div class="section-heading">
+    <section class="home-directory" id="tools" aria-labelledby="directory-title">
+      <div class="home-section-intro">
+        <h2 id="directory-title">What are you making?</h2><p>
+          A chart for your report. A diagram for your lesson. A page to print. Pick a tool and start with a
+          working example.
+        </p>
+      </div>
+      <div class="home-directory-columns">
+        {
+          collections.map((c) => (
+            <section>
+              <>
+                <h3>{c.name}</h3>
+                <p>{c.description}</p>
+                <ul>
+                  {c.tools.map(([name, path, description]) => (
+                    <li>
+                      <a href={`/${path}/`}>
+                        <strong>{name}</strong>
+                        <span>{description}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            </section>
+          ))
+        }
+      </div>
+    </section>
+    <section class="home-try" aria-labelledby="try-title">
       <div>
-        <span class="eyebrow">SAME DATA. YOUR POINT OF VIEW.</span><h2>A style for the setting.</h2>
-      </div><p>
-        Keep the values. Change the presentation.<br />Each style is included in every chart maker.
-      </p>
-    </div><div class="style-gallery">
-      {
-        (
-          [
-            {
-              id: 'editorial',
-              name: 'Editorial',
-              use: 'For reports, assignments & the printed page.',
-            },
-            {
-              id: 'ocean',
-              name: 'Blueprint',
-              use: 'For presentations, proposals & comparisons.',
-            },
-            {
-              id: 'night',
-              name: 'After hours',
-              use: 'For dark slides & a little more contrast.',
-            },
-          ] as const
-        ).map((style) => (
-          <a
-            href={`/radar-chart-maker/?example=products&style=${style.id}#editor`}
-            class="style-gallery-card"
-          >
-            <>
-              <ChartPreview spec={{ ...radarExample('products'), theme: style.id }} />
-              <div>
-                <>
-                  <h3>
-                    {style.name} <span>↗</span>
-                  </h3>
-                  <p>{style.use}</p>
-                </>
-              </div>
-            </>
-          </a>
-        ))
-      }
-    </div>
-  </section>
-  <section id="how-it-works" class="container workflow-section">
-    <div>
-      <span class="eyebrow">A SHORTER PATH TO THE FINISHED CHART</span><h2>
-        From spreadsheet<br />to slide. Done.
-      </h2><p>
-        Use the data you already have. The preview gives you a chance to check the meaning before you
-        download.
-      </p><a class="text-link" href="/about/#methodology">Our approach to data →</a>
-    </div><ol>
-      <li>
-        <span>01</span><div>
-          <h3>Start with something real</h3><p>
-            Open an example, paste cells or select a CSV or Excel file. Choose the rows and columns you want
-            to use.
-          </p>
-        </div>
-      </li><li>
-        <span>02</span><div>
-          <h3>Make your point</h3><p>
-            Pick a style, name the chart and add context. Check the scale and the values. Missing data gets
-            flagged.
-          </p>
-        </div>
-      </li><li>
-        <span>03</span><div>
-          <h3>Put it to work</h3><p>
-            Download a PNG, vector SVG or PDF. Choose a presentation, square or standard canvas. No watermark
-            to remove.
-          </p>
-        </div>
-      </li>
-    </ol>
-  </section>
-  <section class="container printable-banner">
-    <div>
-      <span class="eyebrow">SOME THINGS WORK BETTER ON PAPER</span><h2>
-        Make a little<br />room for progress.
-      </h2><p>
-        A habit tracker with your words, your month and your paper size. Customize it once. Keep it somewhere
-        you’ll see it.
-      </p><a class="button secondary" href="/printables/habit-tracker/">Make a free printable ↗</a>
-    </div><div class="printable-banner-paper">
-      <TrackerPreview
-        config={{
-          title: 'A week, well spent.',
-          habits: ['Read 10 pages', 'Move for 20 minutes', 'Make something', 'Get outside'],
-          month: '2026-09',
-          period: 'week',
-          paper: 'a4',
-          ink: false,
-        }}
-      />
-    </div>
-  </section>
-  <section class="container open-work">
-    <div>
-      <span class="eyebrow">BUILT BY SUPAMAKERS</span><h2>
-        Useful enough to use.<br />Open enough to build on.
-      </h2>
-    </div><div>
-      <p>
-        The chart makers run on Apache ECharts. The source code, original example data and calculation notes
-        are here to inspect and reuse.
-      </p><div>
-        <a class="text-link" href="/source/">Explore the source ↗</a><a
-          class="text-link"
-          href="https://www.supamakers.com/">Meet SupaMakers ↗</a
+        <h2 id="try-title">See it.<br />Make it yours.</h2><p>
+          Try a dot plot or radar chart in three styles. Choose a look, then open the maker with this exact
+          example ready to edit.
+        </p><p>
+          Your own data works too: upload a spreadsheet or paste cells, select your columns, and check the
+          values before you replace the sample.
+        </p><p class="home-small-note">These previews use fictional teaching data.</p>
+      </div>
+      <HeroStudio client:load descriptions={descriptions} />
+    </section>
+    <section class="home-learn" aria-labelledby="learn-title">
+      <h2 id="learn-title">Useful beyond the download.</h2>
+      <div class="home-learn-links">
+        <a href="/examples/"
+          ><h3>Worked examples</h3><p>
+            50 original examples with the source values, a worked interpretation, and reusable downloads.
+          </p><span>Explore the examples</span></a
+        ><a href="/guides/"
+          ><h3>Chart guides</h3><p>
+            20 explanations to help you choose a chart, understand its calculations, and avoid misleading
+            comparisons.
+          </p><span>Read the guides</span></a
+        ><a href="/datasets/"
+          ><h3>Public datasets</h3><p>
+            Five attributed UCI datasets, with source notes and prepared CSV files for exploring the tools.
+          </p><span>Find a dataset</span></a
         >
       </div>
-    </div>
-  </section>
-  <section class="container example-home-link">
-    <span class="eyebrow">50 ORIGINAL WORKED EXAMPLES</span><h2>See the chart. Understand the data.</h2><p>
-      Explore distance–time graphs, dot plot distributions and radar profiles. Every example includes the
-      original values, a worked explanation and free downloads.
-    </p><a class="text-link" href="/examples/">Explore the example library →</a>
-  </section>
-<section class="container section"><span class="eyebrow">FOR YOUR NEXT MATH LESSON</span><h2>Make the maths visible.</h2><p>Explore number lines, slope, transformations, quadratic graphs and coordinate planes. Free practice worksheets with separate answer keys.</p><a class="button secondary" href="/math-tools/">Explore five free math tools ↗</a></section>
+    </section>
+    <section class="home-method" aria-labelledby="method-title">
+      <h2 id="method-title">Free tools. Clear methods.</h2><div>
+        <p>
+          ChartsAI is a free collection of chart makers, math visualization tools and printable resources
+          built by <a href="https://www.supamakers.com/">SupaMakers</a>. No account or watermark is required.
+        </p><p>
+          Files, calculations and exports stay in your browser. Each tool explains its inputs, assumptions and
+          limits. You can inspect the values, download the result, and reuse the open-source code.
+        </p><div class="home-method-links">
+          <a href="/about/">About our methods</a><a href="/source/">Get the source code</a><a href="/privacy/"
+            >How privacy works</a
+          >
+        </div>
+      </div>
+    </section>
+  </div>
 </Layout>

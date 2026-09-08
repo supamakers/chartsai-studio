@@ -33,3 +33,10 @@ public/coordinate/assets/
 public/math/assets/
 
 public/worksheets/assets/
+
+# Local design decisions, generated mockups and review evidence.
+.impeccable/*
+!.impeccable/config.json
+!.impeccable/design.json
+!.impeccable/surfaces/
+/assets/plates/

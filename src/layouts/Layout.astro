@@ -18,6 +18,7 @@ interface Props {
   imageAlt?: string;
   imageWidth?: number;
   imageHeight?: number;
+  dateModified?: string;
 }
 const {
   title,
@@ -29,6 +30,7 @@ const {
   imageAlt = 'ChartsAI — Free chart makers and printables by SupaMakers',
   imageWidth = 1200,
   imageHeight = 630,
+  dateModified = '2026-09-08',
 } = Astro.props;
 const canonical = new URL(path, Astro.site).href;
 const graph = [
@@ -58,7 +60,7 @@ const graph = [
     description,
     isPartOf: { '@id': 'https://www.chartsai.com/#website' },
     inLanguage: 'en',
-    dateModified: '2026-09-08',
+    dateModified,
   },
   ...schema,
 ];
@@ -104,7 +106,7 @@ const graph = [
     />
     <Analytics />
   </head>
-  <body>
+  <body class:list={{ 'home-page': path === '/' }}>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="container header-inner">
@@ -117,20 +119,51 @@ const graph = [
               stroke-linecap="round"></path></svg
           ><span>charts<span class="brand-ai">ai</span><span class="brand-dot">.</span></span></a
         >
-        <nav aria-label="Main navigation">
-          <a href="/charts/" aria-current={path.includes('maker') || path === '/charts/' ? 'page' : undefined}
-            >Chart makers</a
-          ><a href="/examples/" aria-current={path.startsWith('/examples/') ? 'page' : undefined}>Examples</a
-          ><a href="/printables/" aria-current={path.includes('printables') ? 'page' : undefined}
-            >Printables</a
-          ><a
-            href="/math-tools/"
-            aria-current={path === '/math-tools/' || /calculator|number-line|coordinate-plane/.test(path)
-              ? 'page'
-              : undefined}>Math tools</a
-          ><a href="/about/" aria-current={path === '/about/' ? 'page' : undefined}>Our approach</a>
-        </nav>
-        <a class="header-maker" href="https://www.supamakers.com/">Built by <strong>SupaMakers ↗</strong></a>
+        {
+          path === '/' ? (
+            <nav aria-label="Main navigation">
+              <>
+                <a href="/charts/">Charts</a>
+                <a href="/math-tools/">Math tools</a>
+                <a href="/printables/">Printables</a>
+                <a href="/examples/">Examples</a>
+              </>
+            </nav>
+          ) : (
+            <nav aria-label="Main navigation">
+              <>
+                <a
+                  href="/charts/"
+                  aria-current={path.includes('maker') || path === '/charts/' ? 'page' : undefined}
+                >
+                  Chart makers
+                </a>
+                <a href="/examples/" aria-current={path.startsWith('/examples/') ? 'page' : undefined}>
+                  Examples
+                </a>
+                <a href="/printables/" aria-current={path.includes('printables') ? 'page' : undefined}>
+                  Printables
+                </a>
+                <a
+                  href="/math-tools/"
+                  aria-current={
+                    path === '/math-tools/' || /calculator|number-line|coordinate-plane/.test(path)
+                      ? 'page'
+                      : undefined
+                  }
+                >
+                  Math tools
+                </a>
+                <a href="/about/" aria-current={path === '/about/' ? 'page' : undefined}>
+                  Our approach
+                </a>
+              </>
+            </nav>
+          )
+        }
+        <a class="header-maker" href="https://www.supamakers.com/"
+          >Built by <strong>SupaMakers{path === '/' ? '' : ' ↗'}</strong></a
+        >
       </div>
     </header>
     <main id="main"><slot /></main>
@@ -141,7 +174,7 @@ const graph = [
             <a class="brand" href="/"
               >charts<span class="brand-ai">ai</span><span class="brand-dot">.</span></a
             ><p>
-              Your data. Ready to share.<br />Free chart makers & printables.
+              Free chart makers, math tools<br />& printable resources.
             </p>
           </div><div>
             <span class="footer-label">MAKE SOMETHING</span><a href="/charts/">All eight chart makers</a><a

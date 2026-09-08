@@ -103,3 +103,7 @@ Five free visual tools cover coordinate planes, number lines, slope, geometry tr
 The experimental [chart-quality skill](.agents/skills/chartsai-chart-quality/SKILL.md) and its seven [evaluation tasks](.agents/skills/chartsai-chart-quality/fixtures/evaluation-tasks.json) are included in source. Its tests validate invariants; they are not an LLM improvement benchmark. Search evidence and scope: [education expansion](docs/EDUCATION-EXPANSION-2026-09-08.md).
 
 Version 0.9 adds [number line worksheets](https://www.chartsai.com/number-line-worksheets/): generate 6–12 exercises, choose integer/fraction/jump practice, print A4 or Letter PDFs with separate keys, or use three original ready-made packs. Questions and printable answers share the existing SVG number-line renderer. See `docs/NUMBER-LINE-WORKSHEETS-RESEARCH-2026-09-08.md` for search evidence and scope.
+
+### Expanded homepage
+
+The homepage introduces charts, math tools and printables with real static previews, a directory of all 15 builders, an interactive example/style handoff, and links to the original resource library. Its printed blue/pink identity is scoped to the homepage; chart and worksheet editing behavior is unchanged. `src/lib/home-figures.ts` generates accurate native chart options at build time. `tests/home-figures.test.ts` and `tests/browser/home.spec.ts` cover data integrity and accessible discovery. Product and design context live in `PRODUCT.md` and `DESIGN.md`.

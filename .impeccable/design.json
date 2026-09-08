@@ -1,0 +1,406 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-08T20:05:58.686282+00:00",
+  "title": "Design System: ChartsAI",
+  "extensions": {
+    "colorMeta": {
+      "home-blue": {
+        "role": "primary",
+        "displayName": "Home Blue",
+        "tonalRamp": [
+          "oklch(15% 0.2065 264.81)",
+          "oklch(26% 0.2065 264.81)",
+          "oklch(38% 0.2065 264.81)",
+          "oklch(49% 0.2065 264.81)",
+          "oklch(61% 0.2065 264.81)",
+          "oklch(72% 0.2065 264.81)",
+          "oklch(84% 0.2065 264.81)",
+          "oklch(95% 0.2065 264.81)"
+        ]
+      },
+      "home-pink": {
+        "role": "secondary",
+        "displayName": "Home Pink",
+        "tonalRamp": [
+          "oklch(15% 0.2057 1.09)",
+          "oklch(26% 0.2057 1.09)",
+          "oklch(38% 0.2057 1.09)",
+          "oklch(49% 0.2057 1.09)",
+          "oklch(61% 0.2057 1.09)",
+          "oklch(72% 0.2057 1.09)",
+          "oklch(84% 0.2057 1.09)",
+          "oklch(95% 0.2057 1.09)"
+        ]
+      },
+      "home-paper": {
+        "role": "neutral",
+        "displayName": "Home Paper",
+        "tonalRamp": [
+          "oklch(15% 0.0258 92.39)",
+          "oklch(26% 0.0258 92.39)",
+          "oklch(38% 0.0258 92.39)",
+          "oklch(49% 0.0258 92.39)",
+          "oklch(61% 0.0258 92.39)",
+          "oklch(72% 0.0258 92.39)",
+          "oklch(84% 0.0258 92.39)",
+          "oklch(95% 0.0258 92.39)"
+        ]
+      },
+      "home-rule": {
+        "role": "primary",
+        "displayName": "Home Rule",
+        "tonalRamp": [
+          "oklch(15% 0.1648 266.30)",
+          "oklch(26% 0.1648 266.30)",
+          "oklch(38% 0.1648 266.30)",
+          "oklch(49% 0.1648 266.30)",
+          "oklch(61% 0.1648 266.30)",
+          "oklch(72% 0.1648 266.30)",
+          "oklch(84% 0.1648 266.30)",
+          "oklch(95% 0.1648 266.30)"
+        ]
+      },
+      "chart-field": {
+        "role": "neutral",
+        "displayName": "Chart Field",
+        "tonalRamp": [
+          "oklch(15% 0.0143 231.21)",
+          "oklch(26% 0.0143 231.21)",
+          "oklch(38% 0.0143 231.21)",
+          "oklch(49% 0.0143 231.21)",
+          "oklch(61% 0.0143 231.21)",
+          "oklch(72% 0.0143 231.21)",
+          "oklch(84% 0.0143 231.21)",
+          "oklch(95% 0.0143 231.21)"
+        ]
+      },
+      "math-field": {
+        "role": "neutral",
+        "displayName": "Math Field",
+        "tonalRamp": [
+          "oklch(15% 0.0330 351.18)",
+          "oklch(26% 0.0330 351.18)",
+          "oklch(38% 0.0330 351.18)",
+          "oklch(49% 0.0330 351.18)",
+          "oklch(61% 0.0330 351.18)",
+          "oklch(72% 0.0330 351.18)",
+          "oklch(84% 0.0330 351.18)",
+          "oklch(95% 0.0330 351.18)"
+        ]
+      },
+      "print-field": {
+        "role": "neutral",
+        "displayName": "Print Field",
+        "tonalRamp": [
+          "oklch(15% 0.0159 216.68)",
+          "oklch(26% 0.0159 216.68)",
+          "oklch(38% 0.0159 216.68)",
+          "oklch(49% 0.0159 216.68)",
+          "oklch(61% 0.0159 216.68)",
+          "oklch(72% 0.0159 216.68)",
+          "oklch(84% 0.0159 216.68)",
+          "oklch(95% 0.0159 216.68)"
+        ]
+      },
+      "figure-blue": {
+        "role": "primary",
+        "displayName": "Figure Blue",
+        "tonalRamp": [
+          "oklch(15% 0.2117 264.78)",
+          "oklch(26% 0.2117 264.78)",
+          "oklch(38% 0.2117 264.78)",
+          "oklch(49% 0.2117 264.78)",
+          "oklch(61% 0.2117 264.78)",
+          "oklch(72% 0.2117 264.78)",
+          "oklch(84% 0.2117 264.78)",
+          "oklch(95% 0.2117 264.78)"
+        ]
+      },
+      "figure-pink": {
+        "role": "secondary",
+        "displayName": "Figure Pink",
+        "tonalRamp": [
+          "oklch(15% 0.2060 358.85)",
+          "oklch(26% 0.2060 358.85)",
+          "oklch(38% 0.2060 358.85)",
+          "oklch(49% 0.2060 358.85)",
+          "oklch(61% 0.2060 358.85)",
+          "oklch(72% 0.2060 358.85)",
+          "oklch(84% 0.2060 358.85)",
+          "oklch(95% 0.2060 358.85)"
+        ]
+      },
+      "selection-paper": {
+        "role": "neutral",
+        "displayName": "Selection Paper",
+        "tonalRamp": [
+          "oklch(15% 0.0696 349.20)",
+          "oklch(26% 0.0696 349.20)",
+          "oklch(38% 0.0696 349.20)",
+          "oklch(49% 0.0696 349.20)",
+          "oklch(61% 0.0696 349.20)",
+          "oklch(72% 0.0696 349.20)",
+          "oklch(84% 0.0696 349.20)",
+          "oklch(95% 0.0696 349.20)"
+        ]
+      },
+      "selection-ink": {
+        "role": "neutral",
+        "displayName": "Selection Ink",
+        "tonalRamp": [
+          "oklch(15% 0.1812 264.31)",
+          "oklch(26% 0.1812 264.31)",
+          "oklch(38% 0.1812 264.31)",
+          "oklch(49% 0.1812 264.31)",
+          "oklch(61% 0.1812 264.31)",
+          "oklch(72% 0.1812 264.31)",
+          "oklch(84% 0.1812 264.31)",
+          "oklch(95% 0.1812 264.31)"
+        ]
+      },
+      "workbench-paper": {
+        "role": "neutral",
+        "displayName": "Workbench Paper",
+        "tonalRamp": [
+          "oklch(15% 0.0106 106.59)",
+          "oklch(26% 0.0106 106.59)",
+          "oklch(38% 0.0106 106.59)",
+          "oklch(49% 0.0106 106.59)",
+          "oklch(61% 0.0106 106.59)",
+          "oklch(72% 0.0106 106.59)",
+          "oklch(84% 0.0106 106.59)",
+          "oklch(95% 0.0106 106.59)"
+        ]
+      },
+      "workbench-ink": {
+        "role": "neutral",
+        "displayName": "Workbench Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0295 171.64)",
+          "oklch(26% 0.0295 171.64)",
+          "oklch(38% 0.0295 171.64)",
+          "oklch(49% 0.0295 171.64)",
+          "oklch(61% 0.0295 171.64)",
+          "oklch(72% 0.0295 171.64)",
+          "oklch(84% 0.0295 171.64)",
+          "oklch(95% 0.0295 171.64)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.88)",
+          "oklch(26% 0.0000 89.88)",
+          "oklch(38% 0.0000 89.88)",
+          "oklch(49% 0.0000 89.88)",
+          "oklch(61% 0.0000 89.88)",
+          "oklch(72% 0.0000 89.88)",
+          "oklch(84% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Homepage focal headline only; responsive overrides are recorded in DESIGN.md."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Homepage headline role."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Homepage title role."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Homepage body role."
+      },
+      "introduction": {
+        "displayName": "Introduction",
+        "purpose": "Homepage introduction role."
+      },
+      "launch": {
+        "displayName": "Launch",
+        "purpose": "Homepage launch role."
+      },
+      "navigation": {
+        "displayName": "Navigation",
+        "purpose": "Homepage navigation role."
+      },
+      "preview-control": {
+        "displayName": "Preview Control",
+        "purpose": "Homepage preview control role."
+      },
+      "workbench-body": {
+        "displayName": "Workbench Body",
+        "purpose": "Established controls outside the homepage."
+      },
+      "workbench-heading": {
+        "displayName": "Workbench Heading",
+        "purpose": "Established controls outside the homepage."
+      }
+    },
+    "shadows": [
+      {
+        "name": "printed-registration",
+        "value": "filter: drop-shadow(2px 1px 0 var(--home-pink))",
+        "purpose": "Selective headline ink offset; 1px 1px on phones, removed in forced colors. Not container elevation."
+      },
+      {
+        "name": "related-figure-focus",
+        "value": "inset 0 0 0 2px var(--home-pink)",
+        "purpose": "Matching figure emphasis when the associated launch link is hovered or focused."
+      }
+    ],
+    "motion": [
+      {
+        "name": "launch-arrow",
+        "value": "transform 180ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Five-pixel arrow shift on hover or keyboard focus; disabled under reduced motion."
+      },
+      {
+        "name": "figure-emphasis",
+        "value": "box-shadow 180ms ease-out",
+        "purpose": "Related figure inset emphasis; transition disabled under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone-max",
+        "value": "480px"
+      },
+      {
+        "name": "stacked-max",
+        "value": "860px"
+      },
+      {
+        "name": "compact-max",
+        "value": "1200px"
+      },
+      {
+        "name": "proportional-opening-min",
+        "value": "1201px"
+      },
+      {
+        "name": "large-display-min",
+        "value": "1600px"
+      },
+      {
+        "name": "proportional-opening-max",
+        "value": "1680px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Launch link",
+      "kind": "nav",
+      "description": "A ruled category destination with a moving pink SVG arrow.",
+      "html": "<a class=\"ds-launch ds-focus\" href=\"/charts/\"><span>Make a chart</span><svg viewBox=\"0 0 40 32\" aria-hidden=\"true\"><path d=\"M2 16h33M22 3l13 13-13 13\"/></svg></a>",
+      "css": ".ds-launch{display:flex;align-items:center;justify-content:space-between;gap:15px;min-height:88px;padding:11px 8px 13px 0;border-top:1px solid var(--home-rule,#395cc2);border-bottom:1px solid var(--home-rule,#395cc2);color:var(--home-blue,#1036b8);font:400 clamp(32px,3.4vw,52px)/1.1 'Anton',Impact,sans-serif;letter-spacing:-.015em;text-decoration:none}.ds-launch svg{width:43px;height:38px;color:var(--home-pink,#ce276f);transition:transform 180ms cubic-bezier(.16,1,.3,1)}.ds-launch path{fill:none;stroke:currentColor;stroke-width:5;vector-effect:non-scaling-stroke}.ds-launch:hover{color:var(--home-pink,#ce276f)}.ds-launch:is(:hover,:focus-visible) svg{transform:translateX(5px)}.ds-focus:focus-visible{outline:3px solid var(--home-pink,#ce276f);outline-offset:5px}@media(prefers-reduced-motion:reduce){.ds-launch svg{transition:none}.ds-launch:is(:hover,:focus-visible) svg{transform:none}}",
+      "refersTo": "launch-link"
+    },
+    {
+      "name": "Header navigation",
+      "kind": "nav",
+      "description": "Four direct library destinations with complete mobile wrapping.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><a class=\"ds-focus\" href=\"/charts/\">Charts</a><a class=\"ds-focus\" href=\"/math-tools/\">Math tools</a><a class=\"ds-focus\" href=\"/printables/\">Printables</a><a class=\"ds-focus\" href=\"/examples/\">Examples</a></nav>",
+      "css": ".ds-nav{display:flex;gap:50px;font-family:'Barlow Condensed',Arial,sans-serif;color:var(--home-blue,#1036b8);font-size:22px;font-weight:600;text-transform:uppercase}.ds-nav a{padding:8px 0;color:inherit;text-decoration:none}.ds-nav a:hover{color:var(--home-pink,#ce276f)}.ds-focus:focus-visible{outline:3px solid var(--home-pink,#ce276f);outline-offset:5px}@media(max-width:1200px){.ds-nav{gap:24px;font-size:21px}}@media(max-width:860px){.ds-nav{justify-content:space-between;gap:16px;font-size:20px}}@media(max-width:480px){.ds-nav{gap:10px;font-size:18px}}"
+    },
+    {
+      "name": "Figure field",
+      "kind": "card",
+      "description": "A square paper substrate behind genuine chart or worksheet figures.",
+      "html": "<section class=\"ds-field\"><h2>Maths, made visible</h2><p>Slope = rise / run<br>= 2 / 3</p><a class=\"ds-focus\" href=\"/slope-calculator/\">Slope calculator</a></section>",
+      "css": ".ds-field{position:relative;min-width:0;padding:10px 14px 9px;background:#f7dce7;font-family:'Barlow Condensed',Arial,sans-serif;color:var(--home-blue,#1036b8);font-size:22px;line-height:1.35}.ds-field::before{content:\"\";position:absolute;inset:0;background:url(\"/brand/paper.png\") repeat;background-size:540px 540px;filter:grayscale(1) contrast(1.35);opacity:.85;mix-blend-mode:multiply;pointer-events:none}.ds-field>*{position:relative}.ds-field h2{font:400 clamp(25px,2.48vw,38px)/1.22 Anton,Impact,sans-serif;letter-spacing:-.02em;margin:0}.ds-field p{font-size:24px;line-height:1.35}.ds-field a{color:inherit;text-underline-offset:5px}.ds-field a:hover{text-decoration:underline}.ds-focus:focus-visible{outline:3px solid var(--home-pink,#ce276f);outline-offset:5px}",
+      "refersTo": "figure-panel"
+    },
+    {
+      "name": "Preview button",
+      "kind": "button",
+      "description": "Chart-kind selection in the bounded style preview.",
+      "html": "<button class=\"ds-preview ds-focus\" aria-pressed=\"false\">Dot plot</button>",
+      "css": ".ds-preview{padding:7px 12px;border:0;border-radius:0;background:transparent;font-family:'Barlow Condensed',Arial,sans-serif;color:var(--home-blue,#1036b8);font-size:20px;cursor:pointer}.ds-preview[aria-pressed=\"true\"]{background:var(--home-blue,#1036b8);color:var(--home-paper,#f8f2df)}.ds-preview:disabled{cursor:not-allowed;opacity:.5}.ds-focus:focus-visible{outline:3px solid var(--home-pink,#ce276f);outline-offset:5px}",
+      "refersTo": "preview-button"
+    },
+    {
+      "name": "Selected preview button",
+      "kind": "button",
+      "description": "Chart-kind selection in the bounded style preview.",
+      "html": "<button class=\"ds-preview ds-focus\" aria-pressed=\"true\">Radar chart</button>",
+      "css": ".ds-preview{padding:7px 12px;border:0;border-radius:0;background:transparent;font-family:'Barlow Condensed',Arial,sans-serif;color:var(--home-blue,#1036b8);font-size:20px;cursor:pointer}.ds-preview[aria-pressed=\"true\"]{background:var(--home-blue,#1036b8);color:var(--home-paper,#f8f2df)}.ds-preview:disabled{cursor:not-allowed;opacity:.5}.ds-focus:focus-visible{outline:3px solid var(--home-pink,#ce276f);outline-offset:5px}",
+      "refersTo": "preview-button-selected"
+    },
+    {
+      "name": "Directory link",
+      "kind": "custom",
+      "description": "A complete tool destination with its distinct purpose.",
+      "html": "<a class=\"ds-directory ds-focus\" href=\"/dot-plot-maker/\"><strong>Dot plot maker</strong><span>Show every individual observation.</span></a>",
+      "css": ".ds-directory{display:block;padding:16px 0;border-bottom:1px solid #a6b2c9;font-family:'Barlow Condensed',Arial,sans-serif;color:var(--home-blue,#1036b8);text-decoration:none}.ds-directory strong{display:block;font-size:25px;font-weight:600;line-height:1.2}.ds-directory span{display:block;font-size:20px;margin-top:4px}.ds-directory:hover strong{color:var(--home-pink,#ce276f);text-decoration:underline}.ds-focus:focus-visible{outline:3px solid var(--home-pink,#ce276f);outline-offset:5px}",
+      "refersTo": "directory-link"
+    },
+    {
+      "name": "Workbench primary button",
+      "kind": "button",
+      "description": "The incumbent control outside the homepage; preserve its established design.",
+      "html": "<button class=\"ds-workbench-button\">Apply data</button>",
+      "css": ".ds-workbench-button{display:inline-flex;align-items:center;justify-content:center;gap:16px;background:var(--ink,#263b34);color:white;border:1px solid var(--ink,#263b34);border-radius:7px;padding:14px 22px;font:500 12px/1.5 \"DM Sans\",Arial,sans-serif;cursor:pointer;transition:background .18s,transform .18s}.ds-workbench-button:hover:not(:disabled){background:#405648;transform:translateY(-1px)}.ds-workbench-button.ds-secondary{background:transparent;color:var(--ink,#263b34);border-color:#cbd3c4}.ds-workbench-button.ds-secondary:hover:not(:disabled){background:#eef1e6}.ds-workbench-button:focus-visible{outline:3px solid #648f70;outline-offset:2px}.ds-workbench-button:disabled{opacity:.5;cursor:not-allowed}",
+      "refersTo": "workbench-button"
+    },
+    {
+      "name": "Workbench secondary button",
+      "kind": "button",
+      "description": "The incumbent control outside the homepage; preserve its established design.",
+      "html": "<button class=\"ds-workbench-button ds-secondary\">Cancel</button>",
+      "css": ".ds-workbench-button{display:inline-flex;align-items:center;justify-content:center;gap:16px;background:var(--ink,#263b34);color:white;border:1px solid var(--ink,#263b34);border-radius:7px;padding:14px 22px;font:500 12px/1.5 \"DM Sans\",Arial,sans-serif;cursor:pointer;transition:background .18s,transform .18s}.ds-workbench-button:hover:not(:disabled){background:#405648;transform:translateY(-1px)}.ds-workbench-button.ds-secondary{background:transparent;color:var(--ink,#263b34);border-color:#cbd3c4}.ds-workbench-button.ds-secondary:hover:not(:disabled){background:#eef1e6}.ds-workbench-button:focus-visible{outline:3px solid #648f70;outline-offset:2px}.ds-workbench-button:disabled{opacity:.5;cursor:not-allowed}",
+      "refersTo": "workbench-button-secondary"
+    },
+    {
+      "name": "Workbench field",
+      "kind": "input",
+      "description": "An existing data-entry field, outside the printed homepage.",
+      "html": "<label class=\"ds-workbench-label\">Chart title<input class=\"ds-workbench-input\" value=\"Class scores\"></label>",
+      "css": ".ds-workbench-label{display:block;margin:15px 0 0;font:500 10px/1.65 \"DM Sans\",Arial,sans-serif;color:var(--ink,#263b34)}.ds-workbench-input{display:block;width:100%;min-width:0;margin-top:6px;border:1px solid #d6decf;background:white;border-radius:5px;padding:9px 10px;color:var(--ink,#263b34);font:400 12px/1.5 \"DM Sans\",Arial,sans-serif}.ds-workbench-input:focus-visible{outline:3px solid #648f70;outline-offset:2px}",
+      "refersTo": "workbench-field"
+    }
+  ],
+  "narrative": {
+    "northStar": "Printed Resource Library",
+    "overview": "The homepage pairs visibly fibrous warm paper with blue and pink spot ink. Condensed display lettering, thin rules and substantial text links give it the character of a useful printed resource collection. Real chart and worksheet outputs provide the visual substance; the composition stays open and readable rather than dividing every item into a card.\n\nThis visual world applies to the homepage, including its header and footer. It is scoped through `body.home-page` in [home.css](src/styles/home.css). Existing tool, editor and supporting-page styles remain in [global.css](src/styles/global.css), [studio.css](src/styles/studio.css) and their component stylesheets. Their DM Sans / Instrument Serif pairing and quieter workbench colors remain established; the homepage does not authorize a sitewide redesign. ChartsAI retains its existing name and SupaMakers attribution.",
+    "keyCharacteristics": [
+      "Blue ink carries readable text; pink provides selective emphasis.",
+      "Actual paper and ink textures give the opening its printed material character.",
+      "Ruled text links and square figure fields organize the library.",
+      "Semantic text and genuine mathematical outputs remain independent of decorative treatment."
+    ],
+    "rules": [
+      {
+        "name": "The Readable Ink Rule",
+        "body": "Keep body copy, navigation and numerical marks crisp; apply textured ink only to the focal headline lettering.",
+        "section": "colors"
+      },
+      {
+        "name": "The Material Boundary Rule",
+        "body": "Keep texture and registration in the printed surface; do not distress chart geometry, labels, input fields or exported values.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do scope the printed identity to the homepage and preserve the established editor workbenches.",
+      "Do retain real semantic headline text, image alternatives and working static links.",
+      "Do use genuine native chart outputs and the shared printable renderers.",
+      "Do preserve keyboard emphasis, reduced-motion feedback and the forced-colors headline fallback.",
+      "Do use the supplied paper and ink assets visibly while keeping small text and numerical marks crisp."
+    ],
+    "donts": [
+      "Don't spread headline texture or registration into body text, controls or data geometry.",
+      "Don't replace native axes with decorative hand-drawn chart geometry.",
+      "Don't turn every directory item into a floating card or apply letter-registration effects as container shadows.",
+      "Don't let homepage styling recolor the selectable chart export themes or change their exact maker handoff.",
+      "Don't infer an all-site identity replacement from this homepage system."
+    ]
+  }
+}

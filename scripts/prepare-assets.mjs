@@ -147,6 +147,8 @@ async function collect(directory) {
 for (const directory of ['src', 'public', 'scripts', 'tests', 'docs', '.github/workflows', '.agents/skills/chartsai-chart-quality']) await collect(directory);
 for (const path of [
   'README.md',
+  'PRODUCT.md',
+  'DESIGN.md',
   '.prettierrc.json',
   'AGENTS.md',
   'AGENT.md',

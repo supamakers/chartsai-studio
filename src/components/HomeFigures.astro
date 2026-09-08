@@ -1,0 +1,91 @@
+---
+import { renderOptionSvg } from '../lib/echarts';
+import { homeDotOption, homeLineOption, homeSlopeOption, homeNumberLine } from '../lib/home-figures';
+const svgUrl = (svg: string) => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+const figures = {
+  dot: svgUrl(renderOptionSvg(homeDotOption(), 360, 170)),
+  line: svgUrl(renderOptionSvg(homeLineOption(), 360, 170)),
+  slope: svgUrl(renderOptionSvg(homeSlopeOption(), 340, 210)),
+  reading: svgUrl(homeNumberLine(true)),
+  plotting: svgUrl(homeNumberLine(false)),
+};
+---
+
+<div class="home-figures" aria-label="Examples of charts, math tools and printables">
+  <section class="home-figure home-chart-figure" id="chart-preview" aria-labelledby="home-chart-title">
+    <div class="home-figure-heading">
+      <h2 id="home-chart-title">Charts for reports & assignments</h2><span>Fictional example data</span>
+    </div>
+    <div class="home-chart-pair">
+      <a href="/dot-plot-maker/?example=scores#editor"
+        ><span>Class scores (out of 100)</span><img
+          src={figures.dot}
+          alt="Dot plot of 48 fictional class scores, from 52 to 100; repeated scores are stacked."
+          width="360"
+          height="170"
+          fetchpriority="high"
+        /></a
+      ><a href="/line-graph-maker/?example=monthly#editor"
+        ><span>Orders · <span class="home-line-key">North</span> / South</span><img
+          src={figures.line}
+          alt="Line graph of fictional monthly orders, January to June: North shop in pink and South shop in blue. Open the example to inspect the values."
+          width="360"
+          height="170"
+        /></a
+      >
+    </div>
+    <nav class="home-figure-links" aria-label="Chart examples">
+      <a href="/dot-plot-maker/">Dot plot</a><span>·</span><a href="/radar-chart-maker/">Radar chart</a><span
+        >·</span
+      ><a href="/line-graph-maker/">Line graph</a><svg aria-hidden="true" viewBox="0 0 32 24"
+        ><path d="M1 12h27M18 2l10 10-10 10"></path></svg
+      >
+    </nav>
+  </section>
+  <section class="home-figure home-math-figure" id="math-preview" aria-labelledby="home-math-title">
+    <h2 id="home-math-title">Maths, made visible</h2>
+    <div class="home-slope">
+      <a href="/slope-calculator/" aria-label="Explore the slope calculator"
+        ><img
+          src={figures.slope}
+          alt="A line through (0, 1) and (3, 3), with equal units on both axes."
+          width="340"
+          height="210"
+        /></a
+      ><p>Slope = rise / run<br /><span>= 2 / 3</span></p>
+    </div>
+    <nav class="home-figure-links" aria-label="Math tools">
+      <a href="/coordinate-plane-generator/">Coordinates</a><span>·</span><a href="/slope-calculator/"
+        >Slope</a
+      ><span>·</span><a href="/geometry-transformation-calculator/">Transformations</a><svg
+        aria-hidden="true"
+        viewBox="0 0 32 24"><path d="M1 12h27M18 2l10 10-10 10"></path></svg
+      >
+    </nav>
+  </section>
+  <section class="home-figure home-print-figure" id="print-preview" aria-labelledby="home-print-title">
+    <h2 id="home-print-title">Practice on paper</h2>
+    <div class="home-practice">
+      <div>
+        <p>1. What number is marked?</p><img
+          src={figures.reading}
+          alt="Number line from minus 4 to 4, with one point marked; count from zero to identify it."
+          width="720"
+          height="200"
+        /><p class="home-answer-line">Answer: <span></span></p>
+      </div><div>
+        <p>2. Plot the number −1.</p><img
+          src={figures.plotting}
+          alt="Blank number line from minus 4 to 4 with unit intervals for plotting minus 1."
+          width="720"
+          height="200"
+        /><p class="home-answer-line">Answer: <span></span></p>
+      </div>
+    </div>
+    <nav class="home-figure-links" aria-label="Printables">
+      <a href="/number-line-worksheets/">Number line worksheets</a><span>·</span><a
+        href="/printables/habit-tracker/">Habit trackers</a
+      ><svg aria-hidden="true" viewBox="0 0 32 24"><path d="M1 12h27M18 2l10 10-10 10"></path></svg>
+    </nav>
+  </section>
+</div>
