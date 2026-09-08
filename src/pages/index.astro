@@ -1,4 +1,5 @@
 ---
+import '../styles/examples.css';
 import Layout from '../layouts/Layout.astro';
 import ToolCards from '../components/ToolCards.astro';
 import HeroStudio from '../components/HeroStudio';
@@ -178,5 +179,11 @@ const dotSvg = renderChartSvg({ ...dotExample('scores'), theme: 'night' });
         >
       </div>
     </div>
+  </section>
+  <section class="container example-home-link">
+    <span class="eyebrow">20 ORIGINAL WORKED EXAMPLES</span><h2>See the chart. Understand the data.</h2><p>
+      Explore distance–time graphs, dot plot distributions and radar profiles. Every example includes the
+      original values, a worked explanation and free downloads.
+    </p><a class="text-link" href="/examples/">Explore the example library →</a>
   </section>
 </Layout>

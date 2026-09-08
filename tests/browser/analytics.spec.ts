@@ -47,4 +47,20 @@ test('production analytics wires bounded events and canonical URLs while exports
   });
   expect(received.every((event) => event.u === 'https://www.chartsai.com/line-graph-maker/')).toBe(true);
   expect(JSON.stringify(received)).not.toMatch(/SECRET|CONFIDENTIAL|Sample A|Cooling/);
+  await page.goto('https://www.chartsai.com/examples/dot-plot-fractions/?search=SECRET');
+  const exampleDownload = page.waitForEvent('download');
+  await page.locator('.example-downloads').getByRole('link', { name: 'CSV ↓', exact: true }).click();
+  await exampleDownload;
+  await expect
+    .poll(() =>
+      received.some(
+        (event) =>
+          event.n === 'Chart Download' &&
+          event.u === 'https://www.chartsai.com/examples/dot-plot-fractions/' &&
+          event.p.tool === 'dot-plot' &&
+          event.p.format === 'csv',
+      ),
+    )
+    .toBe(true);
+  expect(JSON.stringify(received)).not.toMatch(/SECRET|CONFIDENTIAL/);
 });

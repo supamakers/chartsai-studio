@@ -17,3 +17,5 @@ artifacts/
 /public/downloads/
 
 .vercel/
+
+public/examples/assets/

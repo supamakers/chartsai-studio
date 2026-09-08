@@ -1,0 +1,96 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ExampleCards from '../../components/ExampleCards.astro';
+import { groups } from '../../data/showcase';
+import '../../styles/examples.css';
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': 'https://www.chartsai.com/examples/#collection',
+    name: 'Chart examples with data',
+    hasPart: groups.map((g) => ({
+      '@type': 'CollectionPage',
+      name: g.name,
+      url: `https://www.chartsai.com/examples/${g.slug}/`,
+    })),
+  },
+];
+---
+
+<Layout
+  title="20 Chart Examples with Data & Free Downloads | ChartsAI"
+  description="Explore 20 line graph, dot plot and radar chart examples with worked explanations, original CSV data and free SVG and PNG downloads. Edit any chart in your browser."
+  schema={schema}
+>
+  <section class="container example-intro">
+    <span class="eyebrow">THE EXAMPLE LIBRARY / 001–020</span><h1>
+      A good chart starts<br />with a <em>clear question.</em>
+    </h1><p>
+      Twenty finished charts. The data behind every point. See how each one works, then make it your own.
+    </p><div class="example-promises">
+      <span>Free SVG + PNG</span><span>Original CSV data</span><span>No signup</span>
+    </div>
+  </section>
+  <section class="container example-collection">
+    <h2 class="sr-only">Explore chart examples</h2><div class="example-hub-links">
+      {
+        groups.map((g) => (
+          <a href={`/examples/${g.slug}/`}>
+            {g.name} <span>{g.examples.length} ↗</span>
+          </a>
+        ))
+      }
+    </div>
+    <div class="example-filters" hidden>
+      <label for="example-search"
+        >Find an example<input
+          type="search"
+          id="example-search"
+          placeholder="Try speed, fractions or skills"
+        /></label
+      ><label for="example-kind"
+        >Chart type<select id="example-kind"
+          ><option value="all">All types</option><option value="line">Line graphs</option><option value="dot"
+            >Dot plots</option
+          ><option value="radar">Radar charts</option></select
+        ></label
+      ><p id="example-count" role="status" aria-live="polite">20 examples</p>
+    </div>
+    <ExampleCards /><p id="example-empty" hidden>
+      No examples match. Try another phrase or choose all types.
+    </p>
+  </section>
+  <section class="container prose-section">
+    <h2>Finished examples you can check and reuse</h2><p>
+      Every example pairs a chart with its exact data, a worked interpretation, input guidance and
+      limitations. All datasets are fictional and created for this library by <a
+        href="https://www.supamakers.com/">SupaMakers</a
+      >. They illustrate methods, not real-world findings or benchmarks.
+    </p><p>
+      Download a chart immediately, or choose “Edit this chart” to load the same data, scale and style into a <a
+        href="/charts/">free chart maker</a
+      >. Editing runs in your browser. Use the CSV as a starting point, replace it with your own evidence and
+      update the source note before sharing.
+    </p>
+  </section>
+</Layout>
+<script>
+  const search = document.querySelector<HTMLInputElement>('#example-search')!;
+  const kind = document.querySelector<HTMLSelectElement>('#example-kind')!;
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-example-kind]')];
+  document.querySelector<HTMLElement>('.example-filters')!.hidden = false;
+  function filter() {
+    let count = 0;
+    for (const card of cards) {
+      card.hidden =
+        !(kind.value === 'all' || card.dataset.exampleKind === kind.value) ||
+        !card.dataset.exampleTitle!.includes(search.value.trim().toLowerCase());
+      if (!card.hidden) count++;
+    }
+    document.querySelector('#example-count')!.textContent =
+      `${count} ${count === 1 ? 'example' : 'examples'}`;
+    document.querySelector<HTMLElement>('#example-empty')!.hidden = count !== 0;
+  }
+  search.addEventListener('input', filter);
+  kind.addEventListener('change', filter);
+</script>

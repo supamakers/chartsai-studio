@@ -1,7 +1,11 @@
+import { showcaseSlugs, showcaseGroups, findShowcase } from './showcase-specs';
 export const productionHosts = ['www.chartsai.com', 'chartsai.com'];
 const pagePaths = new Set([
   '/',
   '/charts/',
+  '/examples/',
+  ...showcaseSlugs.map((slug) => `/examples/${slug}/`),
+  ...Object.values(showcaseGroups).map((group) => `/examples/${group.slug}/`),
   '/dot-plot-maker/',
   '/radar-chart-maker/',
   '/line-graph-maker/',
@@ -37,4 +41,11 @@ export function usageEvent(detail: unknown) {
   if (action === 'render') return { name: 'Data Import', props };
   if (action === 'sample') return { name: 'Example Loaded', props };
   return null;
+}
+
+export function showcaseDownloadEvent(pathname: string) {
+  const match = pathname.match(/^\/examples\/assets\/([a-z-]+)\.(svg|png|csv|json)$/);
+  if (!match) return null;
+  const spec = findShowcase(match[1]);
+  return spec ? usageEvent({ tool: spec.kind, action: 'export', format: match[2] }) : null;
 }

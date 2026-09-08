@@ -1,3 +1,4 @@
+import { findShowcase } from '../lib/showcase-specs';
 import { useEffect, useState } from 'react';
 import { ArrowDownToLine, Upload, RotateCcw, Plus, X, FileSpreadsheet, Code2 } from 'lucide-react';
 import EChartView from './EChartView';
@@ -99,7 +100,20 @@ export default function RadarEditor({ initialSvg }: { initialSvg?: string }) {
     emitUsage('radar-chart', 'render');
   }
   useEffect(() => {
-    const id = new URLSearchParams(location.search).get('example');
+    const query = new URLSearchParams(location.search);
+    const p = findShowcase(query.get('showcase'), 'radar');
+    if (p?.kind === 'radar') {
+      setTable([['Dimension', ...p.series], ...p.axes.map((a, i) => [a, ...p.scores[i].map(String)])]);
+      setTitle(p.title);
+      setMax(String(p.max));
+      setFilled(p.filled);
+      setRound(p.round);
+      setPresentation({ theme: p.theme, frame: p.frame, subtitle: p.subtitle, source: p.source });
+      setActive(query.get('showcase')!);
+      setNotice('Worked example loaded. All data is fictional.');
+      return;
+    }
+    const id = query.get('example');
     if (radarPresets.some((p) => p.id === id)) preset(id!, false);
   }, []);
   return (

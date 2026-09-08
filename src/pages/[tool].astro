@@ -1,4 +1,8 @@
 ---
+import ExampleCards from '../components/ExampleCards.astro';
+import { examples } from '../data/showcase';
+import { showcaseGroups } from '../lib/showcase-specs';
+import '../styles/examples.css';
 import Layout from '../layouts/Layout.astro';
 import { tools } from '../data/tools';
 import { DotEditor, RadarEditor, LineEditor } from '../components/ChartEditor';
@@ -180,4 +184,12 @@ const schema = [
       tools.filter((t) => t.slug !== tool.slug).map((t) => <a href={`/${t.slug}/`}>{t.name} ↗</a>)
     }<a href="/printables/habit-tracker/">Printable habit tracker ↗</a>
   </div>
+  <section class="container section">
+    <div class="section-heading">
+      <h2>Worked examples with data</h2><a
+        class="text-link"
+        href={`/examples/${showcaseGroups[tool.type].slug}/`}
+        >All {showcaseGroups[tool.type].name.toLowerCase()} →</a>
+    </div><ExampleCards items={examples.filter((e) => e.spec.kind === tool.type).slice(0, 3)} />
+  </section>
 </Layout>

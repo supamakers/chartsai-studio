@@ -1,3 +1,4 @@
+import { findShowcase } from '../lib/showcase-specs';
 import { useEffect, useState } from 'react';
 import { ArrowDownToLine, Upload, RotateCcw, FileSpreadsheet, ChevronDown, Code2 } from 'lucide-react';
 import EChartView from './EChartView';
@@ -91,7 +92,20 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
     emitUsage('dot-plot', 'render');
   }
   useEffect(() => {
-    const id = new URLSearchParams(location.search).get('example');
+    const query = new URLSearchParams(location.search);
+    const p = findShowcase(query.get('showcase'), 'dot');
+    if (p?.kind === 'dot') {
+      setRaw(p.values.join('\n'));
+      setTitle(p.title);
+      setLabel(p.label);
+      setMean(p.meanLine);
+      setCounts(p.showCounts);
+      setPresentation({ theme: p.theme, frame: p.frame, subtitle: p.subtitle, source: p.source });
+      setActive(query.get('showcase')!);
+      setNotice('Worked example loaded. All data is fictional.');
+      return;
+    }
+    const id = query.get('example');
     if (dotPresets.some((p) => p.id === id)) selectPreset(id!, false);
   }, []);
   return (

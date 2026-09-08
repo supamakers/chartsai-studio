@@ -14,8 +14,22 @@ interface Props {
   path?: string;
   schema?: Record<string, unknown>[];
   noindex?: boolean;
+  imagePath?: string;
+  imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 }
-const { title, description, path = Astro.url.pathname, schema = [], noindex = false } = Astro.props;
+const {
+  title,
+  description,
+  path = Astro.url.pathname,
+  schema = [],
+  noindex = false,
+  imagePath = '/og.png',
+  imageAlt = 'ChartsAI — Free chart makers and printables by SupaMakers',
+  imageWidth = 1200,
+  imageHeight = 630,
+} = Astro.props;
 const canonical = new URL(path, Astro.site).href;
 const graph = [
   {
@@ -66,19 +80,19 @@ const graph = [
     /><meta property="og:description" content={description} /><meta
       property="og:url"
       content={canonical}
-    /><meta property="og:image" content={new URL('/og.png', Astro.site).href} /><meta
+    /><meta property="og:image" content={new URL(imagePath, Astro.site).href} /><meta
       property="og:image:width"
-      content="1200"
-    /><meta property="og:image:height" content="630" /><meta
+      content={String(imageWidth)}
+    /><meta property="og:image:height" content={String(imageHeight)} /><meta
       property="og:image:alt"
-      content="ChartsAI — Your data. Ready to share. Free chart makers and printables by SupaMakers."
+      content={imageAlt}
     />
     <meta name="twitter:card" content="summary_large_image" /><meta
       name="twitter:title"
       content={title}
     /><meta name="twitter:description" content={description} /><meta
       name="twitter:image"
-      content={new URL('/og.png', Astro.site).href}
+      content={new URL(imagePath, Astro.site).href}
     />
     <script
       is:inline
@@ -106,6 +120,7 @@ const graph = [
         <nav aria-label="Main navigation">
           <a href="/charts/" aria-current={path.includes('maker') || path === '/charts/' ? 'page' : undefined}
             >Chart makers</a
+          ><a href="/examples/" aria-current={path.startsWith('/examples/') ? 'page' : undefined}>Examples</a
           ><a href="/printables/" aria-current={path.includes('printables') ? 'page' : undefined}
             >Printables</a
           ><a href="/about/" aria-current={path === '/about/' ? 'page' : undefined}>Our approach</a>

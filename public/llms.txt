@@ -8,6 +8,12 @@
 - [Radar chart maker](https://www.chartsai.com/radar-chart-maker/): Compare 1–5 series across 3–10 dimensions with an explicit shared scale. PNG, SVG, PDF and CSV export.
 - [Habit tracker printable](https://www.chartsai.com/printables/habit-tracker/): Custom weekly and monthly blank trackers, up to 8 habits, A4 or US Letter landscape PDF.
 
+## Worked examples
+- [Chart example library](https://www.chartsai.com/examples/): 20 original fictional datasets with worked interpretations, limits, exact editor links and SVG/PNG/CSV/ECharts JSON downloads.
+- [Line graph examples](https://www.chartsai.com/examples/line-graphs/): Eight examples including numeric/time spacing, motion, grouped cumulative frequency and break-even.
+- [Dot plot examples](https://www.chartsai.com/examples/dot-plots/): Six stacked frequency plots with means, medians, fractions and distribution shapes.
+- [Radar chart examples](https://www.chartsai.com/examples/radar-charts/): Six shared-scale rating profiles. No automatic normalization or composite scores.
+
 ## Context
 - [Methodology and authorship](https://www.chartsai.com/about/): Calculations, limits, original samples and SupaMakers attribution.
 - [Source code and reuse](https://www.chartsai.com/source/): MIT-licensed implementation and downloadable sample data.

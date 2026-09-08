@@ -15,7 +15,7 @@ Build excellent free chart tools and printable resources that people can discove
 
 ## Current scope and evidence
 
-The implemented initial scope is a dot plot maker, radar/spider chart maker, line graph maker, and weekly/monthly printable habit tracker. Each has a working editor and downloads. Relationship charts, other printable families, and Power BI/Tableau resources are candidates, not committed work.
+The implemented initial scope is a dot plot maker, radar/spider chart maker, line graph maker, and weekly/monthly printable habit tracker. Each has a working editor and downloads. Version 0.4.0 adds 20 worked chart examples at `/examples/[slug]/`, three family hubs and `/examples/`. Each has original fictional data, exact editor state, static downloads and visible explanations. See `docs/SHOWCASE-RESEARCH-2026-09-08.md` for country/date/query evidence and exploratory topics. Relationship charts, other printable families, and Power BI/Tableau resources are candidates, not committed work.
 
 Local research, when available:
 
@@ -93,6 +93,8 @@ This property has a Search Console “Generative AI features” beta report, obs
 
 ## File map and checks
 
+- `src/lib/showcase-specs.ts`: whitelist of 20 complete chart specifications and shared table serialization; `src/data/showcase.ts`: original editorial copy and collection definitions.
+- `src/pages/examples/`, `src/components/ExampleCards.astro`, `src/styles/examples.css`: static gallery, family hubs and example resources. Generated `public/examples/assets/` files are excluded from Git/source ZIP and rebuilt by asset preparation.
 - `src/pages/`: static routes and tool pages; `src/data/tools.ts`: chart page copy.
 - `src/layouts/Layout.astro`: shared metadata, navigation, identity, and structured data.
 - `src/lib/chart-options.ts`, `src/lib/echarts.ts`: shared native ECharts configuration/rendering.

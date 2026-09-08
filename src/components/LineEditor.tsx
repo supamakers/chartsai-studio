@@ -1,3 +1,4 @@
+import { findShowcase } from '../lib/showcase-specs';
 import { useEffect, useState } from 'react';
 import { Upload, RotateCcw, Plus, X, FileSpreadsheet, ArrowDownToLine, Code2 } from 'lucide-react';
 import EChartView from './EChartView';
@@ -88,7 +89,22 @@ export default function LineEditor({ initialSvg }: { initialSvg?: string }) {
     emitUsage('line', 'render');
   }
   useEffect(() => {
-    const id = new URLSearchParams(location.search).get('example');
+    const query = new URLSearchParams(location.search);
+    const p = findShowcase(query.get('showcase'), 'line');
+    if (p?.kind === 'line') {
+      setTable(asTable(p));
+      setTitle(p.title);
+      setXLabel(p.xLabel);
+      setYLabel(p.yLabel);
+      setXMode(p.xMode);
+      setZero(p.zeroBaseline);
+      setMarkers(p.markers);
+      setPresentation({ theme: p.theme, frame: p.frame, subtitle: p.subtitle, source: p.source });
+      setActive(query.get('showcase')!);
+      setNotice('Worked example loaded. All data is fictional.');
+      return;
+    }
+    const id = query.get('example');
     if (linePresets.some((p) => p.id === id)) preset(id!, false);
   }, []);
   return (

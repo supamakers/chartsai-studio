@@ -33,3 +33,7 @@ Review weekly by landing page and traffic source:
 - Actual AI referrals and dated manual citation checks. These are partial observations, not a comprehensive GEO score.
 
 Do not install a second analytics provider by default or send data from imports to analytics. Avoid arbitrary targets before the launch baseline exists. A lack of clicks immediately after launch is not a failed SEO experiment; indexing and sufficient exposure must be checked first.
+
+## Showcase library — September 8, 2026
+
+The 20 example details, three family hubs and library index have fixed analytics route identifiers. Static SVG/PNG/CSV/JSON download clicks reuse Chart Download with only the tool and format. A click is not proof of a completed save or reuse. Query state, search text and chart values are excluded. Compare example landing-page visits and download clicks separately from maker use. Normal-visitor ingestion remains unverified as recorded in the launch log.

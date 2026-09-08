@@ -1,0 +1,45 @@
+---
+import { examples } from '../data/showcase';
+import { chartFrames } from '../lib/chart-options';
+interface Props {
+  items?: typeof examples;
+}
+const { items = examples } = Astro.props;
+---
+
+<div class="showcase-grid">
+  {
+    items.map((e) => (
+      <article
+        class="showcase-card"
+        data-example-kind={e.spec.kind}
+        data-example-title={`${e.title} ${e.answer}`.toLowerCase()}
+      >
+        <a href={`/examples/${e.slug}/`} class="showcase-card-image" tabindex="-1" aria-hidden="true">
+          <img
+            src={`/examples/assets/${e.slug}.svg`}
+            width={chartFrames[e.spec.frame].width}
+            height={chartFrames[e.spec.frame].height}
+            alt=""
+            loading="lazy"
+          />
+        </a>
+        <div class="showcase-card-copy">
+          <>
+            <span class="eyebrow">
+              {e.spec.kind === 'dot' ? 'DOT PLOT' : e.spec.kind === 'line' ? 'LINE GRAPH' : 'RADAR CHART'} ·
+              WORKED EXAMPLE
+            </span>
+            <h3>
+              <a href={`/examples/${e.slug}/`}>
+                {e.title} <span aria-hidden="true">↗</span>
+              </a>
+            </h3>
+            <p>{e.answer}</p>
+            <span class="showcase-card-note">Editable chart + original data</span>
+          </>
+        </div>
+      </article>
+    ))
+  }
+</div>

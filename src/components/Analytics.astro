@@ -1,5 +1,5 @@
 <script>
-  import { analyticsUrl, productionHosts, usageEvent } from '../lib/analytics-policy';
+  import { analyticsUrl, productionHosts, usageEvent, showcaseDownloadEvent } from '../lib/analytics-policy';
   type Tracker = ((name: string, options?: Record<string, unknown>) => void) & {
     q?: unknown[];
     o?: Record<string, unknown>;
@@ -55,6 +55,12 @@
       const anchor = event.target instanceof Element ? event.target.closest('a') : null;
       if (!anchor) return;
       const url = new URL(anchor.href);
+      const exampleDownload = url.origin === location.origin ? showcaseDownloadEvent(url.pathname) : null;
+      if (exampleDownload)
+        w.plausible?.(exampleDownload.name, {
+          props: exampleDownload.props,
+          url: analyticsUrl(location.href),
+        });
       if (url.origin === location.origin && url.pathname === '/downloads/chartsai-source.zip')
         w.plausible?.('Source Download', { url: analyticsUrl(location.href) });
       else if (url.hostname === 'www.supamakers.com' || url.hostname === 'supamakers.com')

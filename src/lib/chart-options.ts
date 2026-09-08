@@ -103,7 +103,7 @@ export function createChartOption(spec: ChartSpec, width = 900, height = 600): E
     (spec.kind === 'dot'
       ? 'Each dot represents one observation.'
       : spec.kind === 'line'
-        ? 'Straight segments connect observations. No interpolation or aggregation.'
+        ? 'Straight segments connect supplied points. No aggregation.'
         : 'A shared scale. Compare values along the same axis.');
   const titleSize = Math.max(19, 29 * scale);
   const base: EChartsOption = {
@@ -276,7 +276,6 @@ export function createChartOption(spec: ChartSpec, width = 900, height = 600): E
         left: pad + 36 * scale,
         right: pad + 12,
         bottom: Math.max(110, 118 * scale),
-        containLabel: true,
       },
       tooltip: { ...base.tooltip, trigger: 'axis' },
       legend: {
@@ -299,7 +298,8 @@ export function createChartOption(spec: ChartSpec, width = 900, height = 600): E
             : {
                 type: 'value' as const,
                 scale: true,
-                boundaryGap: ['3%', '3%'] as [string, string],
+                min: 'dataMin',
+                max: 'dataMax',
               }),
         name: spec.xLabel,
         nameLocation: 'middle',

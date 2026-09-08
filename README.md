@@ -8,6 +8,7 @@ Use Node.js 22.12+ or 24.x (Vercel uses 24.x; local checks also run on 22.22.2).
 
 ```sh
 npm ci
+npm run prepare:assets
 npm run dev
 ```
 
@@ -30,13 +31,19 @@ The browser checks use Playwright Chromium. Install it once with `npx playwright
 - Import: paste or CSV/TSV/TXT/XLSX, sheet selection, row range, transpose, header and column selection, US/European number style. Missing or invalid scores block plotting. Files stay on-device.
 - Habit tracker: weekly or calendar-correct monthly, up to eight habits, title, A4/US Letter landscape, ink-friendly header, PDF download. PDF uses a high-resolution rendering of the same SVG preview.
 
-All nine example datasets are original, fictional illustrations. They are not research or benchmark findings. Import limits are 8 MB per file, 2 MB of pasted text, 2,000 data rows and 100 columns; oversized inputs are rejected, not silently truncated. Currency symbols are formatting; percentages remain percentage points (12% → 12). Statistical calculations use ordinary JavaScript floating-point numbers.
+All nine preset datasets and twenty showcase datasets are original, fictional illustrations. They are not research or benchmark findings. Import limits are 8 MB per file, 2 MB of pasted text, 2,000 data rows and 100 columns; oversized inputs are rejected, not silently truncated. Currency symbols are formatting; percentages remain percentage points (12% → 12). Statistical calculations use ordinary JavaScript floating-point numbers.
 
 ## Chart engine and presentation
 
 ECharts built-in scatter, radar and line series replace the original hand-drawn chart components. `src/lib/chart-options.ts` is the shared option builder; `src/lib/echarts.ts` registers only the chart types, components and SVG renderer needed. Static examples use ECharts SSR, and `EChartView` loads the interactive engine on the client. The ECharts engine is larger than a handwritten two-chart renderer; it is dynamically loaded, while initial example graphics are already in HTML. Excel and PDF modules load only when requested.
 
 Three themes (Editorial, Blueprint, After hours), standard/presentation/square export sizes, subtitles and source notes are available in Design & details. Chart exports include PNG, vector SVG, raster PDF and reusable ECharts JSON. Changing sample values removes the fictional source note. Values and scores are unchanged by presentation settings. Native tooltips expose records; the dot frequency table and radar input table expose exact data without pointer interaction.
+
+## Worked example library
+
+`/examples/` contains 20 original worked examples grouped into line graphs, dot plots and radar charts. Each page includes an accessible data table, method and limitations, static SVG/PNG/CSV/ECharts JSON downloads and an exact editor handoff. Three family hubs organize the collection. All 24 new pages render their main content without JavaScript. Gallery filters have no indexable URL variants.
+
+Specifications live in `src/lib/showcase-specs.ts` and editorial text in `src/data/showcase.ts`. Run asset preparation before development or asset-dependent tests; production builds do this automatically. Generated `public/examples/assets/` files are omitted from Git and the source ZIP to keep the source small and reproducible. The September research and release criteria are documented in `docs/SHOWCASE-RESEARCH-2026-09-08.md`.
 
 ## Search and content architecture
 
