@@ -45,3 +45,5 @@
 - [Slope calculator](https://www.chartsai.com/slope-calculator/): Two points, signed rise/run, line equation and vertical-line handling.
 - [Geometry transformations](https://www.chartsai.com/geometry-transformation-calculator/): Translate, reflect, rotate or dilate a simple polygon; corresponding vertices and equal units.
 - [Quadratic graph calculator](https://www.chartsai.com/quadratic-graph-calculator/): Standard-form coefficients, vertex, real roots, discriminant and calculated table. Independent axis scales.
+
+- [Number line worksheets](https://www.chartsai.com/number-line-worksheets/): Generate 6–12 integer, fraction or unit-jump questions; A4 and Letter PDFs with separate answer pages and three original downloadable packs.

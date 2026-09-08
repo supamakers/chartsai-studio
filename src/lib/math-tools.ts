@@ -317,12 +317,17 @@ function autoPlane(points: Point[]): Plane {
   const bound = Math.min(50, Math.ceil((n + step) / step) * step);
   return { ...defaultPlane, xmin: -bound, xmax: bound, ymin: -bound, ymax: bound, step };
 }
-export function numberLineSvg(i: Inputs, answer: boolean) {
+export function numberLineSvg(
+  i: Inputs,
+  answer: boolean,
+  options: { compact?: boolean; anchorsOnly?: boolean; markerId?: string } = {},
+) {
+  const markerId = escapeXml(options.markerId ?? 'jump-arrow');
   const r = numberLineResult(i),
     x = (n: number) => 60 + ((n - r.min) * 600) / (r.max - r.min),
     y = 360;
   const label = i.labels === 'fraction' ? fraction : fmt;
-  let body = `<defs><marker id="jump-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7" fill="#315b84"/></marker></defs>`;
+  let body = `<defs><marker id="${markerId}" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7" fill="#315b84"/></marker></defs>`;
   body += `<path d="M45 ${y} H675 M45 ${y} l10 -5 M45 ${y} l10 5 M675 ${y} l-10 -5 M675 ${y} l-10 5" fill="none" stroke="#39483f" stroke-width="2"/>`;
   const intervals = Math.round((r.max - r.min) / r.step);
   const tickValues = Array.from({ length: intervals + 1 }, (_, n) => r.min + n * r.step);
@@ -330,7 +335,8 @@ export function numberLineSvg(i: Inputs, answer: boolean) {
   for (let n = 0; n <= intervals; n++) {
     const v = r.min + n * r.step;
     body += `<path d="M${x(v)} ${y - 6} v12" stroke="#39483f"/>`;
-    body += tx(x(v), y + 30 + (stagger && n % 2 ? 18 : 0), label(v), 13, '#39483f', 'middle');
+    if (!options.anchorsOnly || n === 0 || n === intervals)
+      body += tx(x(v), y + 30 + (stagger && n % 2 ? 18 : 0), label(v), 13, '#39483f', 'middle');
   }
   const dot = (v: number, open: boolean, name: string, offset = 0) =>
     `<circle cx="${x(v)}" cy="${y}" r="6" fill="${open ? 'white' : '#315b84'}" stroke="#315b84" stroke-width="2"/>${tx(x(v), y - 20 - offset, name, 15, '#254e76', 'middle')}`;
@@ -349,9 +355,9 @@ export function numberLineSvg(i: Inputs, answer: boolean) {
       for (let n = 0; n < r.count!; n++) {
         const a = x(r.start! + n * r.jump!),
           b = x(r.start! + (n + 1) * r.jump!);
-        body += `<path d="M${a} ${y - 10} Q${(a + b) / 2} ${y - 110} ${b} ${y - 13}" fill="none" stroke="#315b84" stroke-width="2" marker-end="url(#jump-arrow)"/>`;
+        body += `<path d="M${a} ${y - 10} Q${(a + b) / 2} ${y - 110} ${b} ${y - 13}" fill="none" stroke="#315b84" stroke-width="2" marker-end="url(#${markerId})"/>`;
       }
-      body += dot(r.end!, false, 'End');
+      body += dot(r.end!, false, 'End', Math.abs(x(r.end!) - x(r.start!)) < 55 ? -75 : 0);
     }
   }
   const caption =
@@ -362,6 +368,11 @@ export function numberLineSvg(i: Inputs, answer: boolean) {
         : i.mode === 'interval'
           ? `${i.left === 'closed' ? '[' : '('}${label(r.low!)}, ${label(r.high!)}${i.right === 'closed' ? ']' : ')'}`
           : `Plot ${r.points.map(label).join(', ')}`;
+  if (options.compact)
+    return wrapSvg(body, 'Number line with equally spaced ticks').replace(
+      'width="720" height="720" viewBox="0 0 720 720"',
+      'width="720" height="200" viewBox="0 230 720 200"',
+    );
   wrapped(caption, 65).forEach((line, n) => {
     body += tx(360, 165 + n * 23, line, 17, '#263b34', 'middle');
   });

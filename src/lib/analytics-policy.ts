@@ -7,6 +7,7 @@ const pagePaths = new Set([
   '/charts/',
   '/coordinate-plane-generator/',
   '/number-line-generator/',
+  '/number-line-worksheets/',
   '/slope-calculator/',
   '/geometry-transformation-calculator/',
   '/quadratic-graph-calculator/',
@@ -41,6 +42,7 @@ export function usageEvent(detail: unknown) {
   const names: Record<string, string> = {
     'coordinate-plane': 'coordinate-plane',
     'number-line': 'number-line',
+    'number-line-worksheets': 'number-line-worksheets',
     slope: 'slope',
     transformation: 'transformation',
     quadratic: 'quadratic',
@@ -69,6 +71,14 @@ export function usageEvent(detail: unknown) {
 }
 
 export function showcaseDownloadEvent(pathname: string) {
+  if (
+    /^\/worksheets\/assets\/(?:integers|fractions|jumps)(?:-(?:a4|letter)\.pdf|\.(?:svg|csv))$/.test(pathname)
+  )
+    return usageEvent({
+      tool: 'number-line-worksheets',
+      action: 'export',
+      format: pathname.split('.').pop(),
+    });
   if (
     /^\/coordinate\/assets\/(?:quadrants\.(?:svg|png|csv)|(?:four-quadrants|first-quadrant|triangle)-(?:a4|letter)\.pdf)$/.test(
       pathname,

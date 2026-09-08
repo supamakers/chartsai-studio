@@ -41,3 +41,7 @@ The 20 example details, three family hubs and library index have fixed analytics
 ## v0.5.1 operational follow-up
 
 Public dataset CSV, chart image/config and provenance download clicks reuse Chart Download with only `tool=public-dataset` and a whitelisted format. Dataset names are not event properties; the canonical page identifies the landing resource. All 102 current page paths are bounded. See [operations](OPERATIONS.md) for the automated public-health checks and private local Search Console export reports.
+
+## Worksheet build phase — September 8, 2026
+
+Continue useful releases while discovery data accumulate, per the user's direction. The worksheet page and `number-line-worksheets` tool identifier join the fixed allowlist. Existing math identifiers are `coordinate-plane`, `number-line`, `slope`, `transformation`, and `quadratic`. Worksheet downloads emit Chart Download with PDF/CSV format; fresh sets emit Example Loaded. No seed, question, learner name or answer is transmitted. These events indicate an action, not learning outcomes. No traffic threshold gates the worksheet release.

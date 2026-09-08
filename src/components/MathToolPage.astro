@@ -54,17 +54,29 @@ const schema = [
   <section class="container coordinate-intro">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="/">Home</a><span>/</span><a href="/math-tools/">Math tools</a><span>/</span><span
-        >{mathNames[kind]}</span>
+        >{mathNames[kind]}</span
+      >
     </nav><span class="eyebrow">FREE MATH TOOL · EXPLORE & PRINT</span><h1>{mathNames[kind]}<em>.</em></h1><p>
       {page.answer}
     </p>
   </section>
+  {
+    kind === 'number-line' && (
+      <div class="container">
+        <p class="notice">
+          Need a whole practice set?{' '}
+          <a href="/number-line-worksheets/">Make 6–12 number line questions with a separate answer key →</a>
+        </p>
+      </div>
+    )
+  }
   <div class="container editor-container">
     <MathEditor kind={kind} initial={initial} client:load /><noscript
       ><p class="notice">
         Enable JavaScript to change the values. The worked example and ready-made worksheets below work
         without JavaScript.
-      </p></noscript>
+      </p></noscript
+    >
   </div>
   <section class="container section coordinate-reference">
     <span class="eyebrow">FROM VALUES TO UNDERSTANDING</span><h2>How to use it</h2><ol>
@@ -81,7 +93,8 @@ const schema = [
           download>Letter worksheet + answers ↓</a
         ><a href={`/math/assets/${kind}.svg`} download>SVG diagram ↓</a><a
           href={`/math/assets/${kind}.csv`}
-          download>Example values CSV ↓</a>
+          download>Example values CSV ↓</a
+        >
       </div><p class="coordinate-help">
         Free for class, homework and presentations. Two-page PDFs: question first, answer key second. Print in
         portrait at 100% / Actual size.

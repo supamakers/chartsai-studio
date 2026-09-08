@@ -1,0 +1,181 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NumberLineWorksheetEditor from '../components/NumberLineWorksheetEditor';
+import { packIds, packs } from '../lib/number-line-worksheets';
+import '../styles/coordinate.css';
+import '../styles/worksheets.css';
+const description =
+  'Make free number line worksheets with 6, 9 or 12 questions. Practice negative numbers, fractions and jumps. Download A4 or Letter PDFs with separate answer keys.';
+---
+
+<Layout
+  title="Number Line Worksheets — Free Generator & PDF Packs | ChartsAI"
+  description={description}
+  schema={[
+    {
+      '@type': 'SoftwareApplication',
+      name: 'Number line worksheet generator',
+      applicationCategory: 'EducationalApplication',
+      operatingSystem: 'Web browser',
+      isAccessibleForFree: true,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      url: 'https://www.chartsai.com/number-line-worksheets/',
+      featureList: [
+        '6, 9 or 12 questions',
+        'Negative integers, fractions and unit jumps',
+        'A4 and US Letter PDF',
+        'Separate answer pages',
+        'CSV questions and answers',
+      ],
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Math tools',
+          item: 'https://www.chartsai.com/math-tools/',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Number line worksheets',
+          item: 'https://www.chartsai.com/number-line-worksheets/',
+        },
+      ],
+    },
+  ]}
+>
+  <section class="container coordinate-intro">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/math-tools/">Math tools</a><span>/</span><span>Number line worksheets</span>
+    </nav><span class="eyebrow">FREE PRINTABLE PRACTICE · NO SIGNUP</span><h1>
+      Number line<br /><em>worksheets.</em>
+    </h1><p>
+      Choose a skill. Get a fresh set of questions. Print a worksheet with space to work and a separate answer
+      key. Practice negative numbers, fractions, or addition and subtraction on equally spaced number lines.
+    </p><div class="worksheet-pack-links">
+      <a href="#worksheet-generator">Make your worksheet ↓</a><a href="#ready-made-packs"
+        >Download ready-made PDFs ↓</a
+      >
+    </div>
+  </section>
+  <div class="container">
+    <NumberLineWorksheetEditor client:load /><noscript
+      ><p>Use the ready-made PDF packs below. Enable JavaScript to generate a different set.</p></noscript
+    >
+  </div>
+  <section class="container section coordinate-reference">
+    <h2>From a topic to a printable lesson</h2><ol>
+      <li>
+        <strong>Choose a practice pack and question count.</strong> Use 6, 9 or 12 exercises. For integers and fractions,
+        choose reading marked points, plotting given values, or both. Fraction steps can be halves, quarters, fifths
+        or tenths.
+      </li><li>
+        <strong>Generate a fresh set when you need another version.</strong> Each set uses distinct exercise specifications;
+        a value can recur on a different fraction window. Paper size and answer-key settings keep the questions
+        unchanged.
+      </li><li>
+        <strong>Check the preview, then download.</strong> A4 and US Letter PDFs place three questions on each page.
+        Answer pages follow all the question pages, so you can print or distribute them separately. Print at 100%
+        scale.
+      </li>
+    </ol><p>
+      For one custom diagram, decimal steps, blank lines or open and closed intervals, use the <a
+        href="/number-line-generator/">number line generator</a
+      >. This worksheet builder creates bounded practice sets; it does not accept arbitrary equations or grade
+      student responses.
+    </p>
+  </section>
+  <section class="container section" id="ready-made-packs">
+    <span class="eyebrow">ORIGINAL PRACTICE PACKS · READY NOW</span><h2>Three ways to practice</h2><p>
+      Each free pack includes six original questions and a matching answer key: two question pages followed by
+      two answer pages. The fraction pack starts with quarters. These files work without JavaScript.
+    </p><div class="worksheet-packs">
+      {
+        packIds.map((id) => (
+          <article class="worksheet-pack" id={id}>
+            <>
+              <img
+                src={`/worksheets/assets/${id}.svg`}
+                width="800"
+                height="1131"
+                alt={`First question sheet: ${packs[id].title}`}
+                loading="lazy"
+              />
+              <h3>{packs[id].title}</h3>
+              <p>{packs[id].description}</p>
+              <p>
+                <strong>Try this:</strong> {packs[id].tip}
+              </p>
+              <p>
+                <strong>Worked example:</strong> {packs[id].example}
+              </p>
+              <p>
+                <strong>Watch for:</strong> {packs[id].mistake}
+              </p>
+              <div class="worksheet-pack-links">
+                <>
+                  <a href={`/worksheets/assets/${id}-a4.pdf`} download>
+                    A4 PDF ↓
+                  </a>
+                  <a href={`/worksheets/assets/${id}-letter.pdf`} download>
+                    Letter PDF ↓
+                  </a>
+                  <a href={`/worksheets/assets/${id}.csv`} download>
+                    Questions & answers CSV ↓
+                  </a>
+                  <a href={`?pack=${id}#worksheet-generator`}>Customize this pack ↗</a>
+                </>
+              </div>
+            </>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+  <section class="container section coordinate-reference">
+    <h2>How these worksheets are made</h2><p>
+      The generator selects from a finite pool of valid exercises using a reproducible set number. Integer
+      lines run from −10 to 10. Fraction lines span two units within 0–5, with equal fractional steps. Jumps
+      use addition or subtraction of positive integers from 1 to 6, and both the starting value and answer
+      remain between −10 and 10.
+    </p><p>
+      On reading questions, only the two endpoint values are labelled. Learners determine the step size from
+      the spaces and identify point A. On plotting questions, every tick is labelled and learners place the
+      given point. The key shows the point and its value. Fraction answers are simplified, so 2/4 appears as
+      1/2; equivalent answers are valid.
+    </p><p>
+      Question and answer pages share the same number-line geometry used by the interactive diagram tool. The
+      PDF uses high-resolution page images rather than selectable text. The CSV provides the questions and
+      answers as text. Screen previews shrink to fit; the printed page is the intended working size.
+    </p><h2>Questions about printing and practice</h2><h3>Can I download only the questions?</h3><p>
+      Yes. Uncheck “Include separate answer pages” before downloading a generated PDF. The ready-made packs
+      include both sections; print only pages 1–2 if you want their questions alone. Previewing an answer key
+      never adds answers to the question sheets.
+    </p><h3>Can I make another version of the same activity?</h3><p>
+      Use “Generate fresh questions.” The topic, question count and fraction steps stay the same while the set
+      changes. A new set may reuse some numbers, but each worksheet avoids duplicate exercises. Changing the
+      paper size preserves the set.
+    </p><h3>Which ages or grades are these for?</h3><p>
+      Choose by the skill a learner is practicing. There is no grade-level certification or claim of
+      curriculum alignment. An adult should review the preview for the learner's needs, especially negative
+      values and fractions greater than one.
+    </p><h3>Are these free for a class or home lesson?</h3><p>
+      Yes. Download, print and share these original practice sheets for teaching or independent study. There
+      is no account, watermark over the questions, or upload required. Worksheet generation runs in your
+      browser.
+    </p><div class="worksheet-callout">
+      <h3>Ready for two dimensions?</h3><p>
+        Try the <a href="/coordinate-plane-generator/">coordinate plane generator</a> for ordered pairs, then the
+        <a href="/slope-calculator/">slope calculator</a> to connect two points with rise and run. Explore all <a
+          href="/math-tools/">free math tools</a
+        > or the <a href="/printables/">printable library</a>.
+      </p>
+    </div><p class="byline">
+      Original worksheets and generator by <a href="https://www.supamakers.com/">SupaMakers</a> · Reviewed September
+      8, 2026 · <a href="/source/">Public source and methods</a>
+    </p>
+  </section>
+</Layout>

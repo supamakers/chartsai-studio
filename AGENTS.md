@@ -177,3 +177,11 @@ Preserve signed slope differences, undefined vertical slopes and errors for repe
 Practice mode and PDF answer visibility are separate. SVG/PNG match screen visibility; CSV includes underlying/calculated answers and is labelled accordingly. Static and interactive PDFs share the same renderer. Math asset filenames and analytics are allowlisted; custom values stay local. No indexed query-state permutations.
 
 The chart-quality skill now has seven frozen original evaluation tasks. These are prompts/fixtures, not generated baseline outputs. No fresh-context LLM comparison has been run, so the skill remains experimental. Do not claim benchmark improvement or create a promotional skill page based on passing application tests.
+
+## Number-line worksheet expansion — v0.9.0
+
+The user explicitly chose continued building while discovery and usage measurements mature. Keep privacy-preserving measurement in place; do not pause useful bounded releases waiting for traffic.
+
+`/number-line-worksheets/` is one substantive multi-question resource, distinct from the custom single-diagram generator. `src/lib/number-line-worksheets.ts` owns deterministic sets, question models and page layout; it calls the existing `numberLineSvg` with compact rendering and endpoint-only labels for reading tasks. Keep preview and both static and browser PDF exports on this same path. All question pages precede all answer pages. There are 6/9/12 exercises, three per sheet, with integers, fractions and unit-jump operations. Fraction windows span two units within 0–5; fraction step choices are 1/2, 1/4, 1/5 and 1/10. Reading and plotting tasks differ intentionally in available labels. No grading or curriculum certification is claimed.
+
+Three original six-question packs are generated under `public/worksheets/assets/` and excluded from Git and the source ZIP. They include four-page A4/Letter PDFs, a first-page SVG and questions/answers CSV. Query presets stay canonical to the worksheet page. Do not multiply indexed pages by seed, denominator, count or paper size. Research and search-data limitations are recorded in `docs/NUMBER-LINE-WORKSHEETS-RESEARCH-2026-09-08.md`. Expected site totals: 110 HTML / 109 sitemap routes. Verify production before claiming this release is live.

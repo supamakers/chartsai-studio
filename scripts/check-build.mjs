@@ -40,6 +40,7 @@ for (const route of [
   'geometry-transformation-calculator/',
   'quadratic-graph-calculator/',
   'math-tools/',
+  'number-line-worksheets/',
 
   'line-graph-maker/',
   'dot-plot-maker/',
