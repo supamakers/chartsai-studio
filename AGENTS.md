@@ -76,7 +76,7 @@ After launch, establish a dated baseline and review:
 - Referring domains, useful resource citations, branded searches, and relevant SupaMakers visits.
 - Observable AI referrals and a small repeatable set of manual citation checks, recording prompt, platform, date, and cited URL. Mentions, links, visits, and conversions are different measurements.
 
-Google reports AI features within overall Web search performance; do not present that as a clean separate GEO attribution report. Manual AI checks vary and are not a comprehensive visibility score. Use evidence to improve existing pages before multiplying them. Do not promise rankings, traffic, backlinks, or consulting leads.
+This property has a Search Console “Generative AI features” beta report, observed on September 8, 2026. Record its impressions separately from ordinary Web search metrics; impressions are not clicks, citations, visits, or complete GEO attribution. Check the actual available report and date range rather than assuming all properties expose the same metrics. Manual AI checks vary and are not a comprehensive visibility score. Use evidence to improve existing pages before multiplying them. Do not promise rankings, traffic, backlinks, or consulting leads.
 
 ## Engineering and data integrity
 

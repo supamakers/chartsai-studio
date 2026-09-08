@@ -7,14 +7,14 @@
   "trailingSlash": true,
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "chartsai.com" }],
-      "destination": "https://www.chartsai.com/:path*",
+      "destination": "https://www.chartsai.com/$1",
       "permanent": true
     },
-    { "source": "/cookies", "destination": "/privacy/", "permanent": true },
+    { "source": "/cookies/", "destination": "/privacy/", "permanent": true },
     {
-      "source": "/contact",
+      "source": "/contact/",
       "destination": "/about/#contact",
       "permanent": true
     },
@@ -26,14 +26,14 @@
   ],
   "headers": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
       ]
     },
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": ".*\\.vercel\\.app" }],
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
     }
