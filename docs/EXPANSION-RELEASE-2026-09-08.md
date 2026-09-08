@@ -24,3 +24,11 @@ The build still reports a JavaScript chunk above 500 kB. Chart engines and sprea
 Plausible retains fixed route/tool/format events and strips query strings and hashes. Entered titles, values and filenames are not sent. New tools and resource routes are included in that bounded policy. Dataset CSV clicks currently are not a separate custom goal; maker downloads are measured through the existing Chart Download goal. Normal human-visitor ingestion and search outcomes require subsequent observation.
 
 Sitemaps, canonical pages, crawlable text, visible calculations, attribution and truthful Article/Dataset/SoftwareApplication schema support discovery and interpretation. They do not guarantee indexing, rankings or AI citations. Follow Search Console impressions/indexing and useful-tool downloads, rather than treating page volume as authority.
+
+## Production verification
+
+Code commit `90c8f63` deployed successfully through the connected GitHub/Vercel integration to `dpl_5MAgPeHqthPE1JMkySYR6Sk5vbGi` (`chartsai-studio-m5b4h193q-supamakers.vercel.app`). The canonical domain is https://www.chartsai.com.
+
+At 09:42 UTC on September 8, all 102 sitemap pages returned successfully with their expected canonicals and valid structured data. All 150 new linked chart/dataset assets downloaded successfully; CSVs matched the pinned build files. The apex redirected to the canonical domain, robots and llms files were available, and the public source ZIP contained version 0.5.0, dataset provenance and third-party notices. The protected Vercel deployment hostname returned `X-Robots-Tag: noindex`.
+
+A live mobile histogram editor produced a real PDF, and the live Iris editor exported the declared CSV selection. QA visits disabled or blocked analytics. Local evidence is retained in ignored `artifacts/expansion-live-verification.json`; these checks establish deployment behavior, not search adoption.
