@@ -119,7 +119,7 @@ Install Playwright Chromium if needed with `npx playwright install chromium`. Ru
 
 ## Workspace, source publication, and launch
 
-At the time this guide was added (2026-09-08), work was in `/Users/indievish/work/chartsai_dashdashgo`, a standalone local project without `.git` or a GitHub remote. This is a dated snapshot, not an instruction to avoid Git. Inspect current status before version-control work. Keep the original sibling projects intact.
+On 2026-09-08, this project was initialized in `/Users/indievish/work/chartsai_dashdashgo` and published to https://github.com/supamakers/chartsai-studio using `indievish`. The public repository's `main` branch tracks `origin/main`; the SSH remote is `git@github.com:supamakers/chartsai-studio.git`. Inspect current status before version-control work. Keep the original sibling projects intact. Repository publication does not deploy the website.
 
 Repository name: `chartsai-studio`, under the `supamakers` GitHub organization. The user authorized creating and initializing this repository using `indievish` on 2026-09-08. Public application source fits the free-tool/authority objective. Keep local course materials, research caches, credentials, and private notes out of public publishing. The source ZIP uses an explicit allowlist; `.gitignore` separately excludes the local research Markdown files, keyword CSV, and generated download archives. Review what will actually be committed before publishing. Do not broaden the ZIP to include the whole workspace.
 
