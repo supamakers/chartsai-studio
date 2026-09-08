@@ -1,0 +1,14 @@
+---
+import { renderChartSvg } from '../lib/echarts';
+import { chartDescription, type ChartSpec } from '../lib/chart-options';
+interface Props {
+  spec: ChartSpec;
+  class?: string;
+  width?: number;
+  height?: number;
+}
+const { spec, class: className = '', width = 900, height = 600 } = Astro.props;
+const svg = renderChartSvg(spec, width, height);
+---
+
+<div class:list={['static-chart', className]} role="img" aria-label={chartDescription(spec)} set:html={svg} />

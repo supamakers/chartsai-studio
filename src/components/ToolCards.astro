@@ -1,0 +1,101 @@
+---
+import ChartPreview from './ChartPreview.astro';
+import { TrackerPreview } from './TrackerEditor';
+import { dotExample, radarExample } from '../lib/chart-presets';
+const { show = 'all' } = Astro.props;
+---
+
+<div class:list={['tool-cards', show !== 'all' && 'two-cards']}>
+  {
+    show !== 'printables' && (
+      <>
+        <a class="tool-card" href="/dot-plot-maker/">
+          <>
+            <div class="card-preview">
+              <ChartPreview spec={{ ...dotExample('scores'), theme: 'editorial' }} />
+            </div>
+            <div class="card-copy">
+              <>
+                <span class="card-index">01 / FIND THE DISTRIBUTION</span>
+                <div>
+                  <>
+                    <h3>Dot plot maker</h3>
+                    <span class="card-arrow">↗</span>
+                  </>
+                </div>
+                <p>
+                  Every observation, accounted for. Turn scores, timings or measurements into a clear
+                  distribution.
+                </p>
+                <span class="card-format">
+                  Paste or import <span>→</span> PNG · SVG · PDF
+                </span>
+              </>
+            </div>
+          </>
+        </a>
+        <a class="tool-card" href="/radar-chart-maker/?style=ocean">
+          <>
+            <div class="card-preview">
+              <ChartPreview spec={{ ...radarExample('skills'), theme: 'ocean' }} />
+            </div>
+            <div class="card-copy">
+              <>
+                <span class="card-index">02 / COMPARE THE PROFILES</span>
+                <div>
+                  <>
+                    <h3>Radar chart maker</h3>
+                    <span class="card-arrow">↗</span>
+                  </>
+                </div>
+                <p>
+                  Compare skills, products or survey scores. Put the strengths and differences in one picture.
+                </p>
+                <span class="card-format">
+                  Up to 5 profiles <span>→</span> PNG · SVG · PDF
+                </span>
+              </>
+            </div>
+          </>
+        </a>
+      </>
+    )
+  }
+  {
+    show !== 'charts' && (
+      <a class="tool-card" href="/printables/habit-tracker/">
+        <>
+          <div class="card-preview tracker-card-preview">
+            <TrackerPreview
+              config={{
+                title: 'A week, well spent.',
+                habits: ['Read 10 pages', 'Move for 20 minutes', 'Make something', 'Get outside'],
+                month: '2026-09',
+                period: 'week',
+                paper: 'a4',
+                ink: false,
+              }}
+            />
+          </div>
+          <div class="card-copy">
+            <>
+              <span class="card-index">03 / TAKE IT OFFLINE</span>
+              <div>
+                <>
+                  <h3>Habit tracker printable</h3>
+                  <span class="card-arrow">↗</span>
+                </>
+              </div>
+              <p>
+                A routine you can put on paper. Pick your habits, choose a layout and make space for progress.
+              </p>
+              <span class="card-format">
+                Weekly or monthly <span>→</span> A4 · Letter PDF
+              </span>
+            </>
+          </div>
+        </>
+      </a>
+    )
+  }
+</div>

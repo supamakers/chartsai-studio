@@ -1,0 +1,53 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { TrackerPreview } from '../../components/TrackerEditor';
+---
+
+<Layout
+  title="Free Printable Trackers — Personalize & Download PDF | ChartsAI"
+  description="Make a printable habit tracker for your desk, fridge or notebook. Customize your habits, choose weekly or monthly, and download a free A4 or US Letter PDF."
+>
+  <section class="container listing-intro">
+    <span class="eyebrow">A LITTLE MORE INTENTIONAL</span><h1>
+      Good days start<br /><em>with small things.</em>
+    </h1><p>
+      Thoughtful printables for the things you want to make time for. Pick a layout, add your words, and take
+      a little intention offline.
+    </p>
+  </section>
+  <section class="container section listing-cards">
+    <div class="printable-feature">
+      <div class="card-preview tracker-preview">
+        <span class="card-index">YOUR NEXT LITTLE ROUTINE</span><div class="mini-paper">
+          <TrackerPreview
+            config={{
+              title: 'Small steps, good days.',
+              habits: ['Read a little', 'Move my body', 'Make something', 'Step outside', 'Wind down early'],
+              month: '2026-09',
+              period: 'week',
+              paper: 'a4',
+              ink: false,
+            }}
+          />
+        </div>
+      </div><div class="feature-copy">
+        <span class="eyebrow">FREE · PERSONALIZABLE · READY TO PRINT</span><h2>
+          Make room for<br />a good habit.
+        </h2><p>
+          Weekly or monthly. A4 or US Letter. Your habits, your title, and a little space to reflect. No
+          account, email gate, or watermark.
+        </p><a class="button" href="/printables/habit-tracker/">Make your habit tracker ↗</a>
+      </div>
+    </div>
+  </section>
+  <section class="container prose-section">
+    <h2>A printable that fits your life</h2><p>
+      A habit tracker is a simple sheet with a row for each habit and a box for each day. Mark a box when you
+      complete the action. This collection begins with one flexible habit tracker, including weekly and
+      monthly layouts, personal labels and an ink-friendly option.
+    </p><p>
+      Prefer to explore numbers you already have? Our <a href="/charts/">free chart makers</a> turn pasted values
+      and spreadsheet data into downloadable charts.
+    </p>
+  </section>
+</Layout>

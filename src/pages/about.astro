@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Our Approach — Useful Charts, Honest Data | ChartsAI by SupaMakers"
+  description="Why we build free chart makers and printable trackers. Learn about ChartsAI’s data handling, chart calculations, original examples and SupaMakers authorship."
+>
+  <article class="container prose-page">
+    <span class="eyebrow">THE THINKING BEHIND THE TOOLS</span><h1>
+      Useful by design.<br /><em>Open by intention.</em>
+    </h1><p class="intro-text">
+      ChartsAI is a collection of free visual tools built by SupaMakers. We want making a chart or printing a
+      tracker to feel like a small, satisfying task.
+    </p><p class="byline">Written by SupaMakers · Updated September 8, 2026</p><h2>
+      A finished example is a better start.
+    </h2><p>
+      Every tool starts with something you can use immediately. You can explore the example, replace its data,
+      and download the result. Our examples are original and explicitly fictional; they are demonstrations of
+      the tools, not claims about real people or businesses.
+    </p><h2 id="methodology">Keep the meaning intact.</h2><p>
+      A pretty chart is only useful when it represents the values you meant to show. Our import preview lets
+      you select a sheet, choose columns, and specify number formatting. We flag missing or invalid values
+      instead of replacing them with zero. We do not remove outliers, infer business metrics, or normalize
+      mixed units without your involvement.
+    </p><h3>Dot plots</h3><p>
+      Each selected observation produces one dot. Identical numeric values stack at the same horizontal
+      position. No automatic binning or rounding is applied to the observations. The frequency table exposes
+      the counts behind the drawing. The mean, median and range use the included observations; the display
+      formats values to a maximum of six decimal places.
+    </p><p>
+      This implementation is for frequency dot plots. It supports up to 300 observations. Very close values
+      can be visually crowded; use the frequency table to inspect their exact values. The chart is not a
+      substitute for checking the underlying data.
+    </p><h3>Radar charts</h3><p>
+      Axes share a zero-to-maximum scale, and score positions vary linearly along each axis. All series use
+      the same dimension order. Missing, negative and out-of-range values are flagged. Changing axis order
+      changes the shape, so the enclosed area is not presented as an overall score. For more context, see <a
+        href="https://www.data-to-viz.com/caveat/spider.html">Data to Viz’s discussion of radar charts</a
+      >.
+    </p><h3>Habit trackers</h3><p>
+      Monthly layouts use the Gregorian calendar and include leap-year February. Weekly layouts use Monday
+      through Sunday with a blank start-date field. The PDF uses the selected A4 or US Letter dimensions. This
+      is a printable template, not a health assessment or a behavior-change guarantee.
+    </p><h2>Proven rendering. Open implementation.</h2><p>
+      The chart makers use Apache ECharts’ built-in scatter and radar charts. Our application provides the
+      data validation, presentation settings and examples. The same option builders drive the static previews,
+      interactive editors and exports. Chart PDFs contain a high-resolution image; SVG exports retain vector
+      shapes and text.
+    </p><h2>Your input stays with you.</h2><p>
+      Parsing, calculations and file generation happen in your browser. We do not receive your spreadsheet or
+      habit list. There is no account or cloud history; download your data or finished output before closing
+      the page. Read the <a href="/privacy/">privacy details</a>.
+    </p><h2>Made to be used, and learned from.</h2><p>
+      Charts, trackers and sample datasets are free to use. The implementation is available under the MIT
+      license, so you can inspect the logic and adapt it. <a href="/source/"
+        >Download the source code and read the reuse notes</a
+      >.
+    </p><h2>The makers</h2><p>
+      <a href="https://www.supamakers.com/">SupaMakers</a> builds practical software and AI systems. ChartsAI is
+      one of our public projects: a small place to make useful things, publish our choices, and improve them through
+      use.
+    </p><p>
+      Found a calculation issue, confusing input, or a layout that needs attention? <a
+        href="mailto:support@chartsai.com">Send feedback to support@chartsai.com</a
+      >. Include a fictional or anonymized example when possible.
+    </p><div class="callout">
+      <p>
+        Looking for a starting point? <a href="/dot-plot-maker/">Make a dot plot</a>, <a
+          href="/radar-chart-maker/">compare a radar chart</a
+        >, or <a href="/printables/habit-tracker/">print a habit tracker</a>.
+      </p>
+    </div>
+  </article>
+</Layout>

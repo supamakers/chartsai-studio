@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ToolCards from '../../components/ToolCards.astro';
+---
+
+<Layout
+  title="Free Online Chart Makers — Dot Plots & Radar Charts | ChartsAI"
+  description="Make a dot plot or radar chart online. Start with a sample, paste your own values or import CSV and Excel, and download a free PNG, SVG or PDF."
+>
+  <section class="container listing-intro">
+    <span class="eyebrow">THE CHART COLLECTION</span><h1>
+      A clearer picture.<br /><em>A few clicks away.</em>
+    </h1><p>
+      Free online chart makers for small datasets and useful comparisons. Start with a working example, add
+      your values, and download your chart.
+    </p>
+  </section>
+  <section class="container section listing-cards"><ToolCards show="charts" /></section>
+  <section class="container prose-section">
+    <h2>Choose the chart that fits your question</h2><div class="comparison-table">
+      <table>
+        <thead><tr><th>You want to…</th><th>Start here</th><th>Your data</th></tr></thead><tbody
+          ><tr
+            ><td>See how individual numeric values are distributed</td><td
+              ><a href="/dot-plot-maker/">Dot plot maker</a></td
+            ><td>One numeric column, such as scores or waiting times</td></tr
+          ><tr
+            ><td>Compare profiles across several dimensions</td><td
+              ><a href="/radar-chart-maker/">Radar chart maker</a></td
+            ><td>Dimension names and comparable scores for each series</td></tr
+          ></tbody>
+      </table>
+    </div><p>
+      Both tools process data in your browser. Import a spreadsheet and choose your columns in a preview.
+      Missing values are flagged, and downloads have no watermark. Looking for something to fill in by hand?
+      Explore our <a href="/printables/">printable trackers</a>.
+    </p>
+  </section>
+</Layout>

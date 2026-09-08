@@ -1,0 +1,62 @@
+# ChartsAI
+
+Free dot plots, radar charts and printable habit trackers, made by SupaMakers. Built with Astro, React, TypeScript and Apache ECharts. Data processing and exports run in the visitor's browser. No account, backend, model API, tracking script or environment secrets are required.
+
+## Run
+
+Use Node.js 22.12 or newer (tested on 22.22.2).
+
+```sh
+npm ci
+npm run dev
+```
+
+Open http://127.0.0.1:4321. To prepare the public source archive and original sample downloads, run `npm run prepare:assets`. A production build runs this automatically.
+
+```sh
+npm test
+npm run build
+npm run test:e2e
+npm run preview
+```
+
+The browser checks use Playwright Chromium. Install it once with `npx playwright install chromium`. Production HTML, CSS, JS, sitemap and public assets are written to `dist/`. Serve it with any static host that supports directory indexes and a custom `404.html`.
+
+## What works
+
+- Dot plot: up to 300 observations, repeated-value stacking, mean/median/range, frequency table, SVG/PNG/PDF and CSV downloads.
+- Radar chart: 3–10 named dimensions, 1–5 series, explicit shared scale, direct table editing, SVG/PNG/PDF and CSV downloads.
+- Import: paste or CSV/TSV/TXT/XLSX, sheet selection, row range, transpose, header and column selection, US/European number style. Missing or invalid scores block plotting. Files stay on-device.
+- Habit tracker: weekly or calendar-correct monthly, up to eight habits, title, A4/US Letter landscape, ink-friendly header, PDF download. PDF uses a high-resolution rendering of the same SVG preview.
+
+All six example datasets are original, fictional illustrations. They are not research or benchmark findings. Import limits are 8 MB per file, 2 MB of pasted text, 2,000 data rows and 100 columns; oversized inputs are rejected, not silently truncated. Currency symbols are formatting; percentages remain percentage points (12% → 12). Statistical calculations use ordinary JavaScript floating-point numbers.
+
+## Chart engine and presentation
+
+ECharts built-in scatter and radar series replace the original hand-drawn chart components. `src/lib/chart-options.ts` is the shared option builder; `src/lib/echarts.ts` registers only the chart types, components and SVG renderer needed. Static examples use ECharts SSR, and `EChartView` loads the interactive engine on the client. The ECharts engine is larger than a handwritten two-chart renderer; it is dynamically loaded, while initial example graphics are already in HTML. Excel and PDF modules load only when requested.
+
+Three themes (Editorial, Blueprint, After hours), standard/presentation/square export sizes, subtitles and source notes are available in Design & details. Chart exports include PNG, vector SVG, raster PDF and reusable ECharts JSON. Changing sample values removes the fictional source note. Values and scores are unchanged by presentation settings. Native tooltips expose records; the dot frequency table and radar input table expose exact data without pointer interaction.
+
+## Search and content architecture
+
+The three working tool pages and two category hubs render their descriptions, sample graphics, instructions and FAQs in static HTML. The editors hydrate with React. The homepage demo opens the matching tool, example and visual theme. Titles, descriptions, canonical URLs, Organization/WebSite/WebPage/SoftwareApplication/BreadcrumbList structured data, social images, sitemap and robots directives are included. `/llms.txt` provides a concise optional discovery aid; it is not a ranking mechanism.
+
+Preset query links load real examples and canonicalize to their parent tool. User-entered data is never put into URLs or generated SEO pages. `src/data/tools.ts` holds the chart page content. Add a page only when it supplies a distinct working tool or materially distinct useful resource. Avoid generating near-identical pages for every color, date or synonym.
+
+Authorship, assumptions, method limitations, original datasets and an MIT source archive support verification and reuse. There are no fabricated reviews, customers, credentials or popularity claims. Search rankings and AI citations are outcomes to measure after publication, not guaranteed by this implementation.
+
+## Launch
+
+The intended canonical origin is **https://www.chartsai.com** in `astro.config.mjs`, the layout, robots and llms files. This checkout does not change either live domain. Keep DashDashGo separate until there is evidence for a second product.
+
+1. Preview the site and downloads, then deploy `dist/` to the chosen ChartsAI host with HTTPS, non-www → www redirects and trailing-slash routing. Review any existing indexed URLs before redirects; do not blanket-redirect unrelated legacy routes.
+2. Keep preview deployments out of search using host-level authentication or an `X-Robots-Tag: noindex` header. Production files are intentionally indexable.
+3. Verify the domain in Google Search Console and Bing Webmaster Tools. Submit `/sitemap-index.xml`, inspect the three tool URLs, and check crawl/access behavior on the live host. No verification credentials are embedded here.
+4. Record a publication baseline. Review indexed pages, query impressions/clicks, referring links, and manual branded AI mentions over time. Expand only where actual query demand and useful functionality overlap.
+5. If analytics are added, update the privacy page and comply with the chosen provider's requirements. `chartsai:usage` DOM events already expose tool/action/format only; they are not transmitted or persisted by this site. Do not collect raw data, titles or habit text.
+
+Public source ZIP generation uses an explicit allowlist. Private research notes, `.seo-cache`, `.env`, `node_modules`, test artifacts and build outputs are excluded. Regenerate the archive whenever the source changes.
+
+## License
+
+Original code and sample datasets: MIT, copyright 2026 SupaMakers Limited. Dependencies retain their own licenses; DM Sans and Instrument Serif are distributed through Fontsource under their upstream font licenses. Exported user charts and trackers require no visible credit. Optional links to ChartsAI or SupaMakers are welcome.

@@ -1,0 +1,163 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TrackerEditor from '../../components/TrackerEditor';
+const faqs = [
+  [
+    'Is the habit tracker printable really free?',
+    'Yes. Customize the tracker and download a PDF without an account, payment or watermark. The file is yours to print for personal, classroom or workplace use.',
+  ],
+  [
+    'Can I change the habits and title?',
+    'Yes. Type one habit per line, up to eight habits. Each label can contain up to 24 characters. You can also change the title, choose weekly or monthly, and switch between A4 and US Letter.',
+  ],
+  [
+    'Does the monthly tracker use the correct number of days?',
+    'Yes. The selected month determines whether the tracker contains 28, 29, 30 or 31 days, including February in leap years. The weekly layout has Monday-through-Sunday columns and a blank space for the week’s date.',
+  ],
+  [
+    'How should I print the PDF?',
+    'Choose the matching paper size, landscape orientation and actual size (100%) in your print dialog. The design includes margins. If your printer clips the outer area, use its fit-to-printable-area option.',
+  ],
+  [
+    'Can I track habits digitally?',
+    'This version creates a blank printable. You can mark the downloaded PDF in an annotation app, but the website does not store completion history, send reminders or synchronize habits between devices.',
+  ],
+  [
+    'Do you save my habit list?',
+    'No. Your labels are processed in the browser. Refreshing the page resets your edits, so download the PDF when you are ready. No personal habit list is sent to a server.',
+  ],
+];
+const schema = [
+  {
+    '@type': 'SoftwareApplication',
+    name: 'Habit Tracker Printable Maker',
+    applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'Web browser',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    url: 'https://www.chartsai.com/printables/habit-tracker/',
+    author: { '@id': 'https://www.chartsai.com/#organization' },
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.chartsai.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Printables', item: 'https://www.chartsai.com/printables/' },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: 'Habit tracker printable',
+        item: 'https://www.chartsai.com/printables/habit-tracker/',
+      },
+    ],
+  },
+];
+---
+
+<Layout
+  title="Free Habit Tracker Printable — Customize Weekly & Monthly PDF | ChartsAI"
+  description="Create your own free habit tracker printable. Personalize the habits and title, choose a weekly or monthly layout, and download an A4 or Letter PDF without signup."
+  schema={schema}
+>
+  <section class="container tool-intro">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><a href="/printables/">Printables</a><span>/</span><span
+        >Habit tracker</span>
+    </nav><div class="tool-title-line">
+      <div>
+        <span class="eyebrow">FREE PRINTABLE · A4 & US LETTER</span><h1>
+          Your habits.<br /><em>On paper.</em>
+        </h1><p>
+          Create a free habit tracker with your own title and habits. Choose a weekly or monthly layout, pick
+          a style, and download a print-ready PDF.
+        </p>
+      </div>
+    </div>
+  </section>
+  <div class="container editor-container">
+    <TrackerEditor client:load /><noscript
+      ><div class="notice">
+        Enable JavaScript to personalize your tracker and generate the PDF.
+      </div></noscript>
+  </div>
+  <section class="container section">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">TWO WAYS TO MAKE A LITTLE PROGRESS</span><h2>
+          A week at a time. Or the whole month.
+        </h2>
+      </div>
+    </div><div class="printable-types">
+      <article>
+        <h3>Weekly habit tracker</h3><p>
+          Seven columns, a little more breathing room, and a place to write the week’s date. A useful starting
+          point when you want to focus on the next few days.
+        </p><a href="?layout=week#editor">Use the weekly layout ↗</a>
+      </article><article>
+        <h3>Monthly habit tracker</h3><p>
+          A full month at a glance, with the correct number of days. Choose the month and year, then add up to
+          eight things you want to make time for.
+        </p><a href="?layout=month#editor">Use the monthly layout ↗</a>
+      </article>
+    </div>
+  </section>
+  <section class="container guide-section">
+    <div class="guide-intro">
+      <span class="eyebrow">A SIMPLE WAY TO NOTICE</span><h2>What is a habit tracker?</h2><p>
+        A habit tracker is a grid that records whether you completed an activity on a given day. Each row
+        represents a habit, and each column represents a day. Marking the boxes gives you a visible record of
+        your routine.
+      </p><p>
+        This printable is a blank template. You supply the habits and fill it in yourself. It does not score
+        your wellbeing or promise a fixed number of days to build a habit. Start with actions small enough to
+        fit into an ordinary day.
+      </p>
+    </div><div class="how-steps">
+      <span class="eyebrow">MAKE IT. PRINT IT. PUT IT SOMEWHERE USEFUL.</span><article>
+        <span>01</span><div>
+          <h3>Choose a few things to make time for</h3><p>
+            Try “read a little” or “step outside.” Use short labels so the page stays easy to scan.
+          </p>
+        </div>
+      </article><article>
+        <span>02</span><div>
+          <h3>Find your layout</h3><p>
+            Pick a week or a month, choose your paper size, and switch on ink-friendly printing if you prefer
+            a plain header.
+          </p>
+        </div>
+      </article><article>
+        <span>03</span><div>
+          <h3>Give it a home</h3><p>
+            Download the PDF and print in landscape. Keep it somewhere you’ll see it, with a pen nearby.
+          </p>
+        </div>
+      </article>
+    </div>
+  </section>
+  <section class="container faq-section">
+    <div>
+      <span class="eyebrow">BEFORE YOU PRINT</span><h2>Good to know.</h2><p>
+        Built by <a href="https://www.supamakers.com/">SupaMakers</a>.<br />Updated September 8, 2026.
+      </p>
+    </div><div>
+      {
+        faqs.map(([q, a]) => (
+          <details>
+            <>
+              <summary>
+                {q}
+                <span>+</span>
+              </summary>
+              <p>{a}</p>
+            </>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+  <div class="container related-strip">
+    <span>Have numbers to explore?</span><a href="/dot-plot-maker/">Make a dot plot ↗</a><a
+      href="/radar-chart-maker/">Compare a profile with a radar chart ↗</a>
+  </div>
+</Layout>

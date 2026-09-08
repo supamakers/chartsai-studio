@@ -1,0 +1,174 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { tools } from '../data/tools';
+import { DotEditor, RadarEditor } from '../components/ChartEditor';
+import ChartPreview from '../components/ChartPreview.astro';
+import { dotExample, radarExample } from '../lib/chart-presets';
+import { renderChartSvg } from '../lib/echarts';
+import { dotPresets, radarPresets } from '../lib/presets';
+export function getStaticPaths() {
+  return tools.map((tool) => ({ params: { tool: tool.slug }, props: { tool } }));
+}
+const { tool } = Astro.props;
+const initialSvg = renderChartSvg(tool.type === 'dot' ? dotExample() : radarExample());
+const url = `https://www.chartsai.com/${tool.slug}/`;
+const schema = [
+  {
+    '@type': 'SoftwareApplication',
+    '@id': `${url}#tool`,
+    name: tool.name,
+    url,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Web browser',
+    browserRequirements: 'Requires JavaScript for editing and export.',
+    description: tool.description,
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    author: { '@id': 'https://www.chartsai.com/#organization' },
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.chartsai.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Chart makers', item: 'https://www.chartsai.com/charts/' },
+      { '@type': 'ListItem', position: 3, name: tool.name, item: url },
+    ],
+  },
+];
+---
+
+<Layout
+  title={`Free ${tool.name} — Create & Download Online | ChartsAI`}
+  description={tool.description}
+  schema={schema}
+>
+  <section class="container tool-intro">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><a href="/charts/">Chart makers</a><span>/</span><span
+        >{tool.name}</span>
+    </nav><div class="tool-title-line">
+      <div>
+        <span class="eyebrow"
+          >FREE ONLINE {tool.type === 'dot' ? 'DOT PLOT GENERATOR' : 'RADAR & SPIDER CHART GENERATOR'}</span
+        ><h1>{tool.name}<span class="title-dot">.</span></h1><p>{tool.intro}</p>
+      </div><div class="tool-badges"><span>Free to use</span><span>No watermark</span></div>
+    </div>
+  </section>
+  <div class="container editor-container">
+    {
+      tool.type === 'dot' ? (
+        <DotEditor client:load initialSvg={initialSvg} />
+      ) : (
+        <RadarEditor client:load initialSvg={initialSvg} />
+      )
+    }<noscript
+      ><div class="notice">
+        The sample chart and guide are available here without JavaScript. Enable JavaScript to edit your data
+        and download a chart, or download a sample CSV below.
+      </div></noscript>
+  </div>
+  <section class="container section">
+    <div class="section-heading">
+      <div><span class="eyebrow">EXAMPLE GALLERY</span><h2>Start with a finished example.</h2></div><p>
+        Original examples with fictional data.<br />The starting point is yours to change.
+      </p>
+    </div>
+    <div class="example-grid">
+      {
+        tool.type === 'dot'
+          ? dotPresets.map((p) => (
+              <article class="example-card">
+                <>
+                  <ChartPreview spec={dotExample(p.id)} />
+                  <div>
+                    <>
+                      <h3>{p.name}</h3>
+                      <p>{p.note}</p>
+                      <a href={`?example=${p.id}#editor`}>Use this example ↗</a>
+                      <a class="sample-download" href={`/samples/dot-${p.id}.csv`} download>
+                        Sample CSV ↓
+                      </a>
+                    </>
+                  </div>
+                </>
+              </article>
+            ))
+          : radarPresets.map((p) => (
+              <article class="example-card">
+                <>
+                  <ChartPreview spec={radarExample(p.id)} />
+                  <div>
+                    <>
+                      <h3>{p.name}</h3>
+                      <p>{p.note}</p>
+                      <a href={`?example=${p.id}#editor`}>Use this example ↗</a>
+                      <a class="sample-download" href={`/samples/radar-${p.id}.csv`} download>
+                        Sample CSV ↓
+                      </a>
+                    </>
+                  </div>
+                </>
+              </article>
+            ))
+      }
+    </div>
+  </section>
+  <section class="container guide-section">
+    <div class="guide-intro">
+      <span class="eyebrow">THE IDEA BEHIND THE CHART</span><h2>
+        What is a {tool.type === 'dot' ? 'dot plot' : 'radar chart'}?
+      </h2><p>{tool.definition}</p><p>{tool.use}</p>{
+        tool.type === 'radar' && (
+          <p class="source-note">
+            Further reading:{' '}
+            <a href="https://www.data-to-viz.com/caveat/spider.html">
+              Data to Viz explains radar-chart caveats ↗
+            </a>
+          </p>
+        )
+      }<a class="text-link" href="/about/#methodology">How we handle data & calculations ↗</a>
+    </div><div class="how-steps">
+      <span class="eyebrow">FROM DATA TO DOWNLOAD</span>{
+        tool.steps.map((step, i) => (
+          <article>
+            <>
+              <span>0{i + 1}</span>
+              <div>
+                <>
+                  <h3>{step.title}</h3>
+                  <p>{step.text}</p>
+                </>
+              </div>
+            </>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+  <section class="container faq-section">
+    <div>
+      <span class="eyebrow">A FEW USEFUL ANSWERS</span><h2>Good to know.</h2><p>
+        Built by <a href="https://www.supamakers.com/">SupaMakers</a>.<br />Updated September 8, 2026.
+      </p>
+    </div><div>
+      {
+        tool.faqs.map((faq) => (
+          <details>
+            <>
+              <summary>
+                {faq.q}
+                <span>+</span>
+              </summary>
+              <p>{faq.a}</p>
+            </>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+  <div class="container related-strip">
+    <span>Keep making.</span><a href={tool.type === 'dot' ? '/radar-chart-maker/' : '/dot-plot-maker/'}
+      >{tool.type === 'dot' ? 'Try the radar chart maker' : 'Try the dot plot maker'} ↗</a
+    ><a href="/printables/habit-tracker/">Make a printable habit tracker ↗</a>
+  </div>
+</Layout>

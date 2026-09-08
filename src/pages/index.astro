@@ -1,0 +1,160 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ToolCards from '../components/ToolCards.astro';
+import HeroStudio from '../components/HeroStudio';
+import ChartPreview from '../components/ChartPreview.astro';
+import { TrackerPreview } from '../components/TrackerEditor';
+import { dotExample, radarExample } from '../lib/chart-presets';
+import { renderChartSvg } from '../lib/echarts';
+const radarSvg = renderChartSvg({ ...radarExample('products'), theme: 'night' });
+const dotSvg = renderChartSvg({ ...dotExample('scores'), theme: 'night' });
+---
+
+<Layout
+  title="Free Chart Makers & Printable Trackers — Create, Style, Download | ChartsAI"
+  description="Make charts worth sharing. Free dot plot and radar chart makers with spreadsheet import, three styles and PNG, SVG or PDF downloads. Plus printable habit trackers."
+>
+  <section class="studio-hero container">
+    <div class="studio-hero-copy">
+      <span class="eyebrow"><span class="status-dot"></span> FREE TOOLS. FINISHED RESULTS.</span><h1>
+        Your data.<br />Ready to <span>share.</span>
+      </h1><p>
+        Make a chart that belongs in your next presentation, assignment or report. Start with an example.
+        Bring your own data. Take it with you.
+      </p><div class="hero-actions">
+        <a class="button" href="#tools">Explore the tools <span>↗</span></a><a
+          class="text-link"
+          href="/radar-chart-maker/">Start a chart →</a>
+      </div><div class="hero-proof">
+        <span>✓ Free exports</span><span>✓ No signup</span><span>✓ No watermark</span>
+      </div><div class="hero-byline">
+        <span class="maker-monogram">S</span><div>
+          A project by <a href="https://www.supamakers.com/">SupaMakers ↗</a><small
+            >Practical tools. Open source. Yours to use.</small>
+        </div>
+      </div>
+    </div><div class="hero-demo-wrap">
+      <HeroStudio client:visible radarSvg={radarSvg} dotSvg={dotSvg} /><p class="demo-caption">
+        <span>TRY THE STYLES ↑</span> Real chart. Fictional example data. Fully editable.
+      </p>
+    </div>
+  </section>
+  <div class="capability-strip">
+    <div class="container">
+      <span>YOUR SPREADSHEET, WELCOME HERE.</span><p>
+        Paste a table <b>/</b> CSV & Excel <b>/</b> Preview before plotting <b>/</b> Data stays in your browser
+      </p>
+    </div>
+  </div>
+  <section id="tools" class="section container">
+    <div class="section-heading">
+      <div><span class="eyebrow">THE TOOLKIT / 01–03</span><h2>What are you making?</h2></div><p>
+        Pick a starting point.<br />Every example opens a working editor.
+      </p>
+    </div><ToolCards />
+  </section>
+  <section class="container style-section">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">SAME DATA. YOUR POINT OF VIEW.</span><h2>A style for the setting.</h2>
+      </div><p>Keep the values. Change the presentation.<br />Each style is included in every chart maker.</p>
+    </div><div class="style-gallery">
+      {
+        (
+          [
+            { id: 'editorial', name: 'Editorial', use: 'For reports, assignments & the printed page.' },
+            { id: 'ocean', name: 'Blueprint', use: 'For presentations, proposals & comparisons.' },
+            { id: 'night', name: 'After hours', use: 'For dark slides & a little more contrast.' },
+          ] as const
+        ).map((style) => (
+          <a
+            href={`/radar-chart-maker/?example=products&style=${style.id}#editor`}
+            class="style-gallery-card"
+          >
+            <>
+              <ChartPreview spec={{ ...radarExample('products'), theme: style.id }} />
+              <div>
+                <>
+                  <h3>
+                    {style.name} <span>↗</span>
+                  </h3>
+                  <p>{style.use}</p>
+                </>
+              </div>
+            </>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+  <section id="how-it-works" class="container workflow-section">
+    <div>
+      <span class="eyebrow">A SHORTER PATH TO THE FINISHED CHART</span><h2>
+        From spreadsheet<br />to slide. Done.
+      </h2><p>
+        Use the data you already have. The preview gives you a chance to check the meaning before you
+        download.
+      </p><a class="text-link" href="/about/#methodology">Our approach to data →</a>
+    </div><ol>
+      <li>
+        <span>01</span><div>
+          <h3>Start with something real</h3><p>
+            Open an example, paste cells or select a CSV or Excel file. Choose the rows and columns you want
+            to use.
+          </p>
+        </div>
+      </li><li>
+        <span>02</span><div>
+          <h3>Make your point</h3><p>
+            Pick a style, name the chart and add context. Check the scale and the values. Missing data gets
+            flagged.
+          </p>
+        </div>
+      </li><li>
+        <span>03</span><div>
+          <h3>Put it to work</h3><p>
+            Download a PNG, vector SVG or PDF. Choose a presentation, square or standard canvas. No watermark
+            to remove.
+          </p>
+        </div>
+      </li>
+    </ol>
+  </section>
+  <section class="container printable-banner">
+    <div>
+      <span class="eyebrow">SOME THINGS WORK BETTER ON PAPER</span><h2>
+        Make a little<br />room for progress.
+      </h2><p>
+        A habit tracker with your words, your month and your paper size. Customize it once. Keep it somewhere
+        you’ll see it.
+      </p><a class="button secondary" href="/printables/habit-tracker/">Make a free printable ↗</a>
+    </div><div class="printable-banner-paper">
+      <TrackerPreview
+        config={{
+          title: 'A week, well spent.',
+          habits: ['Read 10 pages', 'Move for 20 minutes', 'Make something', 'Get outside'],
+          month: '2026-09',
+          period: 'week',
+          paper: 'a4',
+          ink: false,
+        }}
+      />
+    </div>
+  </section>
+  <section class="container open-work">
+    <div>
+      <span class="eyebrow">BUILT BY SUPAMAKERS</span><h2>
+        Useful enough to use.<br />Open enough to build on.
+      </h2>
+    </div><div>
+      <p>
+        The chart makers run on Apache ECharts. The source code, original example data and calculation notes
+        are here to inspect and reuse.
+      </p><div>
+        <a class="text-link" href="/source/">Explore the source ↗</a><a
+          class="text-link"
+          href="https://www.supamakers.com/">Meet SupaMakers ↗</a>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,21 @@
+# ChartsAI
+
+> Free browser-based chart makers and printable trackers, designed and built by SupaMakers. Original fictional examples, explicit calculations, and reusable source code.
+
+## Tools
+- [Dot plot maker](https://www.chartsai.com/dot-plot-maker/): Frequency dot plots from up to 300 numeric observations. Editable examples, data table, PNG, SVG, PDF and CSV export.
+- [Radar chart maker](https://www.chartsai.com/radar-chart-maker/): Compare 1–5 series across 3–10 dimensions with an explicit shared scale. PNG, SVG, PDF and CSV export.
+- [Habit tracker printable](https://www.chartsai.com/printables/habit-tracker/): Custom weekly and monthly blank trackers, up to 8 habits, A4 or US Letter landscape PDF.
+
+## Context
+- [Methodology and authorship](https://www.chartsai.com/about/): Calculations, limits, original samples and SupaMakers attribution.
+- [Source code and reuse](https://www.chartsai.com/source/): MIT-licensed implementation and downloadable sample data.
+- [Privacy](https://www.chartsai.com/privacy/): Inputs and file generation stay in the browser. No cloud saving or third-party analytics.
+
+## Important distinctions
+- All sample data is fictional, not a research dataset.
+- Missing values are not silently converted to zero.
+- Radar polygon area is not an overall score.
+- The printable tracker is blank; it does not store completion history or provide health advice.
+- No accounts, payments or watermarks are required for current tools.
+- Search visibility or AI citations are not guaranteed by this file.
