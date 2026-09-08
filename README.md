@@ -52,7 +52,7 @@ Live at **https://www.chartsai.com** since September 8, 2026. Vercel team `supam
 
 The verified Search Console property has processed `/sitemap-index.xml`; the new line graph URL was submitted for indexing. This is discovery setup, not a claim that Google has indexed or ranked the new tools. See the [launch baseline](docs/LAUNCH-2026-09-08.md) and [measurement definitions](docs/MEASUREMENT.md).
 
-The existing Vercel GitHub app does not have this repository available. Automatic deployments on Git push are **not connected**. Deploy through the authenticated CLI after relevant checks and source publication:
+The Vercel GitHub app is connected to `supamakers/chartsai-studio`. Pushes to `main` trigger production builds. Check the resulting Vercel deployment before treating a push as live. If a manual deployment is needed, use the authenticated CLI after relevant checks and source publication:
 
 ```sh
 npx vercel link --yes --project chartsai-studio --scope supamakers
