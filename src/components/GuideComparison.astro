@@ -1,0 +1,138 @@
+---
+import { guideComparison, guideEditorPath } from '../lib/guide-comparisons';
+import type { ComparisonId } from '../lib/guide-ids';
+const { id } = Astro.props as { id: ComparisonId };
+const comparison = guideComparison(id);
+---
+
+<section class="guide-comparison" aria-labelledby="visual-comparison">
+  <h2 id="visual-comparison">{comparison.heading}</h2>
+  <p>{comparison.explanation}</p>
+  <div class="comparison-figures">
+    {
+      comparison.views.map((view, i) => (
+        <figure>
+          <a href={`/guides/assets/${id}-${i}.svg`} aria-label={`View full-size graphic: ${view.title}`}>
+            <img
+              src={`/guides/assets/${id}-${i}.svg`}
+              alt={`${view.title}. ${view.caption}`}
+              width="800"
+              height="600"
+              loading="lazy"
+            />
+          </a>
+          <figcaption>
+            <>
+              <strong>{view.title}</strong>
+              <p>{view.caption}</p>
+            </>
+          </figcaption>
+          <div class="comparison-downloads" aria-label={`${view.title} downloads`}>
+            <a href={`/guides/assets/${id}-${i}.svg`} download>
+              SVG
+            </a>
+            <a href={`/guides/assets/${id}-${i}.png`} download>
+              PNG
+            </a>
+            <a href={`/guides/assets/${id}-${i}.csv`} download>
+              CSV
+            </a>
+            {view.editor && (
+              <a href={guideEditorPath(id, i, view.editor)} data-guide={id}>
+                Edit this view →
+              </a>
+            )}
+          </div>
+        </figure>
+      ))
+    }
+  </div>
+  <details class="comparison-data">
+    <summary>Inspect the original data and method</summary>
+    <p>{comparison.method}</p><div class="table-scroll">
+      <table>
+        <caption>Original fictional teaching data · MIT · every row retained</caption><thead
+          ><tr>{comparison.table[0].map((c) => <th scope="col">{c}</th>)}</tr></thead
+        ><tbody
+          >{
+            comparison.table.slice(1).map((row) => (
+              <tr>
+                {row.map((c) => (
+                  <td>{c}</td>
+                ))}
+              </tr>
+            ))
+          }</tbody>
+      </table>
+    </div>
+    <p>
+      Each CSV contains the input for that view. A box-plot CSV adds the same sample label to each
+      observation; it does not substitute quartiles for raw values. Downloaded graphics use the same rendering
+      specification as these previews.
+    </p>
+  </details>
+</section>
+<style>
+  .guide-comparison {
+    width: min(1120px, calc(100vw - 48px));
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .comparison-figures {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin: 24px 0;
+  }
+  figure {
+    margin: 0;
+    min-width: 0;
+    padding: 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  figcaption {
+    margin-top: 16px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .comparison-downloads {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+    font-size: 15px;
+  }
+  .comparison-downloads a {
+    padding: 8px 0;
+  }
+  .comparison-data {
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  caption {
+    text-align: left;
+    padding: 12px 0;
+    font-size: 14px;
+  }
+  @media (max-width: 760px) {
+    .comparison-figures {
+      grid-template-columns: 1fr;
+    }
+    figure {
+      padding: 8px;
+    }
+  }
+</style>

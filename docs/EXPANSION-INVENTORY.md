@@ -46,7 +46,7 @@ The editorial duplicate check compares five-word phrase containment, excluding s
 | [/guides/dot-plot-vs-histogram/](https://www.chartsai.com/guides/dot-plot-vs-histogram/) | guide | 250 | 0.0% |
 | [/guides/scatter-plot-vs-line-graph/](https://www.chartsai.com/guides/scatter-plot-vs-line-graph/) | guide | 249 | 0.8% |
 | [/guides/bar-graph-vs-line-graph/](https://www.chartsai.com/guides/bar-graph-vs-line-graph/) | guide | 257 | 0.0% |
-| [/guides/pie-chart-vs-bar-graph/](https://www.chartsai.com/guides/pie-chart-vs-bar-graph/) | guide | 249 | 0.4% |
+| [/guides/pie-chart-vs-bar-graph/](https://www.chartsai.com/guides/pie-chart-vs-bar-graph/) | guide | 247 | 0.4% |
 | [/guides/mean-vs-median/](https://www.chartsai.com/guides/mean-vs-median/) | guide | 244 | 0.0% |
 | [/guides/standard-deviation-vs-standard-error/](https://www.chartsai.com/guides/standard-deviation-vs-standard-error/) | guide | 241 | 0.0% |
 | [/guides/histogram-bin-width/](https://www.chartsai.com/guides/histogram-bin-width/) | guide | 252 | 1.2% |

@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout
+  dateModified="2026-09-09"
   title="Our Approach — Useful Charts, Honest Data | ChartsAI by SupaMakers"
   description="Why we build free chart makers and printable trackers. Learn about ChartsAI’s data handling, chart calculations, original examples and SupaMakers authorship."
 >
@@ -12,12 +13,15 @@ import Layout from '../layouts/Layout.astro';
     </h1><p class="intro-text">
       ChartsAI is a collection of free visual tools built by SupaMakers. We want making a chart or printing a
       tracker to feel like a small, satisfying task.
-    </p><p class="byline">Written by SupaMakers · Updated September 8, 2026</p><h2>
+    </p><p class="byline">Written by SupaMakers · Updated September 9, 2026</p><h2>
       A finished example is a better start.
     </h2><p>
       Every tool starts with something you can use immediately. You can explore the example, replace its data,
-      and download the result. Our examples are original and explicitly fictional; they are demonstrations of
-      the tools, not claims about real people or businesses.
+      and download the result. Our original teaching examples are explicitly fictional and demonstrate the
+      tools, not real-world findings. Separately, our <a href="/datasets/">UCI datasets</a> and <a
+        href="/editorial-charts/">NASA/World Bank resources</a
+      > retain primary sources, selection notes and attribution. Each editorial template identifies whether its
+      data is fictional or sourced.
     </p><h2 id="methodology">Keep the meaning intact.</h2><p>
       A pretty chart is only useful when it represents the values you meant to show. Our import preview lets
       you select a sheet, choose columns, and specify number formatting. We flag missing or invalid values
@@ -44,15 +48,33 @@ import Layout from '../layouts/Layout.astro';
       increasing. Missing values, impossible dates and duplicate positions are flagged rather than guessed.
       Values are not smoothed, forecast, aggregated or normalized. All series share one vertical scale, with
       zero included by default.
+    </p><h3>Distributions and relationships</h3><p>
+      Histograms declare bin boundaries and retain all observations. Box plots state the quartile and whisker
+      conventions and keep outliers visible. Scatter plots retain paired values; a fitted line does not
+      establish causation. Bar charts include zero, and Pareto charts separate the value scale from cumulative
+      percentages. The <a href="/guides/">method guides</a> explain these choices with checkable calculations.
+    </p><h3>Publication charts</h3><p>
+      Dumbbells compare two measurements per group; slopegraphs compare endpoints without claiming the
+      intervening path. Small multiples use shared scales. Captions, units, sources and data-anchored
+      annotations travel with <a href="/editorial-charts/publishing-guide/">editable publication projects</a>.
+      Replacing sample data clears unchanged sample claims and annotations.
+    </p><h3>Mathematical diagrams and worksheets</h3><p>
+      Coordinate planes and transformations preserve equal physical units. Slope calculations distinguish
+      vertical lines from repeated points. Quadratic diagrams disclose their independent axis scales. Practice
+      sheets separate questions from answer keys; we claim no curriculum certification. Each <a
+        href="/math-tools/">math tool</a
+      > states its own limits and method.
     </p><h3>Habit trackers</h3><p>
       Monthly layouts use the Gregorian calendar and include leap-year February. Weekly layouts use Monday
       through Sunday with a blank start-date field. The PDF uses the selected A4 or US Letter dimensions. This
       is a printable template, not a health assessment or a behavior-change guarantee.
     </p><h2>Proven rendering. Open implementation.</h2><p>
-      The chart makers use Apache ECharts’ built-in scatter, radar and line charts. Our application provides
-      the data validation, presentation settings and examples. The same option builders drive the static
-      previews, interactive editors and exports. Chart PDFs contain a high-resolution image; SVG exports
-      retain vector shapes and text.
+      The chart makers use Apache ECharts’ built-in scatter, radar, line, bar and boxplot series. Our
+      application provides the data validation, presentation settings and examples. The same option builders
+      drive the static previews, interactive editors and exports. Chart PDFs contain a high-resolution image;
+      SVG exports retain vector shapes and text. Number lines, coordinate diagrams and worksheet grids use
+      shared SVG geometry. Static pie/logarithmic teaching illustrations are labelled separately from
+      interactive maker capabilities.
     </p><h2>Your input stays with you.</h2><p>
       Parsing, calculations and file generation happen in your browser. We do not receive your spreadsheet or
       habit list. There is no account or cloud history; download your data or finished output before closing
@@ -62,6 +84,13 @@ import Layout from '../layouts/Layout.astro';
       license, so you can inspect the logic and adapt it. <a href="/source/"
         >Download the source code and read the reuse notes</a
       >.
+    </p><h2>How we review changes</h2><p>
+      SupaMakers maintains the implementation and explanations. We check calculations against explicit
+      fixtures, compare source values with plotted/exported values, and inspect representative mobile layouts
+      and downloaded outputs. Primary data pages document their sources, periods and selections. These checks
+      are not independent statistical peer review. Report a reproducible issue through our <a
+        href="https://github.com/supamakers/chartsai-studio/issues">public issue tracker</a
+      >; review dates change when the resource is actually reviewed.
     </p><h2>The makers</h2><p>
       <a href="https://www.supamakers.com/">SupaMakers</a> builds practical software and AI systems. ChartsAI is
       one of our public projects: a small place to make useful things, publish our choices, and improve them through

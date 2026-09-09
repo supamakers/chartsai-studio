@@ -22,6 +22,9 @@ import { exportChartConfig } from '../lib/chart-export';
 
 export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
   const initial = dotExample();
+  const guideRef = useRef<DotSpec | null>(null);
+  const sampleFor = (id: string) =>
+    id === 'guide' && guideRef.current ? guideRef.current : (findShowcase(id, 'dot') ?? dotExample(id));
   const [active, setActive] = useState('scores');
   const [raw, setRaw] = useState(initial.values.join('\n'));
   const [title, setTitle] = useState(initial.title);
@@ -76,14 +79,14 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
     setRaw(text);
     setActive('custom');
     if (active !== 'custom') {
-      const sample = findShowcase(active, 'dot') ?? dotExample(active);
+      const sample = sampleFor(active);
       if (title === sample.title) setTitle('Your dot plot');
       if (sample.kind === 'dot' && label === sample.label) setLabel('Value');
     }
     if (active !== 'custom')
       setPresentation((v) => ({
         ...v,
-        source: v.source === (findShowcase(active, 'dot') ?? dotExample(active)).source ? '' : v.source,
+        source: v.source === sampleFor(active).source ? '' : v.source,
         subtitle: '',
       }));
     setNotice('');
@@ -104,6 +107,29 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
   }
   useEffect(() => {
     const query = new URLSearchParams(location.search);
+    if (query.has('guide')) {
+      let cancelled = false;
+      void import('../lib/guide-comparisons')
+        .then(({ guideEditor }) => {
+          const p = guideEditor(query.get('guide'), query.get('view'), 'dot');
+          if (cancelled || p?.kind !== 'dot') return;
+          guideRef.current = p;
+          setRaw(p.values.join('\n'));
+          setTitle(p.title);
+          setLabel(p.label);
+          setMean(p.meanLine);
+          setCounts(p.showCounts);
+          setPresentation({ theme: p.theme, frame: p.frame, subtitle: p.subtitle, source: p.source });
+          setActive('guide');
+          setNotice('Guide comparison loaded. Every fictional observation is retained.');
+        })
+        .catch(() => {
+          if (!cancelled) setNotice('The guide example could not load. Reload to try again.');
+        });
+      return () => {
+        cancelled = true;
+      };
+    }
     const p = findShowcase(query.get('showcase'), 'dot');
     if (p?.kind === 'dot') {
       setRaw(p.values.join('\n'));
@@ -229,7 +255,7 @@ export default function DotEditor({ initialSvg }: { initialSvg?: string }) {
               disabled={!stats}
               onClick={() => {
                 download(
-                  csv([['Value'], ...values.map((v) => [String(v)])]),
+                  csv([[label || 'Value'], ...values.map((v) => [String(v)])]),
                   'text/csv;charset=utf-8',
                   'dot-plot-data.csv',
                 );

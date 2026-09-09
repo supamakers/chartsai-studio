@@ -1,6 +1,6 @@
 /* Homepage only: the approved printed-resource identity. */
 body.home-page {
-  background: var(--home-paper) url('/brand/paper.png') repeat;
+  background: var(--home-paper) url('/brand/paper.webp') repeat;
   color: var(--home-blue);
   font-family: var(--home-body);
   font-size: 22px;
@@ -786,7 +786,7 @@ body.home-page {
 /* Fine-grained raster ink is clipped to selectable text. */
 .home-print-word {
   display: inline-block;
-  background-image: url('/brand/ink.webp');
+  background-image: url('/brand/ink-optimized.webp');
   background-size: 640px 640px;
   background-clip: text;
   -webkit-background-clip: text;
@@ -799,7 +799,7 @@ body.home-page {
   content: '';
   position: absolute;
   inset: 0;
-  background: url('/brand/paper.png') repeat;
+  background: url('/brand/paper.webp') repeat;
   background-size: 540px 540px;
   filter: grayscale(1) contrast(1.35);
   opacity: 0.85;

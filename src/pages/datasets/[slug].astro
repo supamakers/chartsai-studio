@@ -1,5 +1,7 @@
 ---
 import { readFile } from 'node:fs/promises';
+import { irisSpeciesSpec } from '../../lib/iris-comparison';
+import { analyzeStat } from '../../lib/statistics';
 import Layout from '../../layouts/Layout.astro';
 import { datasets } from '../../data/datasets';
 import { parseText } from '../../lib/data';
@@ -9,6 +11,11 @@ export function getStaticPaths() {
 }
 const { d } = Astro.props,
   chart = parseText(await readFile(`public/datasets/assets/${d.id}-chart.csv`, 'utf8'));
+const irisGroups =
+  d.id === 'iris'
+    ? analyzeStat(irisSpeciesSpec(parseText(await readFile('public/datasets/assets/iris.csv', 'utf8'))))
+        .boxes!
+    : [];
 const summary = chart[0].map((name, i) => {
   const v = chart.slice(1).map((r) => Number(r[i]));
   return [
@@ -16,7 +23,7 @@ const summary = chart[0].map((name, i) => {
     String(v.length),
     String(Math.min(...v)),
     String(Math.max(...v)),
-    String(v.reduce((s, n) => s + n, 0) / v.length),
+    String(Number((v.reduce((s, n) => s + n, 0) / v.length).toPrecision(6))),
   ];
 });
 const schema = [
@@ -46,6 +53,7 @@ const schema = [
   title={`${d.name} Dataset — CSV, Charts & Source Notes | ChartsAI`}
   description={d.answer}
   schema={schema}
+  dateModified="2026-09-09"
   imagePath={`/datasets/assets/${d.id}.png`}
   imageWidth={1200}
   imageHeight={800}
@@ -82,8 +90,78 @@ const schema = [
         ))
       }<a href={`/datasets/assets/${d.id}-chart.csv`} download>Chart CSV · {d.chartRows} rows ↓</a><a
         href={`/datasets/assets/${d.id}-manifest.json`}
-        download>Provenance JSON ↓</a>
-    </div><h2>What the columns mean</h2><p>{d.columnNotes}</p><h2>What this chart helps you inspect</h2><p>
+        download>Provenance JSON ↓</a
+      >
+    </div>{
+      d.id === 'iris' && (
+        <section aria-labelledby="species-comparison">
+          <>
+            <h2 id="species-comparison">Does the pooled pattern hide species differences?</h2>
+            <p>
+              The scatter above mixes all three species. Compare petal-length distributions using the same 150
+              source rows: 50 observations per group. The group summaries describe this historical sample;
+              they do not demonstrate a classifier’s accuracy or a causal effect.
+            </p>
+            <figure class="guide-figure">
+              <>
+                <img
+                  src="/datasets/assets/iris-species.svg"
+                  width="1200"
+                  height="800"
+                  loading="lazy"
+                  alt="Petal length box plots by Iris species; all 150 observations retained with outliers visible"
+                />
+                <figcaption>
+                  Source: <a href={d.sourceUrl}>UCI Iris, bezdekIris.data</a>,{' '}
+                  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Species and
+                  petal_length columns selected in original row order; original values preserved.
+                </figcaption>
+              </>
+            </figure>
+            <div class="dataset-downloads">
+              <a class="button" href="/box-plot-maker/?dataset=iris&view=species#editor">
+                Edit this grouped box plot →
+              </a>
+              {['svg', 'png', 'csv', 'json'].map((format) => (
+                <a href={`/datasets/assets/iris-species.${format}`} download>
+                  {format === 'json' ? 'ECharts JSON' : format.toUpperCase()} ↓
+                </a>
+              ))}
+            </div>
+            <div class="table-scroll">
+              <table>
+                <>
+                  <thead>
+                    <tr>
+                      {['Species', 'N', 'Q1 (cm)', 'Median (cm)', 'Q3 (cm)', 'Flagged observations'].map(
+                        (c) => (
+                          <th scope="col">{c}</th>
+                        ),
+                      )}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {irisGroups.map((b) => (
+                      <tr>
+                        {[b.name, b.count, b.q1, b.median, b.q3, b.outliers.length].map((v) => (
+                          <td>{v}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </>
+              </table>
+            </div>
+            <p>
+              Quartiles use linear interpolation at (N − 1)p. Whiskers end at the outermost observed values
+              within 1.5 IQR; points beyond them stay visible. No rows are removed. Compare the medians and
+              spread alongside the raw group CSV; different summaries do not establish population differences.
+              See <a href="/guides/box-plot-vs-histogram/">what a box plot leaves out</a>.
+            </p>
+          </>
+        </section>
+      )
+    }<h2>What the columns mean</h2><p>{d.columnNotes}</p><h2>What this chart helps you inspect</h2><p>
       {d.interpretation}
     </p><h2>Limits of this resource</h2><p>{d.limitation}</p><h2>Calculated from the plotted rows</h2><div
       class="table-scroll"
@@ -101,10 +179,12 @@ const schema = [
                 ))}
               </tr>
             ))
-          }</tbody>
+          }</tbody
+        >
       </table>
     </div><p>
-      These descriptive values are computed from the chart CSV at build time. They summarize the plotted
+      These descriptive values are computed from the chart CSV at build time. Displayed means use up to six
+      significant digits; downloaded measurements retain their original precision. They summarize the plotted
       selection only and are not population estimates. No rows are removed during chart preparation beyond the
       explicit selection rule above.
     </p><h2>Preview of the full CSV</h2><p>
@@ -122,7 +202,8 @@ const schema = [
                 ))}
               </tr>
             ))
-          }</tbody>
+          }</tbody
+        >
       </table>
     </div><h2>Source, version and reuse</h2><p>
       {d.creator}. {d.name} [Dataset]. UCI Machine Learning Repository. <a href={`https://doi.org/${d.doi}`}
@@ -134,7 +215,8 @@ const schema = [
       generates the visual and summaries. Original numeric strings are preserved in the full CSV. Source file: <code
         >{d.sourceFile}</code
       >; retrieved {d.retrieved}; empty or question-mark cells found in this file: {d.missingCells}. <a
-        href={d.archiveUrl}>Download the original archive from UCI.</a>
+        href={d.archiveUrl}>Download the original archive from UCI.</a
+      >
     </p><p class="dataset-meta">SHA-256 of the source data file:</p><pre>{d.sha256}</pre><p>
       The downloadable provenance JSON records the checksum and every selected source row. <a href="/source/"
         >The source archive</a

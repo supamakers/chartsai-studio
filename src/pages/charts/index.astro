@@ -7,7 +7,7 @@ import ToolCards from '../../components/ToolCards.astro';
 
 <Layout
   title="Free Online Chart Makers — Histograms, Box Plots & More | ChartsAI"
-  description="Make a dot plot, radar chart or line graph online. Start with a sample, paste your own values or import CSV and Excel, and download a free PNG, SVG or PDF."
+  description="Choose from eleven free chart makers. Compare distributions, trends and group gaps, import CSV or Excel, and download PNG, SVG or PDF without signup."
 >
   <section class="container listing-intro">
     <h1>
@@ -18,9 +18,17 @@ import ToolCards from '../../components/ToolCards.astro';
     </p>
   </section>
   <section class="container section listing-cards">
-    <ToolCards show="charts" /><h2>Explore distributions, relationships and categories</h2><StatToolCards/>
+    <ToolCards show="charts" /><h2>Explore distributions, relationships and categories</h2><StatToolCards />
   </section>
-  <section class="container prose-section"><h2>Charts for articles and publications</h2><p>Make <a href="/editorial-charts/">editorial charts with annotations, captions and sources</a>. Explore <a href="/dumbbell-chart-maker/">dumbbell comparisons</a>, <a href="/slopegraph-maker/">slopegraphs</a> and <a href="/small-multiples-chart-maker/">small multiples</a>, with free publication downloads.</p></section>
+  <section class="container prose-section">
+    <h2>Charts for articles and publications</h2><p>
+      Make <a href="/editorial-charts/">editorial charts with annotations, captions and sources</a>. Explore <a
+        href="/dumbbell-chart-maker/">dumbbell comparisons</a
+      >, <a href="/slopegraph-maker/">slopegraphs</a> and <a href="/small-multiples-chart-maker/"
+        >small multiples</a
+      >, with free publication downloads.
+    </p>
+  </section>
   <section class="container prose-section">
     <h2>Choose the chart that fits your question</h2><div class="comparison-table">
       <table>
@@ -37,6 +45,34 @@ import ToolCards from '../../components/ToolCards.astro';
             ><td>See how values change across ordered points</td><td
               ><a href="/line-graph-maker/">Line graph maker</a></td
             ><td>Ordered labels, dates or numeric positions and one to five numeric series</td></tr
+          ><tr
+            ><td>See the shape of a distribution</td><td><a href="/histogram-maker/">Histogram maker</a></td
+            ><td>One numeric column; choose explicit bins</td></tr
+          ><tr
+            ><td>Compare group medians and spread</td><td><a href="/box-plot-maker/">Box plot maker</a></td
+            ><td>Group names and individual numeric observations</td></tr
+          ><tr
+            ><td>Inspect a relationship between two measurements</td><td
+              ><a href="/scatter-plot-maker/">Scatter plot maker</a></td
+            ><td>Paired X and Y numeric columns</td></tr
+          ><tr
+            ><td>Compare amounts across categories</td><td><a href="/bar-chart-maker/">Bar chart maker</a></td
+            ><td>Category names and one or more numeric series</td></tr
+          ><tr
+            ><td>Rank categories and their cumulative contribution</td><td
+              ><a href="/pareto-chart-maker/">Pareto chart maker</a></td
+            ><td>Unique categories and nonnegative values</td></tr
+          ><tr
+            ><td>Show the gap between two measures per group</td><td
+              ><a href="/dumbbell-chart-maker/">Dumbbell chart maker</a></td
+            ><td>Group names and two comparable measures</td></tr
+          ><tr
+            ><td>Compare values at two endpoints</td><td><a href="/slopegraph-maker/">Slopegraph maker</a></td
+            ><td>Group names and two comparable endpoint values</td></tr
+          ><tr
+            ><td>Compare trends across separate panels</td><td
+              ><a href="/small-multiples-chart-maker/">Small multiples maker</a></td
+            ><td>Ordered numeric/date positions and several series</td></tr
           ></tbody
         >
       </table>
@@ -52,5 +88,10 @@ import ToolCards from '../../components/ToolCards.astro';
       original values, a worked explanation and free downloads.
     </p><a class="text-link" href="/examples/">Explore the example library →</a>
   </section>
-<section class="container section"><h2>Make the maths visible.</h2><p>Explore number lines, slope, transformations, quadratic graphs and coordinate planes. Free practice worksheets with separate answer keys.</p><a class="button secondary" href="/math-tools/">Explore five free math tools ↗</a></section>
+  <section class="container section">
+    <h2>Make the maths visible.</h2><p>
+      Explore number lines, slope, transformations, quadratic graphs and coordinate planes. Free practice
+      worksheets with separate answer keys.
+    </p><a class="button secondary" href="/math-tools/">Explore five free math tools ↗</a>
+  </section>
 </Layout>

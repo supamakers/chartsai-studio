@@ -3,12 +3,13 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout
+  dateModified="2026-09-09"
   title="Privacy — Your Data Stays in Your Browser | ChartsAI"
   description="How ChartsAI handles files, pasted values and habit lists. Browser-based processing, no cloud saving, and no account required."
   ><article class="container prose-page">
     <h1>
       Your data.<br /><em>Your device.</em>
-    </h1><p class="byline">Last updated September 8, 2026</p><h2>Files and values</h2><p>
+    </h1><p class="byline">Last updated September 9, 2026</p><h2>Files and values</h2><p>
       Chart values, spreadsheet files and tracker labels are processed in your browser. They are not uploaded
       to ChartsAI or sent to an AI provider. PDF and image downloads are generated locally. Fonts and
       application libraries are served as part of the website.
@@ -23,10 +24,11 @@ import Layout from '../layouts/Layout.astro';
     </p><h2>Measurement</h2><p>
       We use Plausible Analytics on the production ChartsAI website to understand aggregate visits, referring
       websites, device/browser categories, and whether people import data or download an output. Custom events
-      contain only a fixed tool name and download format. We also count example selections, source-archive
-      clicks and visits to SupaMakers. These events do not include your chart values, uploaded files, titles,
-      series names, source notes or habit text. Arbitrary URL queries and referrer paths are removed before
-      analytics requests are sent.
+      contain fixed identifiers for the tool, public template or guide, download format, import method and
+      type of control changed. We also count example selections, project loads, source-archive clicks and
+      visits to SupaMakers or AnimCharts. These events do not include your chart values, uploaded files,
+      titles, series names, source notes or habit text. Arbitrary URL queries and referrer paths are removed
+      before analytics requests are sent.
     </p><p>
       Plausible does not use cookies or persistent identifiers. It processes request information such as IP
       address and user agent to produce aggregate statistics; see its <a

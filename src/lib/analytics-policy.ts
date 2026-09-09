@@ -1,3 +1,4 @@
+import { comparisonId } from './guide-ids';
 import { templateId, templateKinds, templateCollectionPath } from './editorial-template-ids';
 import { guideSlugs, datasetIds } from './resource-paths';
 import { statFamilies, statPresetIds, statExamplePath, findStatPreset } from './stat-presets';
@@ -98,9 +99,14 @@ export function usageEvent(detail: unknown) {
 }
 
 export function showcaseDownloadEvent(pathname: string) {
+  const comparison = pathname.match(/^\/guides\/assets\/([a-z-]+)-[01]\.(svg|png|csv)$/);
+  const guide = comparison && comparisonId(comparison[1]);
+  if (guide)
+    return { name: 'Chart Download', props: { tool: 'guide-comparison', guide, format: comparison![2] } };
+
   const file = pathname.match(/^\/editorial\/templates\/([a-z-]+)\.(svg|png|csv|json|pdf)$/);
   const id = file && templateId(file[1]);
-  if (id) return usageEvent({tool: templateKinds[id], action: 'export', template: id, format: file![2]});
+  if (id) return usageEvent({ tool: templateKinds[id], action: 'export', template: id, format: file![2] });
   const editorial = pathname.match(
     /^\/editorial\/assets\/(line|bar|dumbbell|slopegraph|small-multiples)\.(svg|png|csv|json|html|pdf)$/,
   );
@@ -153,6 +159,8 @@ export function showcaseDownloadEvent(pathname: string) {
 
 /** Public, fixed dataset files only. Never derive properties from arbitrary filenames. */
 export function datasetDownloadEvent(pathname: string) {
+  if (/^\/datasets\/assets\/iris-species\.(csv|svg|png|json)$/.test(pathname))
+    return { name: 'Chart Download', props: { tool: 'public-dataset', format: pathname.split('.').pop()! } };
   const match = pathname.match(/^\/datasets\/assets\/([a-z]+)(-chart|-manifest)?\.(csv|svg|png|json)$/);
   if (!match || !datasetIds.includes(match[1])) return null;
   const [, , suffix, format] = match;

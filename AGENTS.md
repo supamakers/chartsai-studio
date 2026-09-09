@@ -15,7 +15,7 @@ Build excellent free chart tools and printable resources that people can discove
 
 ## Current scope and evidence
 
-The live v0.5 library includes eight chart makers, 50 fictional worked examples, 20 method/comparison guides, five attributed UCI datasets, and the weekly/monthly printable habit tracker. There are 102 sitemap URLs including hubs and supporting pages. See `docs/EXPANSION-RESEARCH-2026-09.md` and `docs/EXPANSION-INVENTORY.md`. Additional printable families, Power BI/Tableau kits and AnimStats video tools remain research candidates rather than promised implementations.
+The current v0.13 library includes eleven chart makers, 50 fictional worked examples, 20 method/comparison guides (six with paired same-data graphics), five attributed UCI datasets including a species-aware Iris comparison, five math tools, two printable builders, and an editorial library with twelve templates across three collections. There are 119 sitemap URLs. See the dated release documents for verification and measurement limits. Power BI/Tableau kits remain research candidates; AnimCharts is managed in its separate project.
 
 Local research, when available:
 
@@ -222,3 +222,12 @@ Plausible Template Selected and Chart Download accept the fixed template propert
 ## Shared visual identity — v0.12.1
 
 The user requested sitewide visual consistency on September 9, 2026. This supersedes the homepage-only visual boundary above. `src/styles/brand.css` owns the shared printed blue/pink palette, typography, header, navigation, footer and controls; `home.css` owns only homepage composition and its expressive opening. All site pages use the same four navigation links. Use Anton for page/resource headings, Barlow Condensed for navigation, and DM Sans for long reading and controls. Page-specific CSS uses shared semantic color roles. Keep editable chart themes and exported artwork independent of the surrounding website theme. Preserve canonical content, data, tracking identifiers and the task-specific editor layouts. Update DESIGN.md and its sidecar from the finished shared system.
+
+
+## Visual guide and discovery release — v0.13.0
+
+Six existing guide URLs now contain paired native ECharts teaching figures with original values, explicit methods, SVG/PNG/CSV downloads and exact-data handoffs where supported. `guide-ids.ts` owns the public whitelist; `guide-comparisons.ts` owns figures and editor settings. Guide modules load dynamically only for matching query states. `?guide=<fixed>&view=0|1` remains canonical to its maker. Preserve raw observations and settings; never create indexed query variants. The labelled truncated-bar example is exclusively a teaching demonstration; normal bar makers still include zero. Pie/log figures do not imply new interactive pie/log controls. PieChart registration occurs only during asset preparation.
+
+`iris-comparison.ts` projects every pinned Iris row to species and petal length in original order, with 50 rows per group. Its box-plot handoff accepts only `dataset=iris&view=species` on the box maker. All raw values and outliers remain. Generated guide assets and Iris species files remain excluded from Git/source ZIP and rebuild from checked source. Public trust/privacy pages describe actual scope and license/event boundaries. Source version is read from package.json to avoid manual version drift.
+
+Guide static downloads use Chart Download and guide handoffs use Example Loaded with fixed tool=guide-comparison and allowlisted guide IDs. Never derive an identifier from private query values. Preserve existing template attribution and privacy constraints. Optimized paper/ink assets retain the shared visual identity; two commonly used Latin fonts are preloaded. Verify production release state in the dated release document, not from this implementation description.

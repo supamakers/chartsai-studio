@@ -57,3 +57,12 @@ Read imports, edits, downloads and SupaMakers visits by landing page as discover
 ## Editorial templates — September 9, 2026
 
 Template Selected records a clicked “Use this chart” link or an explicit maker dropdown selection. The fixed `template` property also joins Chart Download for template assets and exports following data replacement in the same maker session. Use tool/template/format breakdowns to compare selection and use; retain the existing distinctions between clicks, file preparation and actual publication. Query hydration does not count an additional selection. Restoring a saved project clears session lineage. See EDITORIAL-TEMPLATES-2026-09-09.md for exact boundaries and search evidence.
+
+
+## Visual guide release — September 9, 2026
+
+Six allowlisted guide IDs now accompany `Chart Download` (SVG/PNG/CSV) and `Example Loaded` (explicit supported-editor handoff) with `tool=guide-comparison`. Plausible's `guide` custom property was configured and verified in its settings. Query loading itself does not emit a guide selection. The guide property describes a public resource, never pasted content; there is no cross-session attribution promise. Iris species downloads use the existing public-dataset tool identifier.
+
+A controlled production template journey reached the real Plausible endpoint with bounded import and template-attributed download payloads. Responses returned HTTP 202 with `x-plausible-dropped: 1`; the test traffic was excluded by Plausible bot filtering, so this is not verified dashboard ingestion or adoption. Its detailed evidence and timestamps remain in ignored `artifacts/release-0.13/`. The site IP block list had no entries. Automated browser visits are normally excluded by Plausible itself, so mock interception tests prove wiring, not ingestion. Any explicitly opted-in QA events must be reported as tests, not adoption.
+
+Plausible documents the dropped-event header in its [Events API reference](https://plausible.io/docs/events-api). Keep automatic filtering intact; a normal unfiltered visitor is needed to confirm the dashboard end of this flow. No artificial visitor IP or analytics proxy was introduced.

@@ -20,7 +20,7 @@ html:root {
   --radius: 8px;
 }
 body.site-brand {
-  background: var(--paper) url('/brand/paper.png') repeat;
+  background: var(--paper) url('/brand/paper.webp') repeat;
   color: var(--ink);
   scrollbar-color: var(--home-blue) var(--paper);
 }

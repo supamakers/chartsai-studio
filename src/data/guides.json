@@ -288,7 +288,7 @@
       },
       {
         "title": "Use the available tool honestly",
-        "text": "ChartsAI currently provides a bar maker, including 100% stacked mode, and does not claim to offer an interactive pie maker. The worked example below demonstrates shares with unequal denominators. Download the original counts to compare amounts as well as composition, and avoid interpreting equal-height percentage bars as equal sample sizes."
+        "text": "ChartsAI provides an interactive bar maker, including 100% stacked mode. The pie above is a static teaching illustration with the same downloadable counts; there is no interactive pie maker. Use “Edit this view” on the bar graphic to load these exact category counts and preserve a zero baseline."
       }
     ],
     "table": [

@@ -1,3 +1,8 @@
+import { irisSpeciesSpec } from '../src/lib/iris-comparison.ts';
+import { use } from 'echarts/core';
+import { PieChart } from 'echarts/charts';
+import { comparisonIds } from '../src/lib/guide-ids.ts';
+import { guideComparison } from '../src/lib/guide-comparisons.ts';
 import {editorialTemplates} from '../src/data/editorial-templates.ts';
 import {editorialKinds,editorialOption,publicationFrames,publicationHtml} from '../src/lib/editorial.ts';
 import {editorialExample} from '../src/data/editorial-examples.ts';
@@ -70,6 +75,12 @@ for(const d of datasets){
  await writeFile(`${path}.json`,JSON.stringify(option,null,2));
  await writeFile(`${path}-manifest.json`,JSON.stringify(d,null,2));
 }
+const irisGroupSpec = irisSpeciesSpec(parseText(await readFile('public/datasets/assets/iris.csv','utf8')));
+const irisGroupOption = statOption(irisGroupSpec), irisGroupSvg = renderOptionSvg(irisGroupOption);
+await writeFile('public/datasets/assets/iris-species.svg',irisGroupSvg);
+await sharp(Buffer.from(irisGroupSvg)).png().toFile('public/datasets/assets/iris-species.png');
+await writeFile('public/datasets/assets/iris-species.csv',csv(irisGroupSpec.table));
+await writeFile('public/datasets/assets/iris-species.json',JSON.stringify(irisGroupOption,null,2));
 const chart = renderChartSvg({ ...radarExample('products'), theme: 'night' }, 570, 430);
 const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#f8f9f6"/><rect x="54" y="54" width="36" height="36" rx="10" fill="#202522"/><path d="M64 80v-9m8 9V63m8 17V68" stroke="#d3ed9c" stroke-width="3" stroke-linecap="round"/><text x="103" y="82" font-family="Arial" font-size="28" font-weight="700" fill="#202522">chartsai.</text><text x="54" y="232" font-family="Arial" font-size="66" font-weight="700" fill="#202522">Your data.</text><text x="54" y="313" font-family="Arial" font-size="66" font-weight="700" fill="#202522">Ready to</text><rect x="54" y="381" width="211" height="16" fill="#d3ed9c"/><text x="54" y="394" font-family="Arial" font-size="66" font-weight="700" fill="#202522">share.</text><text x="57" y="461" font-family="Arial" font-size="19" fill="#606961">Free chart makers &amp; printables.</text><text x="57" y="552" font-family="Arial" font-size="15" fill="#606961">Built by SupaMakers · No signup or watermark</text></svg>`;
 await sharp(Buffer.from(og))
@@ -180,13 +191,28 @@ for (const t of editorialTemplates) {
   await writeFile(`${base}.pdf`,Buffer.from(pdf.output('arraybuffer')));
 }
 
+// Native pie is registered only in the build process; it is not added to interactive makers.
+use([PieChart]);
+await mkdir('public/guides/assets', {recursive:true});
+for (const id of comparisonIds) {
+  const comparison = guideComparison(id);
+  for (const [i, view] of comparison.views.entries()) {
+    const base = `public/guides/assets/${id}-${i}`;
+    const svg = renderOptionSvg(view.option, 800, 600);
+    await writeFile(`${base}.svg`, svg);
+    await sharp(Buffer.from(svg)).png().toFile(`${base}.png`);
+    const table = view.editor?.kind === 'dot' ? [[view.editor.label], ...view.editor.values.map(v => [v])] : view.editor?.table ?? comparison.table;
+    await writeFile(`${base}.csv`, csv(table));
+  }
+}
+
 // Explicit allowlist: research notes, environment files and build artifacts never enter the public source archive.
 const archive = {};
 async function collect(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = join(directory, entry.name);
-    if (path === 'public/editorial/templates' || path === 'public/editorial/assets' || path === 'public/worksheets/assets' || path === 'public/math/assets' || path === 'public/coordinate/assets' || path === 'public/previews' || path === 'public/downloads' || path === 'public/examples/assets' || path === 'public/charts/assets') continue;
-    if (directory === 'public/datasets/assets' && /\.(svg|png|json)$/.test(path)) continue;
+    if (path === 'public/guides/assets' || path === 'public/editorial/templates' || path === 'public/editorial/assets' || path === 'public/worksheets/assets' || path === 'public/math/assets' || path === 'public/coordinate/assets' || path === 'public/previews' || path === 'public/downloads' || path === 'public/examples/assets' || path === 'public/charts/assets') continue;
+    if (path === 'public/datasets/assets/iris-species.csv' || (directory === 'public/datasets/assets' && /\.(svg|png|json)$/.test(path))) continue;
     if (entry.isDirectory()) await collect(path);
     else if (entry.isFile()) archive[`chartsai/${path}`] = new Uint8Array(await readFile(path));
   }

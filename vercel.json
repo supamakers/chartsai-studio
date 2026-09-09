@@ -18,6 +18,21 @@
       "permanent": true
     },
     {
+      "source": "/terms-of-use/",
+      "destination": "/terms/",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-policy/",
+      "destination": "/privacy/",
+      "permanent": true
+    },
+    {
+      "source": "/cookie-policy/",
+      "destination": "/privacy/",
+      "permanent": true
+    },
+    {
       "source": "/cookies/",
       "destination": "/privacy/",
       "permanent": true

@@ -6,7 +6,7 @@ import { datasetIds } from '../lib/resource-paths';
 import { useEffect, useRef, useState } from 'react';
 import type { EChartsType } from 'echarts/core';
 import { statOption, analyzeStat, statDescription, type StatSpec, type StatKind } from '../lib/statistics';
-import { defaultStat, findStatPreset, statFamilies, statPresetIds, statPresets } from '../lib/stat-presets';
+import { defaultStat, findStatPreset, statPresetIds, statPresets } from '../lib/stat-presets';
 import { chartFrames, chartThemes } from '../lib/chart-options';
 import { parseText, csv, readNumber, type Table, type NumberStyle } from '../lib/data';
 import { download, svgMarkupToPng, emitUsage } from '../lib/export';
@@ -48,7 +48,24 @@ export default function StatEditor({ kind, initialSvg }: { kind: StatKind; initi
     let cancelled = false;
     const q = new URLSearchParams(location.search),
       p = findStatPreset(q.get('example'), kind);
-    if (p) {
+    if (q.has('guide')) {
+      void import('../lib/guide-comparisons')
+        .then(({ guideEditor }) => {
+          const next = guideEditor(q.get('guide'), q.get('view'), kind);
+          if (cancelled || !next || next.kind === 'dot') return;
+          analyzeStat(next);
+          sampleRef.current = next;
+          setActive('guide');
+          setSpec(next);
+          setRaw(csv(next.table));
+          setMessage(
+            'Guide comparison loaded. Exact fictional observations and calculation settings retained.',
+          );
+        })
+        .catch(() => {
+          if (!cancelled) setMessage('The guide example could not load. Reload to try again.');
+        });
+    } else if (p) {
       sampleRef.current = p;
       setActive(q.get('example')!);
       setSpec(p);
@@ -56,7 +73,29 @@ export default function StatEditor({ kind, initialSvg }: { kind: StatKind; initi
       setMessage('Worked example loaded. All data is fictional.');
     } else {
       const id = q.get('dataset');
-      if (kind === 'scatter' && id && datasetIds.includes(id)) {
+      if (kind === 'box' && id === 'iris' && q.get('view') === 'species') {
+        void Promise.all([
+          import('../lib/iris-comparison'),
+          fetch('/datasets/assets/iris.csv').then((r) => {
+            if (!r.ok) throw Error('Dataset download failed');
+            return r.text();
+          }),
+        ])
+          .then(([{ irisSpeciesSpec }, text]) => {
+            const next = irisSpeciesSpec(parseText(text));
+            if (cancelled) return;
+            sampleRef.current = next;
+            setActive('dataset');
+            setSpec(next);
+            setRaw(csv(next.table));
+            setMessage(
+              'UCI Iris loaded: all 150 source rows, grouped by species. Source and method are on the dataset page.',
+            );
+          })
+          .catch(() => {
+            if (!cancelled) setMessage('The public dataset could not load. Reload to try again.');
+          });
+      } else if (kind === 'scatter' && id && datasetIds.includes(id)) {
         void Promise.all([
           import('../data/datasets'),
           fetch(`/datasets/assets/${id}-chart.csv`).then((r) => {
