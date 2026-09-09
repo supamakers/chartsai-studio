@@ -42,7 +42,7 @@ const schema = [
     </nav>
     <div class="tool-title-line">
       <div>
-        <span class="eyebrow">FREE ONLINE CHART MAKER</span><h1>
+        <h1>
           {f.name} maker<span class="title-dot">.</span>
         </h1><p>
           Upload a CSV or Excel file, or paste your data. Choose the columns to plot, preview your {
@@ -102,7 +102,7 @@ const schema = [
   <section class="container section">
     <div class="section-heading">
       <h2>Worked {f.name.toLowerCase()} examples</h2><a href={`/examples/${f.hub}/`} class="text-link"
-        >Explore the collection →</a
+        >Explore the collection</a
       >
     </div><StatCards items={statExamples.filter((e) => e.spec.kind === kind)} />
   </section>

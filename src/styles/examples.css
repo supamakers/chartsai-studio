@@ -10,15 +10,15 @@
   margin: 20px 0;
 }
 .example-intro h1 em {
-  font-family: 'Instrument Serif', serif;
+  font-family: var(--home-display);
   font-weight: 400;
-  color: #536d4e;
+  color: var(--muted);
 }
 .example-intro > p {
   max-width: 780px;
   font-size: 19px;
   line-height: 1.7;
-  color: var(--muted, #606961);
+  color: var(--muted, var(--muted));
 }
 .example-promises {
   display: flex;
@@ -29,7 +29,7 @@
 }
 .example-promises span:before {
   content: '✓ ';
-  color: #557743;
+  color: var(--muted);
 }
 .example-collection {
   padding-bottom: 64px;
@@ -42,7 +42,7 @@
 }
 .example-hub-links a {
   padding: 20px;
-  border: 1px solid #d8ded3;
+  border: 1px solid var(--line);
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
@@ -50,7 +50,7 @@
   gap: 15px;
 }
 .example-hub-links a:hover {
-  background: #e9efdf;
+  background: var(--surface-tint);
 }
 .showcase-grid {
   display: grid;
@@ -58,7 +58,7 @@
   gap: 26px;
 }
 .showcase-card {
-  border: 1px solid #dfe3da;
+  border: 1px solid var(--line);
   border-radius: 14px;
   overflow: hidden;
   background: #fff;
@@ -74,14 +74,14 @@
   height: auto;
   aspect-ratio: 3 / 2;
   object-fit: contain;
-  border-bottom: 1px solid #e3e7df;
+  border-bottom: 1px solid var(--line);
 }
 .showcase-card-image {
   display: flex;
-  background: #eef0e9;
+  background: var(--surface-tint);
   align-items: center;
   aspect-ratio: 3/2;
-  border-bottom: 1px solid #e3e7df;
+  border-bottom: 1px solid var(--line);
 }
 .showcase-card-image img {
   display: block;
@@ -106,17 +106,17 @@
   text-decoration: none;
 }
 .showcase-card h3 span {
-  color: #779161;
+  color: var(--muted);
 }
 .showcase-card p {
   font-size: 14px;
   line-height: 1.65;
-  color: #606961;
+  color: var(--muted);
   margin: 0 0 18px;
 }
 .showcase-card-note {
   font-size: 11px;
-  color: #566b4d;
+  color: var(--muted);
 }
 .example-filters {
   display: flex;
@@ -124,7 +124,7 @@
   gap: 20px;
   margin-bottom: 28px;
   padding: 22px;
-  background: #eef1e8;
+  background: var(--surface-tint);
   border-radius: 12px;
 }
 .example-filters label {
@@ -140,7 +140,7 @@
 .example-filters select {
   width: 100%;
   min-height: 44px;
-  border: 1px solid #cad2c4;
+  border: 1px solid var(--line);
   border-radius: 6px;
   background: white;
   padding: 10px 12px;
@@ -154,7 +154,7 @@
 .example-breadcrumb {
   padding-top: 28px;
   font-size: 12px;
-  color: #65715f;
+  color: var(--muted);
 }
 .example-breadcrumb a {
   display: inline-block;
@@ -176,7 +176,7 @@
 .example-output figure {
   margin: 0;
   background: #fff;
-  border: 1px solid #d8ded3;
+  border: 1px solid var(--line);
   border-radius: 16px;
   overflow: hidden;
 }
@@ -188,8 +188,8 @@
 .example-output figcaption {
   padding: 14px 22px;
   font-size: 12px;
-  color: #606961;
-  border-top: 1px solid #e4e8df;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
 }
 .example-downloads {
   display: flex;
@@ -200,7 +200,7 @@
   font-size: 13px;
 }
 .example-downloads > span {
-  color: #65715f;
+  color: var(--muted);
   margin-right: auto;
 }
 .example-downloads a {
@@ -228,7 +228,7 @@
 .example-data p {
   font-size: 16px;
   line-height: 1.85;
-  color: #535e51;
+  color: var(--muted);
 }
 .example-explanation a,
 .example-data a {
@@ -236,18 +236,18 @@
   text-underline-offset: 4px;
 }
 .example-caution {
-  border-left: 3px solid #aabd91;
+  border-left: 1px solid var(--line);
   padding: 8px 0 8px 24px;
 }
 .example-credit {
   font-size: 12px !important;
-  border-top: 1px solid #dce2d5;
+  border-top: 1px solid var(--line);
   padding-top: 20px;
 }
 .example-data {
   align-self: start;
-  background: #eef1e8;
-  border: 1px solid #dce2d5;
+  background: var(--surface-tint);
+  border: 1px solid var(--line);
   border-radius: 12px;
   padding: 26px;
   scroll-margin-top: 90px;
@@ -268,7 +268,7 @@
 .example-data th,
 .example-data td {
   padding: 11px 9px;
-  border-bottom: 1px solid #d5ddcc;
+  border-bottom: 1px solid var(--line);
   text-align: right;
   white-space: nowrap;
 }
@@ -295,7 +295,7 @@
 }
 .example-home-link {
   padding: 32px;
-  background: #eef1e8;
+  background: var(--surface-tint);
   border-radius: 14px;
   margin-top: 30px;
   margin-bottom: 30px;

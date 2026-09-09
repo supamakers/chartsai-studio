@@ -24,3 +24,7 @@ FORM: Printed Resource Library, user-selected risograph challenger from seed f83
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 
 The final charts use native ECharts/static rendered outputs and the existing shared number-line geometry. Correct image-model geometry/text errors as genuine mockup defects; preserve its composition and hierarchy. Keep all required category actions available without JavaScript. No invented usage, rankings, reviews or claims.
+
+## Shared identity supersession — September 9, 2026
+
+The user subsequently authorized extending the selected Printed Resource Library identity across every page. The homepage-only scope, cream/green workbench direction and preserve-stale-DESIGN instructions above are historical and superseded by [site-identity.md](site-identity.md) and the refreshed root [DESIGN.md](../../DESIGN.md). Keep these surfaces' established compositions and native chart/export themes; inherit the shared blue/pink paper shell, Anton orientation headings, Barlow navigation and DM Sans reading/controls. The former global font/palette mismatch and footer eyebrows are resolved by this approved system refresh rather than canonized as alternate brand rules.

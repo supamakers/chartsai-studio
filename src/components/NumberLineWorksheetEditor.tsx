@@ -79,8 +79,9 @@ export default function NumberLineWorksheetEditor() {
       aria-label="Number line worksheet generator"
     >
       <div className="worksheet-controls">
-        <span className="eyebrow">1. CHOOSE YOUR PRACTICE</span>
-        <h2>Make a fresh worksheet</h2>
+        <h2>
+          <span className="coordinate-step">1</span> Make a fresh worksheet
+        </h2>
         <label className="field">
           Practice pack
           <select value={settings.pack} onChange={(e) => update({ pack: e.target.value as PackId })}>
@@ -142,10 +143,12 @@ export default function NumberLineWorksheetEditor() {
             emitUsage('number-line-worksheets', 'sample');
           }}
         >
-          Generate fresh questions ↻
+          Generate fresh questions
         </button>
         <p className="worksheet-small">Set {settings.seed}. Changing paper size keeps the same questions.</p>
-        <span className="eyebrow">2. CHOOSE YOUR DOWNLOAD</span>
+        <h2>
+          <span className="coordinate-step">3</span> Download your worksheet
+        </h2>
         <label className="field">
           Paper size
           <select value={paper} onChange={(e) => setPaper(e.target.value as 'a4' | 'letter')}>
@@ -162,7 +165,7 @@ export default function NumberLineWorksheetEditor() {
           working space.
         </p>
         <button className="button primary" disabled={busy} onClick={save}>
-          {busy ? 'Preparing PDF…' : 'Download worksheet PDF ↓'}
+          {busy ? 'Preparing PDF…' : 'Download worksheet PDF'}
         </button>
         <button
           className="worksheet-text-button"
@@ -180,8 +183,9 @@ export default function NumberLineWorksheetEditor() {
       <div className="worksheet-preview">
         <div className="worksheet-preview-top">
           <div>
-            <span className="eyebrow">3. PREVIEW & PRINT</span>
-            <h2>{showKey ? 'Answer key' : 'Question sheets'}</h2>
+            <h2>
+              <span className="coordinate-step">2</span> {showKey ? 'Answer key' : 'Question sheets'}
+            </h2>
           </div>
           <button className="button secondary" aria-pressed={showKey} onClick={() => setShowKey(!showKey)}>
             {showKey ? 'Hide answers' : 'Preview answer key'}

@@ -50,3 +50,7 @@ The finish reviewer first requested fixes to mobile collection-heading breaks an
 The coordinating pass verified the fixed-ID Plausible Template Selected goal and template property on September 9. Configuration and bounded event attribution do not establish adoption. Production verification remains separate; no deployment claim is made by this documentation pass.
 
 `PRODUCT.md` already describes the twelve templates and three collections, so no capability amendment was needed. The incumbent global design record and sidecar remain unchanged. The previously recorded studio/global typography and palette drift, and inherited tiny footer eyebrows, remain uncanonized and unrepaired: this ordinary extension does not authorize a global system refresh.
+
+## Shared identity supersession — September 9, 2026
+
+The user subsequently authorized extending the selected Printed Resource Library identity across every page. The homepage-only scope, cream/green workbench direction and preserve-stale-DESIGN instructions above are historical and superseded by [site-identity.md](site-identity.md) and the refreshed root [DESIGN.md](../../DESIGN.md). Keep these surfaces' established compositions and native chart/export themes; inherit the shared blue/pink paper shell, Anton orientation headings, Barlow navigation and DM Sans reading/controls. The former global font/palette mismatch and footer eyebrows are resolved by this approved system refresh rather than canonized as alternate brand rules.

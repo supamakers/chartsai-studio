@@ -117,3 +117,8 @@ Seven new pages bring the sitemap to 116 URLs. The editorial collection includes
 ## Editorial templates — v0.12.0
 
 Twelve complete projects across dumbbell, slopegraph and small-multiples collections provide before/after, group-gap, ranking and trend examples. Each includes SVG/PNG/PDF, source CSV, editable JSON and an exact maker handoff. Replacement data keeps the design and clears unchanged sample context. Three templates use World Bank data; nine are visibly fictional teaching examples. The site now has 119 sitemap URLs. Fixed Plausible template IDs distinguish selections and downloads. See [template research and contracts](docs/EDITORIAL-TEMPLATES-2026-09-09.md).
+
+
+## Shared visual identity — v0.12.1
+
+Every page now shares the printed blue/pink ChartsAI identity, wordmark, four-link navigation and footer. `src/styles/brand.css` owns the shared visual roles and controls; page styles retain their task-specific layouts. Heading typography and reading rhythm are consistent across makers, examples, editorial collections, math tools and printables. Selectable chart themes and exported data graphics remain independent. Responsive browser checks compare the shared identity across sixteen page families at 1440, 390 and 320 pixels.

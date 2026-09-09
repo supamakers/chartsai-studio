@@ -43,7 +43,7 @@ test('all content and actual downloads work without JavaScript', async ({ browse
     const d = page.waitForEvent('download');
     await page
       .locator('.example-downloads')
-      .getByRole('link', { name: `${format} ↓`, exact: true })
+      .getByRole('link', { name: `${format}`, exact: true })
       .click();
     expect((await readFile((await (await d).path())!)).length).toBeGreaterThan(50);
   }

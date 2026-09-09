@@ -9,12 +9,12 @@
 }
 .coordinate-intro > p {
   max-width: 760px;
-  color: #526254;
+  color: var(--muted);
   font-size: 18px;
   line-height: 1.6;
 }
 .coordinate-workspace {
-  border: 1px solid #d4ddd2;
+  border: 1px solid var(--line);
   border-radius: 14px;
   overflow: hidden;
   background: white;
@@ -25,8 +25,8 @@
   justify-content: space-between;
   gap: 12px;
   padding: 15px 24px;
-  background: #eaf0e4;
-  color: #3d523b;
+  background: var(--surface-tint);
+  color: var(--muted);
   font-size: 12px;
 }
 .coordinate-body {
@@ -35,7 +35,7 @@
 }
 .coordinate-settings {
   padding: 24px;
-  border-right: 1px solid #e0e6dc;
+  border-right: 1px solid var(--line);
 }
 .coordinate-workspace h2 {
   font-family: inherit;
@@ -52,13 +52,13 @@
   flex: 0 0 27px;
   height: 27px;
   border-radius: 50%;
-  background: #eaf0e4;
-  color: #385436;
+  background: var(--surface-tint);
+  color: var(--muted);
   font-size: 13px;
 }
 .coordinate-help {
   font-size: 12px;
-  color: #5e6e60;
+  color: var(--muted);
   line-height: 1.65;
   margin: 10px 0 18px;
 }
@@ -72,7 +72,7 @@
   min-width: 0;
 }
 .coordinate-details {
-  border-top: 1px solid #dfe5da;
+  border-top: 1px solid var(--line);
   padding: 15px 0;
 }
 .coordinate-details summary {
@@ -97,7 +97,7 @@
 .coordinate-preview {
   padding: 24px;
   min-width: 0;
-  background: #f4f6f0;
+  background: var(--surface-tint);
 }
 .coordinate-preview-heading {
   display: flex;
@@ -108,14 +108,14 @@
 }
 .coordinate-preview-heading > span {
   font-size: 12px;
-  color: #5a6c56;
+  color: var(--muted);
   margin-bottom: 16px;
 }
 .coordinate-drawing {
   max-width: 720px;
   margin: 0 auto 16px;
   background: white;
-  border: 1px solid #dfe5da;
+  border: 1px solid var(--line);
   border-radius: 6px;
   overflow: hidden;
 }
@@ -137,17 +137,17 @@
 .coordinate-data caption {
   text-align: left;
   padding: 10px 0;
-  color: #526254;
+  color: var(--muted);
 }
 .coordinate-data th,
 .coordinate-data td {
   text-align: left;
   padding: 8px 12px;
-  border-bottom: 1px solid #dfe5da;
+  border-bottom: 1px solid var(--line);
 }
 .coordinate-error {
   padding: 35px 24px;
-  background: #fff3ea;
+  background: var(--surface-tint);
   min-height: 300px;
 }
 .coordinate-error p {
@@ -158,12 +158,12 @@
   grid-template-columns: 1fr 1fr;
   gap: 40px;
   padding: 28px;
-  border-top: 1px solid #dfe5da;
+  border-top: 1px solid var(--line);
 }
 .coordinate-download > div > p {
   font-size: 14px;
   line-height: 1.7;
-  color: #526254;
+  color: var(--muted);
 }
 .coordinate-download-controls {
   max-width: 450px;
@@ -178,14 +178,14 @@
   margin: 30px 0;
 }
 .coordinate-activities article {
-  border: 1px solid #d9e2d5;
+  border: 1px solid var(--line);
   border-radius: 12px;
   padding: 24px;
   background: white;
 }
 .coordinate-activities p {
   line-height: 1.7;
-  color: #526254;
+  color: var(--muted);
   font-size: 14px;
 }
 .coordinate-activities h3 {
@@ -201,7 +201,7 @@
 .coordinate-worked img {
   width: 100%;
   height: auto;
-  border: 1px solid #d9e2d5;
+  border: 1px solid var(--line);
   border-radius: 12px;
 }
 .coordinate-worked p {
@@ -216,7 +216,7 @@
 }
 .coordinate-reference details {
   padding: 16px 0;
-  border-bottom: 1px solid #d9e2d5;
+  border-bottom: 1px solid var(--line);
 }
 .coordinate-reference summary {
   font-weight: 600;
@@ -225,7 +225,7 @@
 .coordinate-feature {
   margin: 30px 0;
   padding: 28px;
-  background: #eaf0e4;
+  background: var(--surface-tint);
   border-radius: 12px;
 }
 .coordinate-feature h2 {
@@ -255,7 +255,7 @@
   }
   .coordinate-settings {
     border-right: 0;
-    border-bottom: 1px solid #dfe5da;
+    border-bottom: 1px solid var(--line);
     padding: 20px;
   }
   .coordinate-preview {

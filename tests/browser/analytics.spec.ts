@@ -49,7 +49,7 @@ test('production analytics wires bounded events and canonical URLs while exports
   expect(JSON.stringify(received)).not.toMatch(/SECRET|CONFIDENTIAL|Sample A|Cooling/);
   await page.goto('https://www.chartsai.com/examples/dot-plot-fractions/?search=SECRET');
   const exampleDownload = page.waitForEvent('download');
-  await page.locator('.example-downloads').getByRole('link', { name: 'CSV ↓', exact: true }).click();
+  await page.locator('.example-downloads').getByRole('link', { name: 'CSV', exact: true }).click();
   await exampleDownload;
   await expect
     .poll(() =>

@@ -26,15 +26,15 @@ const { items = examples } = Astro.props;
         </a>
         <div class="showcase-card-copy">
           <>
-            <span class="eyebrow">
-              {e.spec.kind === 'dot' ? 'DOT PLOT' : e.spec.kind === 'line' ? 'LINE GRAPH' : 'RADAR CHART'} ·
-              WORKED EXAMPLE
-            </span>
-            <h3>
-              <a href={`/examples/${e.slug}/`}>
-                {e.title} <span aria-hidden="true">↗</span>
-              </a>
-            </h3>
+            <>
+              <h3>
+                <a href={`/examples/${e.slug}/`}>{e.title}</a>
+              </h3>
+              <span class="example-meta">
+                {e.spec.kind === 'dot' ? 'Dot plot' : e.spec.kind === 'line' ? 'Line graph' : 'Radar chart'} ·
+                Worked example
+              </span>
+            </>
             <p>{e.answer}</p>
             <span class="showcase-card-note">Editable chart + original data</span>
           </>

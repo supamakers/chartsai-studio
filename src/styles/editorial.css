@@ -7,7 +7,7 @@
   gap: 16px;
   justify-content: space-between;
   padding: 16px 24px;
-  border-bottom: 1px solid var(--line, #dedfd7);
+  border-bottom: 1px solid var(--line, var(--line));
   font-size: 13px;
 }
 .editorial-workspace .dot-design h3 {
@@ -26,11 +26,11 @@
 .publication-origin {
   font-size: 13px;
   margin: 8px 0 20px;
-  color: #546056;
+  color: var(--muted);
 }
 .publication-annotations,
 .publication-data {
-  border-top: 1px solid #d9ddd4;
+  border-top: 1px solid var(--line);
   padding: 20px 0;
 }
 .publication-annotations summary,
@@ -48,7 +48,7 @@
 .publication-annotations fieldset {
   padding: 16px;
   margin: 16px 0;
-  border: 1px solid #cbd2c6;
+  border: 1px solid var(--line);
   border-radius: 8px;
 }
 .publication-annotations fieldset .field {
@@ -56,7 +56,7 @@
 }
 .publication-download {
   padding: 24px 0;
-  border-top: 1px solid #d9ddd4;
+  border-top: 1px solid var(--line);
 }
 .publication-download .export-controls {
   display: flex;
@@ -96,7 +96,7 @@
   width: 100%;
   height: auto;
   display: block;
-  border: 1px solid #d9ddd4;
+  border: 1px solid var(--line);
 }
 .editorial-figure figcaption {
   font-size: 14px;
@@ -127,7 +127,7 @@
 .publication-entry {
   margin: 16px 0 24px;
   padding: 20px;
-  border: 1px solid #cbd2c6;
+  border: 1px solid var(--line);
   border-radius: 12px;
 }
 .publication-entry p {

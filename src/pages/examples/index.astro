@@ -27,7 +27,7 @@ const schema = [
   schema={schema}
 >
   <section class="container example-intro">
-    <span class="eyebrow">THE EXAMPLE LIBRARY</span><h1>
+    <h1>
       A good chart starts<br />with a <em>clear question.</em>
     </h1><p>
       {total} finished charts. The data behind every point. See how each one works, then make it your own.
@@ -40,11 +40,11 @@ const schema = [
       {
         groups.map((g) => (
           <a href={`/examples/${g.slug}/`}>
-            {g.name} <span>{g.examples.length} ↗</span>
+            {g.name} <span>{g.examples.length}</span>
           </a>
         ))
       }
-      {Object.values(statFamilies).map((f) => <a href={`/examples/${f.hub}/`}>{f.name} examples ↗</a>)}
+      {Object.values(statFamilies).map((f) => <a href={`/examples/${f.hub}/`}>{f.name} examples</a>)}
     </div>
     <div class="example-filters" hidden>
       <label for="example-search"

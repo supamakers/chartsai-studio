@@ -1,10 +1,10 @@
 .worksheet-workbench {
   display: grid;
   grid-template-columns: 310px minmax(0, 1fr);
-  border: 1px solid var(--line, #dce2d8);
+  border: 1px solid var(--line, var(--line));
   border-radius: 20px;
   overflow: hidden;
-  background: #f2f5ef;
+  background: var(--surface-tint);
   scroll-margin-top: 30px;
 }
 .worksheet-controls {
@@ -35,11 +35,11 @@
 .worksheet-controls select {
   width: 100%;
   min-height: 44px;
-  border: 1px solid #bdc9bd;
+  border: 1px solid var(--line);
   border-radius: 8px;
   padding: 10px;
   background: white;
-  color: #243c32;
+  color: var(--ink);
   font: inherit;
 }
 .worksheet-control-row {
@@ -81,7 +81,7 @@
 }
 .worksheet-small {
   font-size: 12px !important;
-  color: #526254;
+  color: var(--muted);
   overflow-wrap: anywhere;
   line-height: 1.6;
 }
@@ -92,14 +92,14 @@
 }
 .worksheet-pagination button {
   padding: 10px 14px;
-  border: 1px solid #bdc9bd;
+  border: 1px solid var(--line);
   border-radius: 7px;
   background: white;
   font: inherit;
   cursor: pointer;
 }
 .worksheet-pagination [aria-current] {
-  background: #243c32;
+  background: var(--home-blue);
   color: white;
 }
 .worksheet-text-button {
@@ -127,7 +127,7 @@
 }
 .worksheet-pack {
   padding: 24px;
-  border: 1px solid #dce2d8;
+  border: 1px solid var(--line);
   border-radius: 16px;
   background: white;
   min-width: 0;
@@ -135,7 +135,7 @@
 .worksheet-pack img {
   width: 100%;
   height: auto;
-  border: 1px solid #e6e9e1;
+  border: 1px solid var(--line);
   margin-bottom: 20px;
 }
 .worksheet-pack h3 {
@@ -157,7 +157,7 @@
 .worksheet-callout {
   padding: 24px;
   border-radius: 12px;
-  background: #edf3e6;
+  background: var(--surface-tint);
   margin: 24px 0;
 }
 .worksheet-workbench button:focus-visible,

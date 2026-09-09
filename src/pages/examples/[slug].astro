@@ -108,17 +108,17 @@ if (e) {
     </nav>
   </div>
   <section class="container example-intro example-detail-intro">
-    <span class="eyebrow">{e ? 'THE CHART, THE DATA, THE EXPLANATION' : 'EXPLORE THE COLLECTION'}</span><h1>
+    <h1>
       {title}
     </h1><p>{answer}</p>{
       e && (
         <div class="example-actions">
           <>
             <a class="button" href={`${parent!.tool}?showcase=${e.slug}#editor`}>
-              Edit this chart <span aria-hidden="true">↗</span>
+              Edit this chart
             </a>
             <a class="text-link" href="#data">
-              Inspect the data ↓
+              Inspect the data
             </a>
           </>
         </div>
@@ -149,7 +149,7 @@ if (e) {
               <span>Take the example</span>
               {['svg', 'png', 'csv', 'json'].map((format) => (
                 <a href={`${asset}.${format}`} download data-showcase-download={e.slug} data-format={format}>
-                  {format === 'json' ? 'ECharts JSON' : format.toUpperCase()} ↓
+                  {format === 'json' ? 'ECharts JSON' : format.toUpperCase()}
                 </a>
               ))}
             </div>
@@ -177,7 +177,7 @@ if (e) {
                       : e.spec.kind === 'line'
                         ? 'line graph'
                         : 'radar chart'}{' '}
-                    maker →
+                    maker
                   </a>{' '}
                   Replace the data, inspect the preview and download your version. SVG, PNG and PDF exports
                   are available in the editor.
@@ -210,7 +210,7 @@ if (e) {
           </article>
           <aside id="data" class="example-data">
             <>
-              <span class="eyebrow">EVERY PLOTTED VALUE</span>
+
               <h2>The original data</h2>
               <p>Fictional observations or ratings, created for this worked example.</p>
               <div class="table-scroll">
@@ -241,7 +241,7 @@ if (e) {
                 data-format="csv"
                 class="text-link"
               >
-                Download this CSV ↓
+                Download this CSV
               </a>
               <p class="fine-print">
                 {e.spec.kind === 'dot'
@@ -260,7 +260,7 @@ if (e) {
               <>
                 <h2>Keep exploring</h2>
                 <a href={`/examples/${parent!.slug}/`} class="text-link">
-                  All {parent!.name.toLowerCase()} →
+                  All {parent!.name.toLowerCase()}
                 </a>
               </>
             </div>
@@ -284,11 +284,11 @@ if (e) {
             <p>
               <a class="button" href={g!.tool}>
                 Open the free{' '}
-                {g!.kind === 'line' ? 'line graph' : g!.kind === 'dot' ? 'dot plot' : 'radar chart'} maker ↗
+                {g!.kind === 'line' ? 'line graph' : g!.kind === 'dot' ? 'dot plot' : 'radar chart'} maker
               </a>
             </p>
             <p>
-              <a href="/examples/">Browse all 50 chart examples →</a>
+              <a href="/examples/">Browse all 50 chart examples</a>
             </p>
           </section>
         </>

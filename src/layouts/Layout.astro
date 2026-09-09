@@ -2,12 +2,15 @@
 import Analytics from '../components/Analytics.astro';
 import '../styles/global.css';
 import '../styles/studio.css';
+import '../styles/brand.css';
+import '@fontsource/anton/400.css';
+import '@fontsource/barlow-condensed/400.css';
+import '@fontsource/barlow-condensed/500.css';
+import '@fontsource/barlow-condensed/600.css';
 import '@fontsource/dm-sans/400.css';
 import '@fontsource/dm-sans/500.css';
 import '@fontsource/dm-sans/600.css';
 import '@fontsource/dm-sans/700.css';
-import '@fontsource/instrument-serif/400.css';
-import '@fontsource/instrument-serif/400-italic.css';
 interface Props {
   title: string;
   description: string;
@@ -75,7 +78,7 @@ const graph = [
       href={canonical}
     />
     <meta name="robots" content={noindex ? 'noindex,follow' : 'index,follow,max-image-preview:large'} />
-    <meta name="theme-color" content="#f7f7ef" /><link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#f8f2df" /><link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta property="og:type" content="website" /><meta property="og:site_name" content="ChartsAI" /><meta
       property="og:title"
       content={title}
@@ -106,64 +109,41 @@ const graph = [
     />
     <Analytics />
   </head>
-  <body class:list={{ 'home-page': path === '/' }}>
+  <body class:list={['site-brand', { 'home-page': path === '/' }]}>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="container header-inner">
         <a href="/" class="brand" aria-label="ChartsAI home"
-          ><svg viewBox="0 0 31 31" width="30" height="30" aria-hidden="true"
-            ><rect width="31" height="31" rx="9" fill="#263b34"></rect><path
-              d="M8 21V16M15.5 21V9M23 21V12"
-              stroke="#d9ebaa"
-              stroke-width="3"
-              stroke-linecap="round"></path></svg
           ><span>charts<span class="brand-ai">ai</span><span class="brand-dot">.</span></span></a
         >
-        {
-          path === '/' ? (
-            <nav aria-label="Main navigation">
-              <>
-                <a href="/charts/">Charts</a>
-                <a href="/math-tools/">Math tools</a>
-                <a href="/printables/">Printables</a>
-                <a href="/examples/">Examples</a>
-              </>
-            </nav>
-          ) : (
-            <nav aria-label="Main navigation">
-              <>
-                <a
-                  href="/charts/"
-                  aria-current={path.includes('maker') || path === '/charts/' ? 'page' : undefined}
-                >
-                  Chart makers
-                </a>
-                <a href="/examples/" aria-current={path.startsWith('/examples/') ? 'page' : undefined}>
-                  Examples
-                </a>
-                <a href="/printables/" aria-current={path.includes('printables') ? 'page' : undefined}>
-                  Printables
-                </a>
-                <a
-                  href="/math-tools/"
-                  aria-current={
-                    path === '/math-tools/' || /calculator|number-line|coordinate-plane/.test(path)
-                      ? 'page'
-                      : undefined
-                  }
-                >
-                  Math tools
-                </a>
-                <a href="/about/" aria-current={path === '/about/' ? 'page' : undefined}>
-                  Our approach
-                </a>
-              </>
-            </nav>
-          )
-        }
-        <a class="header-maker" href="https://www.supamakers.com/"
-          >Built by <strong>SupaMakers{path === '/' ? '' : ' ↗'}</strong></a
-        >
+        <nav aria-label="Main navigation">
+          <a
+            href="/charts/"
+            aria-current={path === '/charts/' || /plot-maker|graph-maker|chart-maker/.test(path)
+              ? 'page'
+              : undefined}>Charts</a
+          >
+          <a
+            href="/math-tools/"
+            aria-current={path === '/math-tools/' ||
+            /calculator|number-line-generator|coordinate-plane/.test(path)
+              ? 'page'
+              : undefined}>Math tools</a
+          >
+          <a
+            href="/printables/"
+            aria-current={path.startsWith('/printables/') || path === '/number-line-worksheets/'
+              ? 'page'
+              : undefined}>Printables</a
+          >
+          <a
+            href="/examples/"
+            aria-current={path.startsWith('/examples/') || path.startsWith('/editorial-charts/')
+              ? 'page'
+              : undefined}>Examples</a
+          >
+        </nav>
+        <a class="header-maker" href="https://www.supamakers.com/">by <strong>SupaMakers</strong></a>
       </div>
     </header>
     <main id="main"><slot /></main>
@@ -177,7 +157,7 @@ const graph = [
               Free chart makers, math tools<br />& printable resources.
             </p>
           </div><div>
-            <span class="footer-label">MAKE SOMETHING</span><a href="/charts/">All chart makers</a><a
+            <h2 class="footer-heading">Make something</h2><a href="/charts/">All chart makers</a><a
               href="/dot-plot-maker/">Dot plot maker</a
             ><a href="/radar-chart-maker/">Radar chart maker</a><a href="/line-graph-maker/"
               >Line graph maker</a
@@ -185,14 +165,14 @@ const graph = [
               >Free math tools & worksheets</a
             >
           </div><div>
-            <span class="footer-label">THE DETAILS</span><a href="/guides/">Chart guides</a><a
-              href="/datasets/">Public datasets</a
+            <h2 class="footer-heading">Explore</h2><a href="/guides/">Chart guides</a><a href="/datasets/"
+              >Public datasets</a
             ><a href="/about/">About & methodology</a><a href="/source/">Source code & reuse</a><a
               href="/privacy/">Privacy</a
-            ><a href="mailto:support@chartsai.com">Send feedback ↗</a>
+            ><a href="mailto:support@chartsai.com">Send feedback</a>
           </div><div class="footer-credit">
-            <span class="footer-label">MADE WITH INTENTION</span><p>
-              Designed and built by<br /><a href="https://www.supamakers.com/">SupaMakers ↗</a>
+            <h2 class="footer-heading">SupaMakers</h2><p>
+              Designed and built by<br /><a href="https://www.supamakers.com/">SupaMakers</a>
             </p><span class="fine-print">Free to use. Open to build on.</span>
           </div>
         </div><div class="footer-bottom">

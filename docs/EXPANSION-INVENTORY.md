@@ -6,7 +6,7 @@ The editorial duplicate check compares five-word phrase containment, excluding s
 
 | Resource | Type | Original editorial words | Highest phrase overlap |
 |---|---|---:|---:|
-| [/number-line-worksheets/](https://www.chartsai.com/number-line-worksheets/) | worksheet-tool | 900 | 0.1% |
+| [/number-line-worksheets/](https://www.chartsai.com/number-line-worksheets/) | worksheet-tool | 882 | 0.1% |
 | [/number-line-generator/](https://www.chartsai.com/number-line-generator/) | math-tool | 356 | 0.6% |
 | [/slope-calculator/](https://www.chartsai.com/slope-calculator/) | math-tool | 369 | 0.0% |
 | [/geometry-transformation-calculator/](https://www.chartsai.com/geometry-transformation-calculator/) | math-tool | 407 | 0.5% |

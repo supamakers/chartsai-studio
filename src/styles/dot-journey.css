@@ -4,9 +4,9 @@
   justify-content: space-between;
   gap: 12px;
   padding: 14px 24px;
-  background: #edf1e7;
+  background: var(--surface-tint);
   font-size: 12px;
-  color: #44523d;
+  color: var(--muted);
 }
 .dot-journey .workspace-body {
   grid-template-columns: 350px minmax(0, 1fr);
@@ -25,8 +25,8 @@
   flex: 0 0 26px;
   height: 26px;
   border-radius: 50%;
-  background: #e5eddc;
-  color: #374a2f;
+  background: var(--surface-tint);
+  color: var(--muted);
   font-size: 13px;
   font-weight: 600;
 }
@@ -41,9 +41,9 @@
   margin: 12px 0 18px;
 }
 .dot-dropzone {
-  border: 1.5px dashed #789267;
+  border: 1.5px dashed var(--line);
   border-radius: 9px;
-  background: #f1f6e9;
+  background: var(--surface-tint);
   padding: 18px 12px;
   text-align: center;
 }
@@ -55,7 +55,7 @@
   gap: 7px;
   border: 0;
   background: none;
-  color: #263d24;
+  color: var(--ink);
   cursor: pointer;
   padding: 4px 0 10px;
 }
@@ -65,7 +65,7 @@
 .dot-upload span,
 .dot-dropzone > span {
   font-size: 12px;
-  color: #51634a;
+  color: var(--muted);
 }
 .dot-paste {
   width: 100%;
@@ -78,7 +78,7 @@
   margin: 10px 0 20px;
 }
 .dot-example-choice {
-  border-top: 1px solid #dce2d5;
+  border-top: 1px solid var(--line);
   padding-top: 18px;
 }
 .dot-example-choice .field {
@@ -116,15 +116,15 @@
 .dot-data-badge {
   display: inline-block;
   margin-top: 12px;
-  background: #f5eedf;
+  background: var(--surface-tint);
   color: #6a4c1c;
   border-radius: 4px;
   padding: 4px 8px;
   font-size: 11px;
 }
 .dot-data-badge.is-custom {
-  background: #e8f0e1;
-  color: #35542a;
+  background: var(--surface-tint);
+  color: var(--muted);
 }
 .dot-journey .chart-stage {
   padding: 16px;
@@ -135,7 +135,7 @@
   align-items: center;
   gap: 20px;
   padding: 22px 24px;
-  border-top: 1px solid #dce2d5;
+  border-top: 1px solid var(--line);
 }
 .dot-download-step p {
   font-size: 12px;
@@ -180,7 +180,7 @@
   cursor: pointer;
   font-size: 13px;
   padding: 8px 0;
-  color: #415b36;
+  color: var(--muted);
 }
 .import-advanced .mapping-grid {
   margin-top: 14px;
@@ -193,8 +193,8 @@
 }
 .dot-import-ready {
   padding: 14px;
-  background: #eff5e8;
-  color: #35502e;
+  background: var(--surface-tint);
+  color: var(--muted);
   font-size: 14px;
   border-radius: 6px;
 }
@@ -294,7 +294,7 @@
 .dot-preview-heading .canvas-status {
   font-size: 11px;
   letter-spacing: 0;
-  color: #586650;
+  color: var(--muted);
 }
 .dot-journey .chart-stage > .echart-view {
   max-width: 660px;
@@ -318,7 +318,7 @@
   position: sticky;
   bottom: -24px;
   padding: 12px 0 20px;
-  background: #f8f9f6;
+  background: var(--surface-tint);
   z-index: 1;
 }
 .dot-import-modal .dot-import-confirm > .button {
@@ -332,7 +332,7 @@
 /* Shared by all eight makers; specialized controls remain optional. */
 .dot-journey .stat-controls {
   display: block;
-  background: #fcfdfa;
+  background: var(--surface-tint);
 }
 .dot-journey .stat-preview {
   padding: 0;
@@ -373,7 +373,7 @@
   width: 100%;
   min-height: 42px;
   padding: 10px;
-  border: 1px solid #cdd6c5;
+  border: 1px solid var(--line);
   border-radius: 6px;
 }
 @media (max-width: 760px) {

@@ -1,5 +1,5 @@
 .stat-editor {
-  border: 1px solid #dce2d5;
+  border: 1px solid var(--line);
   border-radius: 16px;
   background: #fff;
   overflow: hidden;
@@ -8,7 +8,7 @@
 }
 .stat-editor-heading {
   padding: 22px 26px;
-  border-bottom: 1px solid #dce2d5;
+  border-bottom: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   gap: 20px;
@@ -20,8 +20,8 @@
 }
 .stat-controls {
   padding: 24px;
-  background: #f1f3ed;
-  border-right: 1px solid #dce2d5;
+  background: var(--surface-tint);
+  border-right: 1px solid var(--line);
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -42,7 +42,7 @@
   width: 100%;
   min-width: 0;
   padding: 9px;
-  border: 1px solid #cdd6c5;
+  border: 1px solid var(--line);
   border-radius: 6px;
   background: white;
 }
@@ -83,7 +83,7 @@
   position: absolute;
   inset: 20px;
   padding: 20px;
-  background: #fff4ed;
+  background: var(--surface-tint);
   display: grid;
   place-items: center;
   color: #8a3d24;
@@ -103,7 +103,7 @@
 .stat-download select {
   min-height: 42px;
   padding: 10px;
-  border: 1px solid #cdd6c5;
+  border: 1px solid var(--line);
   border-radius: 6px;
 }
 .stat-status {
@@ -127,7 +127,7 @@
 }
 .stat-summary th,
 .stat-summary td {
-  border-bottom: 1px solid #dce2d5;
+  border-bottom: 1px solid var(--line);
   padding: 10px;
   text-align: left;
   white-space: nowrap;
@@ -135,7 +135,7 @@
 .stat-summary thead {
   position: sticky;
   top: 0;
-  background: #f1f3ed;
+  background: var(--surface-tint);
 }
 .stat-methods {
   display: grid;
@@ -144,7 +144,7 @@
   margin: 35px 0;
 }
 .stat-methods article {
-  border-top: 1px solid #dce2d5;
+  border-top: 1px solid var(--line);
   padding-top: 20px;
 }
 .stat-methods p {
@@ -163,7 +163,7 @@
 .resource-label {
   font-size: 12px;
   line-height: 1.6;
-  color: #5c6b55;
+  color: var(--muted);
 }
 .guide-figure {
   margin: 24px 0;
@@ -186,7 +186,7 @@
 }
 .guide-toc a {
   padding: 9px 12px;
-  background: #eef1e8;
+  background: var(--surface-tint);
   border-radius: 6px;
   font-size: 13px;
 }
@@ -232,7 +232,7 @@
 .guide-body td {
   text-align: left;
   padding: 12px;
-  border-bottom: 1px solid #dce2d5;
+  border-bottom: 1px solid var(--line);
   vertical-align: top;
 }
 .guide-body li {
@@ -241,7 +241,7 @@
 }
 .guide-body pre {
   overflow: auto;
-  background: #eef1e8;
+  background: var(--surface-tint);
   padding: 20px;
 }
 .stat-body {
@@ -265,7 +265,7 @@
   }
   .stat-controls {
     border-right: 0;
-    border-top: 1px solid #dce2d5;
+    border-top: 1px solid var(--line);
   }
   .stat-methods,
   .dataset-grid {

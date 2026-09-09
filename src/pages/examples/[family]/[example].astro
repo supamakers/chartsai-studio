@@ -72,12 +72,12 @@ const schema = [
     </nav>
   </div>
   <section class="container example-intro example-detail-intro">
-    <span class="eyebrow">ORIGINAL WORKED EXAMPLE</span><h1>{e.title}</h1><p>{e.answer}</p><div
+    <h1>{e.title}</h1><p>{e.answer}</p><div
       class="example-actions"
     >
-      <a class="button" href={`/${e.family.tool}/?example=${e.id}#editor`}>Edit this chart ↗</a><a
+      <a class="button" href={`/${e.family.tool}/?example=${e.id}#editor`}>Edit this chart</a><a
         href="#data"
-        class="text-link">Inspect the data ↓</a>
+        class="text-link">Inspect the data</a>
     </div>
   </section>
   <section class="container example-output">
@@ -93,7 +93,7 @@ const schema = [
       <span>Take the example</span>{
         ['svg', 'png', 'csv', 'json'].map((f) => (
           <a href={`${asset}.${f}`} download>
-            {f === 'json' ? 'ECharts JSON' : f.toUpperCase()} ↓
+            {f === 'json' ? 'ECharts JSON' : f.toUpperCase()}
           </a>
         ))
       }
@@ -134,7 +134,7 @@ const schema = [
               ))
             }</tbody>
         </table>
-      </div><a href={`${asset}.csv`} download class="text-link">Download original CSV ↓</a><h2>
+      </div><a href={`${asset}.csv`} download class="text-link">Download original CSV</a><h2>
         Calculated values
       </h2><div class="table-scroll">
         <table>

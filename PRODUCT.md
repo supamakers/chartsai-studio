@@ -28,7 +28,7 @@ Eleven statistical and editorial chart makers, including dumbbell, slopegraph an
 
 ## Brand Commitments
 
-ChartsAI is made by SupaMakers. Keep truthful attribution and a useful link to SupaMakers. The user requested a homepage redesign using Impeccable to reflect the product expansion; no new logo or sitewide rebrand has been requested.
+ChartsAI is made by SupaMakers. Keep truthful attribution and a useful link to SupaMakers. The user requested a homepage redesign using Impeccable to reflect the product expansion; on September 9, 2026 the user requested a consistent visual identity across all pages. Extend the approved homepage identity to the shared navigation, resource pages and tool interfaces.
 
 ## Evidence on Hand
 
