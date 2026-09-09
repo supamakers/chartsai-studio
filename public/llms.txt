@@ -56,3 +56,8 @@
 - [Life expectancy example](https://www.chartsai.com/editorial-charts/life-expectancy/): Pinned World Bank data, 2000–2023; four views, selection, precision and limits.
 - [Temperature example](https://www.chartsai.com/editorial-charts/temperature-record/): NASA GISTEMP annual anomalies, 1960–2025, stated baseline and scientific citation.
 - [Publishing guide](https://www.chartsai.com/editorial-charts/publishing-guide/): Formats, accessibility and a local dated-line handoff to AnimCharts.
+
+## Editable editorial examples
+- [Dumbbell chart examples](https://www.chartsai.com/editorial-charts/dumbbell-examples/): Four paired-comparison templates with data and limitations.
+- [Slopegraph examples](https://www.chartsai.com/editorial-charts/slopegraph-examples/): Four endpoint comparisons including changes in ordering.
+- [Small multiples examples](https://www.chartsai.com/editorial-charts/small-multiples-examples/): Four shared-scale line-panel templates.

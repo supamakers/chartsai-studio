@@ -1,0 +1,192 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { editorialCollections } from '../../data/editorial-collections';
+import { templatesFor } from '../../data/editorial-templates';
+import {
+  templateCollectionPath,
+  templateEditorPath,
+  type TemplateKind,
+} from '../../lib/editorial-template-ids';
+import { publicationFrames } from '../../lib/editorial';
+import { editorialRoutes } from '../../data/editorial-examples';
+import '../../styles/editorial.css';
+export function getStaticPaths() {
+  return Object.keys(editorialCollections).map((kind) => ({
+    params: { collection: `${kind}-examples` },
+    props: { kind },
+  }));
+}
+const { kind } = Astro.props as { kind: TemplateKind };
+const collection = editorialCollections[kind],
+  examples = templatesFor(kind);
+const schema = [
+  { '@type': 'CollectionPage', name: collection.name, isAccessibleForFree: true },
+  {
+    '@type': 'ItemList',
+    itemListElement: examples.map((t, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: t.name,
+      url: `https://www.chartsai.com${templateCollectionPath(kind)}#${t.id}`,
+    })),
+  },
+];
+---
+
+<Layout
+  title={`${collection.name} with Data & Free Templates | ChartsAI`}
+  description={`Explore four ${collection.name.toLowerCase()} with source CSV, editable projects, SVG, PNG and PDF downloads. Understand the comparison, replace the data and keep the design.`}
+  schema={schema}
+  dateModified="2026-09-09"
+>
+  <section class="container tool-intro template-intro">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>/</span><a href="/editorial-charts/">Editorial charts</a><span>/</span><span
+        >{collection.name}</span>
+    </nav>
+    <h1>{collection.name}<span class="title-dot">.</span></h1><p>{collection.answer}</p>
+    <ol class="template-steps">
+      <li>Choose a finished visual</li><li>Replace the data, keep the design</li><li>Download your chart</li>
+    </ol>
+    <nav class="template-jump-links" aria-label="Examples on this page">
+      {examples.map((t) => <a href={`#${t.id}`}>{t.name}</a>)}
+    </nav>
+  </section>
+  <div class="container editorial-resource template-library">
+    {
+      examples.map((t, index) => {
+        const f = publicationFrames[t.project.frame];
+        return (
+          <article class="template-example" id={t.id}>
+            <div class="template-figure">
+              <a
+                href={templateEditorPath(t.id)}
+                data-template={t.id}
+                aria-label={`Use this chart: ${t.name}`}
+              >
+                <img
+                  src={`/editorial/templates/${t.id}.svg`}
+                  width={f.width}
+                  height={f.height}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  alt={`${t.name}. ${t.reading}`}
+                />
+              </a>
+              <p class="template-provenance">
+                {t.provenance} ·{' '}
+                {t.provenance === 'World Bank data' ? 'CC BY 4.0' : 'Original SupaMakers example · CC0'}
+              </p>
+              <details class="template-table">
+                <>
+                  <summary>View source data · {t.project.table.length - 1} rows</summary>
+                  <div class="table-scroll">
+                    <table>
+                      <>
+                        <caption>
+                          {t.name} — {t.project.unit}
+                        </caption>
+                        <thead>
+                          <tr>
+                            {t.project.table[0].map((cell) => (
+                              <th scope="col">{cell}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {t.project.table.slice(1).map((row) => (
+                            <tr>
+                              {row.map((cell, i) =>
+                                i === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>,
+                              )}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </>
+                    </table>
+                  </div>
+                </>
+              </details>
+            </div>
+            <div class="template-explanation">
+              <>
+                <h2>{t.name}</h2>
+                <p class="template-question">{t.question}</p>
+                <p>{t.reading}</p>
+                <p>
+                  <strong>Before you publish:</strong> {t.caution}
+                </p>
+              </>
+              <a class="button" href={templateEditorPath(t.id)} data-template={t.id}>
+                Use this chart
+              </a>
+              <p class="template-reuse">
+                Opens this exact design and data in the maker. Upload or paste replacements; review the units
+                and write your own headline.
+              </p>
+              <ul class="template-downloads" aria-label={`Downloads for ${t.name}`}>
+                {(
+                  [
+                    ['json', 'Editable project'],
+                    ['csv', 'Source CSV'],
+                    ['svg', 'SVG'],
+                    ['png', 'PNG'],
+                    ['pdf', 'PDF'],
+                  ] as const
+                ).map(([ext, label]) => (
+                  <li>
+                    <a href={`/editorial/templates/${t.id}.${ext}`} download>
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              {t.provenance === 'World Bank data' ? (
+                <p>
+                  Read the{' '}
+                  <a href="/editorial-charts/life-expectancy/">source, selection and full annual series</a>.
+                  Values were retained from the September 9, 2026 retrieval.
+                </p>
+              ) : (
+                <p>
+                  All values in this example are invented for teaching. They are not research findings, actual
+                  organizations or reported performance.
+                </p>
+              )}
+            </div>
+          </article>
+        );
+      })
+    }
+    <section class="template-method">
+      <h2>When this chart works</h2><p>{collection.use}</p><h2>How to read the comparison</h2><p>
+        {collection.read}
+      </p><h2>When to choose another chart</h2><p>{collection.avoid}</p><h2>
+        Replace the data without rebuilding the design
+      </h2><p>{collection.input}</p><p>
+        Choose “Use this chart”, upload CSV or Excel or paste spreadsheet cells, and explicitly select the
+        columns. The palette, canvas, decimal preference and label settings remain. Unchanged sample
+        headlines, sources, units and notes are cleared when you apply replacement data; write the context for
+        your own observations. Custom text you have entered is preserved. Review the result before
+        downloading.
+      </p><p>
+        Data processing and exports happen in your browser. Download a project to keep an editable copy. SVG
+        is vector; PNG has the selected pixel dimensions; PDF contains a raster rendering. No account or
+        payment is needed.
+      </p><h2>{collection.question}</h2><p>{collection.response}</p><h2>Explore another comparison</h2><ul>
+        {
+          (Object.keys(editorialCollections) as TemplateKind[])
+            .filter((k) => k !== kind)
+            .map((k) => (
+              <li>
+                <a href={templateCollectionPath(k)}>{editorialCollections[k].name}</a>
+              </li>
+            ))
+        }
+      </ul><p>
+        <a href={editorialRoutes[kind]}>Open the maker</a> · <a href="/editorial-charts/publishing-guide/"
+          >Publishing and accessibility guide</a
+        > · <a href="/source/">Source code</a>
+      </p><p>Made by <a href="https://www.supamakers.com/">SupaMakers</a>. Reviewed September 9, 2026.</p>
+    </section>
+  </div>
+</Layout>

@@ -11,7 +11,7 @@ import { mathKinds, mathPaths } from '../src/lib/math-tools';
 import guides from '../src/data/guides.json' with { type: 'json' };
 const sitemap = await readFile('dist/sitemap-0.xml', 'utf8');
 const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
-assert.equal(urls.length, 116);
+assert.equal(urls.length, 119);
 const worksheetHtml = await readFile('dist/number-line-worksheets/index.html', 'utf8');
 const worksheetEditorial = worksheetHtml
   .slice(worksheetHtml.indexOf('From a topic'), worksheetHtml.lastIndexOf('Original worksheets'))

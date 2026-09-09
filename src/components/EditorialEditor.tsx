@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowDownToLine, FolderOpen, Plus, X } from 'lucide-react';
+import { templatesFor, templateById } from '../data/editorial-templates';
+import {
+  templateId,
+  templateKinds,
+  templateCollectionPath,
+  type EditorialTemplateId,
+} from '../lib/editorial-template-ids';
 import { editorialExample } from '../data/editorial-examples';
 import {
   animChartsProject,
@@ -34,6 +41,8 @@ export default function EditorialEditor({
   onBack?: () => void;
 }) {
   const initial = initialProject ?? editorialExample(kind);
+  const [selectedTemplate, setSelectedTemplate] = useState<EditorialTemplateId>();
+  const sampleProject = useRef<EditorialProject | null>(initialProject && JSON.stringify(initialProject) !== JSON.stringify(editorialExample(kind)) ? null : initial);
   const [enlarged, setEnlarged] = useState(false);
   const [project, setProject] = useState(initial),
     [raw, setRaw] = useState(csv(initial.table)),
@@ -53,6 +62,29 @@ export default function EditorialEditor({
   const journey = useChartJourney(),
     projectInput = useRef<HTMLInputElement>(null);
   const trackedDesign = useRef(JSON.stringify(initial));
+  function selectExample(id: string, track = true) {
+    const known = templateId(id);
+    if (known && templateKinds[known] !== kind) return;
+    const p = structuredClone(known ? templateById(known).project : editorialExample(kind));
+    sampleProject.current = p;
+    trackedDesign.current = JSON.stringify(p);
+    setProject(p);
+    setRaw(csv(p.table));
+    setActive(known ?? 'source');
+    setSelectedTemplate(known);
+    setError('');
+    setEditing(false);
+    setMessage(
+      known
+        ? `${templateById(known).name} loaded. Replace its data; colors, canvas and label settings stay selected.`
+        : 'Sourced example loaded.',
+    );
+    if (track) emitUsage(kind, known ? 'template' : 'sample', undefined, known);
+  }
+  useEffect(() => {
+    const id = templateId(new URLSearchParams(location.search).get('template'));
+    if (id && templateKinds[id] === kind) selectExample(id, false);
+  }, []);
   const dirty = raw !== csv(project.table);
   let validation = '';
   try {
@@ -71,7 +103,10 @@ export default function EditorialEditor({
           frame.width,
           frame.height,
         );
-        if (!cancelled) { setSvg(next); setRenderedProject(JSON.stringify(project)); }
+        if (!cancelled) {
+          setSvg(next);
+          setRenderedProject(JSON.stringify(project));
+        }
       })
       .catch(() => {
         if (!cancelled) setError('The chart could not render. Reload and try again.');
@@ -91,18 +126,22 @@ export default function EditorialEditor({
             : v,
       ),
     );
-    const sample = editorialExample(kind);
+    const sample = sampleProject.current;
     const next = validateProject({
       ...project,
       table: normalized,
       xMode: settings?.lineMode ?? project.xMode,
       annotations: [],
-      title: project.title === sample.title ? 'Your ' + editorialNames[kind].toLowerCase() : project.title,
-      subtitle: project.subtitle === sample.subtitle ? '' : project.subtitle,
-      source: project.source === sample.source ? '' : project.source,
-      sourceUrl: project.sourceUrl === sample.sourceUrl ? '' : project.sourceUrl,
-      date: project.date === sample.date ? '' : project.date,
-      caption: project.caption === sample.caption ? '' : project.caption,
+      unit: sample && project.unit === sample.unit ? 'Value' : project.unit,
+      title:
+        sample && project.title === sample.title
+          ? 'Your ' + editorialNames[kind].toLowerCase()
+          : project.title,
+      subtitle: sample && project.subtitle === sample.subtitle ? '' : project.subtitle,
+      source: sample && project.source === sample.source ? '' : project.source,
+      sourceUrl: sample && project.sourceUrl === sample.sourceUrl ? '' : project.sourceUrl,
+      date: sample && project.date === sample.date ? '' : project.date,
+      caption: sample && project.caption === sample.caption ? '' : project.caption,
     });
     setProject(next);
     setRaw(csv(next.table));
@@ -125,6 +164,9 @@ export default function EditorialEditor({
       setProject(next);
       setRaw(csv(next.table));
       setActive('custom');
+      setSelectedTemplate(undefined);
+      sampleProject.current = null;
+      trackedDesign.current = JSON.stringify(next);
       setError('');
       setMessage('Project restored with its data, styling, source and annotations.');
       emitUsage(kind, 'project-load');
@@ -181,7 +223,7 @@ export default function EditorialEditor({
           doc.save(`${name}.pdf`);
         }
       }
-      emitUsage(kind, 'export', format);
+      emitUsage(kind, 'export', format, selectedTemplate);
       setMessage('Your file is ready.');
     } catch (e) {
       setError((e as Error).message);
@@ -210,16 +252,9 @@ export default function EditorialEditor({
                 id: 'source',
                 name: kind === 'line' ? 'NASA temperature record' : 'World Bank life expectancy',
               },
+              ...templatesFor(kind).map((t) => ({ id: t.id, name: t.name })),
             ]}
-            onExample={() => {
-              const p = editorialExample(kind);
-              setProject(p);
-              setRaw(csv(p.table));
-              setActive('source');
-              setError('');
-              setMessage('Sourced example loaded. Read its method and selection notes below.');
-              emitUsage(kind, 'sample');
-            }}
+            onExample={(id) => selectExample(id)}
             editing={editing}
             design={design}
             onUpload={(file) => {
@@ -237,6 +272,25 @@ export default function EditorialEditor({
               setEditing(false);
             }}
           />
+          {templatesFor(kind).length > 0 && (
+            <p className="template-import-hint">
+              {selectedTemplate ? (
+                <>
+                  Design from <strong>{templateById(selectedTemplate).name}</strong>. Upload or paste your
+                  data above. The palette, canvas and label settings stay; unchanged sample text and notes are
+                  cleared.
+                </>
+              ) : (
+                <>
+                  Start with a finished visual from the{' '}
+                  <a href={templateCollectionPath(kind as 'dumbbell' | 'slopegraph' | 'small-multiples')}>
+                    example collection
+                  </a>
+                  .
+                </>
+              )}
+            </p>
+          )}
           <button className="text-button project-open" onClick={() => projectInput.current?.click()}>
             <FolderOpen size={16} /> Open saved chart project
           </button>
@@ -395,8 +449,12 @@ export default function EditorialEditor({
         >
           <StepTitle step={2}>Preview your publication chart</StepTitle>
           <p className="publication-origin">
-            {active === 'source' ? 'Sourced example · replace with your own data' : 'Your data'} ·{' '}
-            {project.table.length - 1} rows · {project.table[0].length - 1} series
+            {active === 'source'
+              ? 'Sourced example · replace with your own data'
+              : templateId(active)
+                ? templateById(templateId(active)!).provenance + ' · replace with your own data'
+                : 'Your data'}{' '}
+            · {project.table.length - 1} rows · {project.table[0].length - 1} series
           </p>
           <button
             className="text-button preview-zoom"

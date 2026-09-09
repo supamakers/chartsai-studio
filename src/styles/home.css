@@ -1124,3 +1124,9 @@ body.home-page {
     font-size: 1.106771vw;
   }
 }
+
+.home-template-entry {max-width:70ch;margin:16px 0 32px;}
+.home-template-entry a {text-decoration:underline;text-underline-offset:4px;font-weight:600;}
+
+.home-template-hero {font-size:22px;margin:0 0 18px;}
+.home-template-hero a {text-decoration:underline;text-underline-offset:4px;}

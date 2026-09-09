@@ -33,3 +33,18 @@ for (const kind of editorialKinds) {
 console.log(
   'Editorial checks: seven distinct routes, five complete projects, exact dimensions, safe standalone HTML, accessible tables and sitemap separation.',
 );
+
+const {editorialTemplates} = await import('../src/data/editorial-templates');
+const {templateCollectionPath,templateEditorPath} = await import('../src/lib/editorial-template-ids');
+for (const t of editorialTemplates) {
+ const path=templateCollectionPath(t.project.kind as 'dumbbell'|'slopegraph'|'small-multiples');
+ assert(sitemap.includes(`https://www.chartsai.com${path}`));
+ const html=await readFile(`dist${path}index.html`,'utf8');
+ assert(html.includes(`id="${t.id}"`) && html.includes(templateEditorPath(t.id)));
+ assert(html.includes(t.provenance));
+ assert.deepEqual(parseProject(await readFile(`dist/editorial/templates/${t.id}.json`,'utf8')),t.project);
+ const {parseText}=await import('../src/lib/data');
+ assert.deepEqual(parseText(await readFile(`dist/editorial/templates/${t.id}.csv`,'utf8')),t.project.table);
+ for (const ext of ['svg','png','pdf']) assert((await readFile(`dist/editorial/templates/${t.id}.${ext}`)).length>100);
+}
+console.log('Template checks: 12 exact projects/CSVs, three substantive collections, complete graphics and fixed editor handoffs.');

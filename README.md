@@ -113,3 +113,7 @@ The homepage introduces charts, math tools and printables with real static previ
 Free dumbbell, slopegraph and small-multiples makers join publication mode for existing line/bar charts. Upload or paste, explicitly map columns, add a headline/source/date/caption and data-point notes, then download SVG, PNG, raster PDF, CSV, an editable project or script-free HTML with a data table. A compatible dated line can export a project for AnimCharts; no data is automatically transferred.
 
 Seven new pages bring the sitemap to 116 URLs. The editorial collection includes pinned World Bank and NASA examples with exact retained data, provenance and limitations. See [research](docs/EDITORIAL-RESEARCH-2026-09-09.md) and [measurement](docs/MEASUREMENT.md).
+
+## Editorial templates — v0.12.0
+
+Twelve complete projects across dumbbell, slopegraph and small-multiples collections provide before/after, group-gap, ranking and trend examples. Each includes SVG/PNG/PDF, source CSV, editable JSON and an exact maker handoff. Replacement data keeps the design and clears unchanged sample context. Three templates use World Bank data; nine are visibly fictional teaching examples. The site now has 119 sitemap URLs. Fixed Plausible template IDs distinguish selections and downloads. See [template research and contracts](docs/EDITORIAL-TEMPLATES-2026-09-09.md).

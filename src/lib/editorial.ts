@@ -281,6 +281,7 @@ export function editorialOption(p: EditorialProject, width = 1200, height = 900)
   const markers = (series: string, coord: (row: number, column: number) => any[]) => ({
     symbol: 'circle',
     symbolSize: f(26),
+    symbolOffset: p.kind === 'dumbbell' ? [0, -f(25)] : [0, 0],
     itemStyle: { color: theme.ink },
     label: { color: theme.background, fontSize: f(15), formatter: (item: any) => item.name },
     data: p.annotations.flatMap((a, i) =>
@@ -458,6 +459,7 @@ export function editorialOption(p: EditorialProject, width = 1200, height = 900)
         markPoint: {
           symbol: 'circle',
           symbolSize: f(26),
+    symbolOffset: p.kind === 'dumbbell' ? [0, -f(25)] : [0, 0],
           label: { color: theme.background, formatter: (item: any) => item.name },
           itemStyle: { color: theme.ink },
           data: p.annotations.flatMap((a, i) =>

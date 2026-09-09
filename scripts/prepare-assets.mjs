@@ -1,3 +1,4 @@
+import {editorialTemplates} from '../src/data/editorial-templates.ts';
 import {editorialKinds,editorialOption,publicationFrames,publicationHtml} from '../src/lib/editorial.ts';
 import {editorialExample} from '../src/data/editorial-examples.ts';
 import { packIds, initialWorksheet, worksheetPages, worksheetCsv } from '../src/lib/number-line-worksheets.ts';
@@ -8,6 +9,7 @@ import {datasets,datasetSpec} from '../src/data/datasets.ts';
 import {parseText} from '../src/lib/data.ts';
 import { mkdir, readFile, writeFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
+import { crc32 } from 'node:zlib';
 import sharp from 'sharp';
 import { zipSync } from 'fflate';
 import { dotPresets, radarPresets, linePresets } from '../src/lib/presets.ts';
@@ -149,12 +151,41 @@ for(const kind of editorialKinds){
   await writeFile(`${path}.pdf`,Buffer.from(doc.output('arraybuffer')));
 }
 
+// Embed deterministic origin in a standard PNG text chunk without changing rendered pixels.
+function withChartOrigin(png, origin) {
+  const data = Buffer.from(`impeccable:prompt\0${origin}`, 'utf8');
+  const chunk = Buffer.alloc(data.length + 12);
+  chunk.writeUInt32BE(data.length, 0);
+  chunk.write('tEXt', 4, 'ascii');
+  data.copy(chunk, 8);
+  chunk.writeUInt32BE(crc32(chunk.subarray(4, -4)), chunk.length - 4);
+  return Buffer.concat([png.subarray(0, -12), chunk, png.subarray(-12)]);
+}
+
+// Full-size reusable editorial templates; all assets use the same validated native options.
+await mkdir('public/editorial/templates', {recursive:true});
+for (const t of editorialTemplates) {
+  const p=t.project, {width,height}=publicationFrames[p.frame];
+  const svg=renderOptionSvg(editorialOption(p,width,height),width,height);
+  const base=`public/editorial/templates/${t.id}`;
+  const origin = `Origin: deterministic Apache ECharts render from src/data/editorial-templates.ts, template ${t.id}; ${t.provenance}; source: ${p.source}; ${p.sourceUrl || 'original fictional data dedicated to CC0'}. Rendered by scripts/prepare-assets.mjs. No generative image model used.`;
+  const png=withChartOrigin(await sharp(Buffer.from(svg)).png().toBuffer(), origin);
+  await writeFile(`${base}.svg`,svg);
+  await writeFile(`${base}.png`,png);
+  await writeFile(`${base}.csv`,csv(p.table));
+  await writeFile(`${base}.json`,JSON.stringify(p,null,2));
+  const pdf=new jsPDF({orientation:width>=height?'landscape':'portrait',unit:'pt',format:[width*.75,height*.75],compress:true});
+  pdf.addImage(png,'PNG',0,0,width*.75,height*.75);
+  pdf.setProperties({title:p.title,creator:'ChartsAI by SupaMakers'});
+  await writeFile(`${base}.pdf`,Buffer.from(pdf.output('arraybuffer')));
+}
+
 // Explicit allowlist: research notes, environment files and build artifacts never enter the public source archive.
 const archive = {};
 async function collect(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = join(directory, entry.name);
-    if (path === 'public/editorial/assets' || path === 'public/worksheets/assets' || path === 'public/math/assets' || path === 'public/coordinate/assets' || path === 'public/previews' || path === 'public/downloads' || path === 'public/examples/assets' || path === 'public/charts/assets') continue;
+    if (path === 'public/editorial/templates' || path === 'public/editorial/assets' || path === 'public/worksheets/assets' || path === 'public/math/assets' || path === 'public/coordinate/assets' || path === 'public/previews' || path === 'public/downloads' || path === 'public/examples/assets' || path === 'public/charts/assets') continue;
     if (directory === 'public/datasets/assets' && /\.(svg|png|json)$/.test(path)) continue;
     if (entry.isDirectory()) await collect(path);
     else if (entry.isFile()) archive[`chartsai/${path}`] = new Uint8Array(await readFile(path));

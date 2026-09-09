@@ -1,3 +1,4 @@
+import { templateId, templateKinds, templateCollectionPath } from './editorial-template-ids';
 import { guideSlugs, datasetIds } from './resource-paths';
 import { statFamilies, statPresetIds, statExamplePath, findStatPreset } from './stat-presets';
 import { showcaseSlugs, showcaseGroups, findShowcase } from './showcase-specs';
@@ -6,6 +7,7 @@ const pagePaths = new Set([
   '/',
   '/charts/',
   '/editorial-charts/',
+  ...(['dumbbell', 'slopegraph', 'small-multiples'] as const).map(templateCollectionPath),
   '/dumbbell-chart-maker/',
   '/slopegraph-maker/',
   '/small-multiples-chart-maker/',
@@ -45,7 +47,7 @@ export function analyticsUrl(raw: string) {
 }
 export function usageEvent(detail: unknown) {
   if (!detail || typeof detail !== 'object') return null;
-  const { tool, action, format } = detail as Record<string, unknown>;
+  const { tool, action, format, template } = detail as Record<string, unknown>;
   const names: Record<string, string> = {
     dumbbell: 'dumbbell',
     slopegraph: 'slopegraph',
@@ -70,6 +72,9 @@ export function usageEvent(detail: unknown) {
   };
   if (typeof tool !== 'string' || !Object.hasOwn(names, tool)) return null;
   const props: Record<string, string> = { tool: names[tool] };
+  const knownTemplate = templateId(template);
+  if (knownTemplate && templateKinds[knownTemplate] === tool) props.template = knownTemplate;
+  if (action === 'template') return props.template ? { name: 'Template Selected', props } : null;
   if (action === 'export') {
     if (
       typeof format !== 'string' ||
@@ -93,6 +98,9 @@ export function usageEvent(detail: unknown) {
 }
 
 export function showcaseDownloadEvent(pathname: string) {
+  const file = pathname.match(/^\/editorial\/templates\/([a-z-]+)\.(svg|png|csv|json|pdf)$/);
+  const id = file && templateId(file[1]);
+  if (id) return usageEvent({tool: templateKinds[id], action: 'export', template: id, format: file![2]});
   const editorial = pathname.match(
     /^\/editorial\/assets\/(line|bar|dumbbell|slopegraph|small-multiples)\.(svg|png|csv|json|html|pdf)$/,
   );

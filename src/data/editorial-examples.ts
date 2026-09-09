@@ -1,4 +1,4 @@
-import data from './editorial-data.json';
+import data from './editorial-data.json' with { type: 'json' };
 import { projectDefaults, type EditorialKind, type EditorialProject } from '../lib/editorial';
 const lifeBase = {
   ...projectDefaults,

@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import EditorialEditor from './EditorialEditor';
+import { templateCollectionPath } from '../lib/editorial-template-ids';
 import { editorialPages } from '../data/editorial-pages';
 import { editorialExample } from '../data/editorial-examples';
 import { editorialOption, publicationFrames } from '../lib/editorial';
@@ -77,6 +78,7 @@ const schema = [
         </section>
       ))
     }
+<h2>Choose a finished design</h2><p>Explore four <a href={templateCollectionPath(kind)}>editable {p.name.replace(" maker", "").toLowerCase()} examples</a>, with source data, interpretation and downloads. Replace the data while retaining the design.</p>
     <h2>Try a sourced example</h2><p>
       Start with the <a href="/editorial-charts/life-expectancy/">World Bank life expectancy comparison</a>.
       It includes source values, the selected years and countries, calculations, download files and the

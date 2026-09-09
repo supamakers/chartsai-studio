@@ -1,4 +1,5 @@
 <script>
+  import { templateId, templateKinds } from '../lib/editorial-template-ids';
   import {
     analyticsUrl,
     productionHosts,
@@ -61,6 +62,11 @@
       const anchor = event.target instanceof Element ? event.target.closest('a') : null;
       if (!anchor) return;
       const url = new URL(anchor.href);
+      const selected = templateId(anchor.dataset.template);
+      if (selected && url.origin === location.origin) {
+        const mapped = usageEvent({ tool: templateKinds[selected], action: 'template', template: selected });
+        if (mapped) w.plausible?.(mapped.name, {props: mapped.props, url: analyticsUrl(location.href)});
+      }
       const exampleDownload =
         url.origin === location.origin
           ? (showcaseDownloadEvent(url.pathname) ?? datasetDownloadEvent(url.pathname))

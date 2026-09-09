@@ -9,13 +9,15 @@ export function emitUsage(
     | 'project-load'
     | 'annotation'
     | 'design'
-    | 'apply',
+    | 'apply'
+    | 'template',
   format?: string,
+  template?: string,
 ) {
   // Only fixed tool/action/format identifiers. Production analytics listens without any entered values.
   window.dispatchEvent(
     new CustomEvent('chartsai:usage', {
-      detail: { tool, action, ...(format ? { format } : {}) },
+      detail: { tool, action, ...(format ? { format } : {}), ...(template ? { template } : {}) },
     }),
   );
 }

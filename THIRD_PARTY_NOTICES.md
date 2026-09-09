@@ -20,3 +20,7 @@ Public dataset CSVs and derivatives retain the [Creative Commons Attribution 4.0
 - German, B. (1987). Glass Identification [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5WW2P. Source file `glass.data`.
 - Charytanowicz, M., Niewczas, J., Kulczycki, P., Kowalski, P., & Lukasik, S. (2010). Seeds [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5H30K. Source file `seeds_dataset.txt`.
 - Nash, W., Sellers, T., Talbot, S., Cawthorn, A., & Ford, W. (1994). Abalone [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C55C7W. Source file `abalone.data`.
+
+## Original editorial teaching data
+
+Nine fictional teaching tables in `src/data/editorial-templates.ts` (commute-gap, library-access, delivery-times, waiting-times, league-points, energy-use, library-visits, seasonal-orders and route-reliability) were authored for ChartsAI by SupaMakers. SupaMakers dedicates these fictional data tables to the public domain under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). This dedication concerns those tables; it does not change software licenses or the World Bank source license. The three life-expectancy templates reuse the retained World Bank selection under its existing CC BY 4.0 attribution.
