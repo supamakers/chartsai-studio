@@ -1,6 +1,6 @@
 {
   "canonicalOrigin": "https://www.chartsai.com",
-  "recorded": "2026-09-08",
+  "recorded": "2026-09-09",
   "urls": [
     "https://www.chartsai.com/",
     "https://www.chartsai.com/about/",
@@ -15,6 +15,14 @@
     "https://www.chartsai.com/datasets/seeds/",
     "https://www.chartsai.com/datasets/wine/",
     "https://www.chartsai.com/dot-plot-maker/",
+    "https://www.chartsai.com/dumbbell-chart-maker/",
+    "https://www.chartsai.com/editorial-charts/",
+    "https://www.chartsai.com/editorial-charts/dumbbell-examples/",
+    "https://www.chartsai.com/editorial-charts/life-expectancy/",
+    "https://www.chartsai.com/editorial-charts/publishing-guide/",
+    "https://www.chartsai.com/editorial-charts/slopegraph-examples/",
+    "https://www.chartsai.com/editorial-charts/small-multiples-examples/",
+    "https://www.chartsai.com/editorial-charts/temperature-record/",
     "https://www.chartsai.com/examples/",
     "https://www.chartsai.com/examples/bar-charts/",
     "https://www.chartsai.com/examples/bar-charts/bar-diverging-values/",
@@ -109,6 +117,8 @@
     "https://www.chartsai.com/radar-chart-maker/",
     "https://www.chartsai.com/scatter-plot-maker/",
     "https://www.chartsai.com/slope-calculator/",
+    "https://www.chartsai.com/slopegraph-maker/",
+    "https://www.chartsai.com/small-multiples-chart-maker/",
     "https://www.chartsai.com/source/",
     "https://www.chartsai.com/terms/"
   ]

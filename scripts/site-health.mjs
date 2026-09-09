@@ -100,7 +100,7 @@ await pool(urls, async (url) => {
   assert(!/<meta name="robots" content="[^"]*noindex/.test(html), 'Unexpected noindex');
   for (const m of html.matchAll(/<script[^>]+type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs))
     assert(Array.isArray(JSON.parse(m[1])['@graph']));
-  for (const [, path] of html.matchAll(/(?:href|src)="(\/(?:examples|charts|datasets|coordinate|math|worksheets)\/assets\/[^"?#]+)"/g))
+  for (const [, path] of html.matchAll(/(?:href|src)="(\/(?:(?:examples|charts|datasets|coordinate|math|worksheets|guides|editorial)\/assets|editorial\/templates)\/[^"?#]+)"/g))
     assets.add(path);
   report.pages.push({ url, status: 200 });
 });
@@ -113,6 +113,7 @@ await pool(assets, async (path) => {
     assert(bytes.readUInt32BE(16) > 0 && bytes.readUInt32BE(20) > 0);
   }
   if (path.endsWith('.pdf')) assert(bytes.subarray(0, 5).toString() === '%PDF-' && (path.startsWith('/worksheets/') ? /\/Count 4\b/ : /\/Count [12]\b/).test(bytes.toString('latin1')));
+  if (path.endsWith('.html')) assert((r.headers.get('x-robots-tag') || '').includes('noindex'), 'Downloadable publication HTML should be noindex');
   if (path.endsWith('.svg')) assert(bytes.toString().includes('<svg'));
   if (path.endsWith('.json')) JSON.parse(bytes.toString());
   if (path.endsWith('.csv')) assert(bytes.toString().split(/\r?\n/).length > 1);
